@@ -1,0 +1,41 @@
+{
+    "presets": [
+        "es2015",
+        "react",
+        "stage-0"
+    ],
+    "plugins": [
+        "add-module-exports",
+        "transform-runtime"
+    ],
+    "env": {
+        "test": {
+            "plugins": [
+                "istanbul"
+            ]
+        },
+        "development": {
+            "plugins": [
+                ["module-resolver", {"root": ["./src/components"]}],
+                ["import", [
+                    {"libraryName": "antd","libraryDirectory": "./"},
+                    {"libraryName": "olym","libraryDirectory": "./"}
+                ]]
+            ]
+        },
+        "build": {
+            "plugins": [
+                "transform-remove-console",
+                ["module-resolver", {
+                    "root": ["./src/components"]
+
+                }
+                ],
+                ["import", [
+                    {"libraryName": "antd", "libraryDirectory": "../../../antd"},
+                    {"libraryName": "olym", "libraryDirectory": "../../../olym"}
+                ]]
+            ]
+        }
+    }
+}

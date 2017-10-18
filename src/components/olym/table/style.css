@@ -34,3 +34,6 @@
 .custom-filter-dropdown .ant-checkbox-wrapper + .ant-checkbox-wrapper {
     margin-left: 0px;
 }
+.ant-transfer-operation .ant-btn {
+    margin-left: 0px;
+}

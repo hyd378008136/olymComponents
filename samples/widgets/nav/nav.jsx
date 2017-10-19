@@ -130,6 +130,11 @@ Nav.defaultProps = {
             icon: 'laptop',
             href:"/components/table"
         },
+        {
+            label: 'Ad-search 高级查询',
+            icon: 'laptop',
+            href:"/components/ad-search"
+        },
         // {
 			// label: 'Tabs 标签页',
         //     icon: 'laptop',

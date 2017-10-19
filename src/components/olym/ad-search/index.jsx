@@ -30,15 +30,15 @@ class AdSearch extends Component{
         }else if(fieldType === 'select'){
             //单选框
             return(
-                <FormItem label={fieldCn}>
-                    <Select id={fieldEn} dropdownMatchSelectWidth={false} {...otherProps} />
+                <FormItem label={fieldCn} >
+                    <Select id={fieldEn} dropdownMatchSelectWidth={false} {...otherProps} size="small" placeholder='请选择'/>
                 </FormItem>
             )
         }else if(fieldType === 'multi_select'){
             //多选框
             return(
                 <FormItem label={fieldCn}>
-                    <Select id={fieldEn} {...otherProps} multiple dropdownMatchSelectWidth={false}/>
+                    <Select id={fieldEn} {...otherProps} multiple dropdownMatchSelectWidth={false} size="small" placeholder='请选择'/>
                 </FormItem>
             )
         }else if(fieldType === 'date'){
@@ -75,7 +75,7 @@ class AdSearch extends Component{
                         const optionProp = {fieldType,...otherProps}
                         return <Option value={fieldEn} {...optionProp}>{fieldCn}</Option>
                     })
-                    children.push(<FormItem><Select defaultValue={props[0].fieldCn} children={options} dropdownMatchSelectWidth={false} onSelect={this.onArraySelect}/></FormItem>)
+                    children.push(<FormItem><Select defaultValue={props[0].fieldCn} children={options} dropdownMatchSelectWidth={false} onSelect={this.onArraySelect} size="small" /></FormItem>)
                     const arrSelectValue = this.state.arrSelectValue || props[0].fieldEn;
                     props.map((prop)=>{
                         if(prop.fieldEn === arrSelectValue){
@@ -138,13 +138,34 @@ class AdSearch extends Component{
                 _oc[con.id]=con;
             })
             // console.log(_oc)
+            let row_map = {};
+            let size = 0;
+            let length = 0;
             OtherConditionCheckedList.forEach((ocId)=>{
+                const condition = _oc[ocId];
+                if(condition){
+                    const s = parseInt(size / 6);
+                    if(row_map[s] == null) {
+                        let colList = [];
+                        colList.push(<Col span={4}>{this.getElement(condition.props)}</Col>);
+                        row_map[s] = colList;
+                        length++;
+                    } else {
+                        row_map[s].push(<Col span={4}>{this.getElement(condition.props)}</Col>);
+                    }
+                    size++;
+                }
+            });
+            for (let i=0;i<length;i++) {
+              children.push(<Row>{row_map[i]}</Row>)
+            }
+           /* OtherConditionCheckedList.forEach((ocId)=>{
                 const condition = _oc[ocId];
                 // console.log(condition)
                 if(condition){
                     children.push(this.getElement(condition.props))
                 }
-            })
+            })*/
         }
         return children
     }

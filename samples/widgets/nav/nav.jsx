@@ -135,6 +135,11 @@ Nav.defaultProps = {
             icon: 'laptop',
             href:"/components/ad-search"
         },
+        {
+            label: 'multi-col-select 多列选择',
+            icon: 'laptop',
+            href:"/components/multiColSelect"
+        },
         // {
 			// label: 'Tabs 标签页',
         //     icon: 'laptop',

@@ -80,7 +80,7 @@ class TableSample extends Component{
 
     render(){
         return(
-            <Table columns={columns} dataSource={data} onChange={this.onChange} customColumns={customColumns} onCustomChange={this.onCustomChange}
+            <Table showSeq columns={columns} dataSource={data} onChange={this.onChange} customColumns={customColumns} onCustomChange={this.onCustomChange}
             title="这是一个测试自定义列的表格"/>
         )
     }

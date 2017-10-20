@@ -51,14 +51,28 @@ class Table extends Component{
     }
 
     render(){
-        const {columns,customColumns,onCustomChange,...otherProps} = this.props
+        const {columns,customColumns,onCustomChange,showSeq,dataSource,...otherProps} = this.props
         //处理自定义列
         const userDefineColumns = this.getUserDefineCol(columns,customColumns);
 
-        let title = this.props.title;
-        if(customColumns){
-            title = (data) => <Button onClick={this.handleShow}>自定义列</Button>
+        if(showSeq){
+            //显示序号
+            dataSource.map((data,index)=>{
+                console.log(index)
+                data["seq"]=index+1;
+            })
+            console.log(dataSource)
+            userDefineColumns.unshift({
+                dataIndex:"seq",
+                key:"seq",
+                title:"序号",
+                width: '50px'
+            })
+            console.log(userDefineColumns)
         }
+
+        let title = this.props.title;
+
 
 
         // 弹出框参数
@@ -72,6 +86,10 @@ class Table extends Component{
             customColumns
         }
 
+        if(customColumns && Array.isArray(customColumns) && customColumns.length>0){
+            title = (data) => <Button onClick={this.handleShow}>自定义列</Button>
+        }
+
         // 每次弹框都重新渲染
         const CustomColumnsModalGen = () => <CustomColumnsModal {...modalOpts} />
 
@@ -79,6 +97,7 @@ class Table extends Component{
         const props = {
             ...otherProps,
             title,
+            dataSource,
             columns:userDefineColumns,
 
         }

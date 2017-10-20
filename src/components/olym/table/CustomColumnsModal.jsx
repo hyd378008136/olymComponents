@@ -19,7 +19,7 @@ class CustomColumnsModal extends Component {
 
     constructor(props) {
         super(props)
-        const customColumns = props.customColumns;
+        const customColumns = props.customColumns || [];
         let targetKeys = [];
         let dataSource = [];
         customColumns.map((col)=>{

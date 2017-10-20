@@ -9,6 +9,9 @@ const Option = Select.Option;
 
 const FormItem = FormLayout.FormItem;
 
+const selectWidth = 100;
+const themeType = 'small';
+
 class AdSearch extends Component{
     constructor(props) {
         super(props)
@@ -30,15 +33,15 @@ class AdSearch extends Component{
         }else if(fieldType === 'select'){
             //单选框
             return(
-                <FormItem label={fieldCn} >
-                    <Select id={fieldEn} dropdownMatchSelectWidth={false} {...otherProps} size="small" placeholder='请选择'/>
+                <FormItem label={fieldCn} labelWidth={this.getLabelWidth(fieldCn)}>
+                    <Select id={fieldEn} dropdownMatchSelectWidth={false} {...otherProps} size={themeType} placeholder='请选择' style={{width:selectWidth}}/>
                 </FormItem>
             )
         }else if(fieldType === 'multi_select'){
             //多选框
             return(
-                <FormItem label={fieldCn}>
-                    <Select id={fieldEn} {...otherProps} multiple dropdownMatchSelectWidth={false} size="small" placeholder='请选择'/>
+                <FormItem label={fieldCn} labelWidth={this.getLabelWidth(fieldCn)}>
+                    <Select id={fieldEn} {...otherProps} multiple dropdownMatchSelectWidth={false} size={themeType} placeholder='请选择' style={{minWidth:selectWidth}}/>
                 </FormItem>
             )
         }else if(fieldType === 'date'){
@@ -55,6 +58,29 @@ class AdSearch extends Component{
                     <RangePicker id={fieldEn} {...otherProps} />
                 </FormItem>
             )
+        }
+    }
+
+    getStringLength = (str)=> {
+      if (str == null) return 0;
+      if (typeof str != "string"){
+        str += "";
+      }
+      return str.replace(/[^\x00-\xff]/g,"01").length;
+    }
+
+    getLabelWidth = (labelName) => {
+        if(labelName == null || labelName == '') {
+            return null;
+        } else {
+            const length = Math.floor(this.getStringLength(labelName)/2);
+            if(length <= 2) {
+                return '2em'
+            } else if(length >= 8) {
+                return '8em'
+            } else {
+                return length+'em';
+            }
         }
     }
 
@@ -75,7 +101,7 @@ class AdSearch extends Component{
                         const optionProp = {fieldType,...otherProps}
                         return <Option value={fieldEn} {...optionProp}>{fieldCn}</Option>
                     })
-                    children.push(<FormItem><Select defaultValue={props[0].fieldCn} children={options} dropdownMatchSelectWidth={false} onSelect={this.onArraySelect} size="small" /></FormItem>)
+                    children.push(<FormItem><Select defaultValue={props[0].fieldCn} children={options} dropdownMatchSelectWidth={false} onSelect={this.onArraySelect} size={themeType} /></FormItem>)
                     const arrSelectValue = this.state.arrSelectValue || props[0].fieldEn;
                     props.map((prop)=>{
                         if(prop.fieldEn === arrSelectValue){
@@ -90,12 +116,12 @@ class AdSearch extends Component{
         if(oc.length>0){
             // const ocMenu = this.getOtherConditionMenu(oc);
             // children.push(<Dropdown overlay={ocMenu} trigger={['click']}><a>+条件<Icon type="down" /></a></Dropdown>);
-            children.push(<FormItem><Popover title={<span>其他条件</span>} content={this.getOtherConditionContent(oc)} placement="bottom" trigger="click"><a>+条件<Icon type="down" size="small"/></a></Popover></FormItem>)
+            children.push(<FormItem><Popover title={<span>其他条件</span>} content={this.getOtherConditionContent(oc)} placement="bottom" trigger="click"><a>+条件<Icon type="down" size={themeType}/></a></Popover></FormItem>)
         }
 
-        children.push(<FormItem><Button children="查询" size="small"/></FormItem>)
-        children.push(<FormItem><Button children="重置" size="small"/></FormItem>)
-        children.push(<FormItem><Button children="存入我的查询" size="small"/></FormItem>)
+        children.push(<FormItem><Button children="查询" size={themeType}/></FormItem>)
+        children.push(<FormItem><Button children="重置" size={themeType}/></FormItem>)
+        children.push(<FormItem><Button children="存入我的查询" size={themeType}/></FormItem>)
         return children;
     }
 
@@ -138,7 +164,7 @@ class AdSearch extends Component{
                 _oc[con.id]=con;
             })
             // console.log(_oc)
-            let row_map = {};
+            /*let row_map = {};
             let size = 0;
             let length = 0;
             OtherConditionCheckedList.forEach((ocId)=>{
@@ -158,14 +184,14 @@ class AdSearch extends Component{
             });
             for (let i=0;i<length;i++) {
               children.push(<Row>{row_map[i]}</Row>)
-            }
-           /* OtherConditionCheckedList.forEach((ocId)=>{
+            }*/
+            OtherConditionCheckedList.forEach((ocId)=>{
                 const condition = _oc[ocId];
                 // console.log(condition)
                 if(condition){
                     children.push(this.getElement(condition.props))
                 }
-            })*/
+            })
         }
         return children
     }
@@ -178,7 +204,7 @@ class AdSearch extends Component{
         return (
             <Wrap>
                 <Panel>
-                    <FormLayout key="ocContent" children={children} inline inputSize="small">
+                    <FormLayout key="ocContent" children={children} inline inputSize={themeType}>
                     </FormLayout>
                 </Panel>
             </Wrap>
@@ -203,8 +229,8 @@ class AdSearch extends Component{
         return(
             <Wrap>
                 <Panel>
-                    <FormLayout key="defaultCondition" children={defaultConditionChildren} inline inputSize="small"/>
-                    <FormLayout key="otherCondition" children={otherConditionChildren} inputSize="small" inline/>
+                    <FormLayout key="defaultCondition" children={defaultConditionChildren} inline inputSize={themeType}/>
+                    <FormLayout key="otherCondition" children={otherConditionChildren} inputSize={themeType} inline/>
                 </Panel>
             </Wrap>
         )

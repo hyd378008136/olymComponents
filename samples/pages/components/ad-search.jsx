@@ -102,7 +102,13 @@ const searchCondition = [
     {
         id:"carrier",
         props:{
-            "fieldCn":"船公司/航空公司","fieldEn":"carrier","fieldType":"select"
+            "fieldCn":"船公司","fieldEn":"carrier","fieldType":"select"
+        }
+    },
+    {
+        id:"carrier2",
+        props:{
+          "fieldCn":"航空公司","fieldEn":"carrier2","fieldType":"select"
         }
     },
     {

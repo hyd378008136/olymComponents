@@ -152,6 +152,45 @@ const searchCondition = [
     },
 ]
 
+const topButton = [
+    {
+        id:"button1",
+        props:{
+            onClick:()=>{
+                console.log("button1")
+            },
+            displayName:"button1"
+        }
+    },
+    {
+        id:"button2",
+        props:{
+            onClick:()=>{
+                console.log("button2")
+            },
+            displayName:"button2"
+        }
+    },
+    {
+        id:"button3",
+        props:{
+            onClick:()=>{
+                console.log("button3")
+            },
+            displayName:"button3"
+        }
+    },
+    {
+        id:"button4",
+        props:{
+            onClick:()=>{
+                console.log("button4")
+            },
+            displayName:"button4"
+        }
+    },
+]
+
 function goodssourceChildren() {
     let goodssourceChildren = [];
     goodssourceChildren.push(<Option value="1">直客</Option>)
@@ -172,10 +211,13 @@ class AdSearchSample extends Component{
         const {data} = req;
         return(
             <AdSearch
+                topButton={topButton}
                 searchCondition={searchCondition}
                 defaultCondition={defaultCondition}
-                dataSource={data}
-
+                templateSource={data}
+                onSearch={()=>{console.log("search")}}
+                onReSet={()=>{console.log("reset")}}
+                onSaveMySearch={(templateName)=>{console.log(templateName)}}
             />
         )
     }

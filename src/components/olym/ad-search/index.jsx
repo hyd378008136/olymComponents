@@ -15,8 +15,15 @@ const themeType = 'small';
 class AdSearch extends Component{
     constructor(props) {
         super(props)
+        const templateSource = props.templateSource || [];
+        let template = {};
+        templateSource.map((tem)=>{
+            template[tem.id]=tem;
+        })
+
         this.state = {
-            OtherConditionCheckedList:[]
+            OtherConditionCheckedList:[],
+            template
         };
     }
 
@@ -114,28 +121,10 @@ class AdSearch extends Component{
             }
         })
         if(oc.length>0){
-            // const ocMenu = this.getOtherConditionMenu(oc);
-            // children.push(<Dropdown overlay={ocMenu} trigger={['click']}><a>+条件<Icon type="down" /></a></Dropdown>);
             children.push(<FormItem><Popover title={<span>其他条件</span>} content={this.getOtherConditionContent(oc)} placement="bottom" trigger="click"><a>+条件<Icon type="down" size={themeType}/></a></Popover></FormItem>)
         }
 
-        children.push(<FormItem><Button children="查询" size={themeType}/></FormItem>)
-        children.push(<FormItem><Button children="重置" size={themeType}/></FormItem>)
-        children.push(<FormItem><Button children="存入我的查询" size={themeType}/></FormItem>)
         return children;
-    }
-
-    getOtherConditionMenu = (oc) =>{
-        let children = [];
-        oc.map((con)=>{
-            children.push(<Menu.Item key={con.id}><a>{con.props.fieldCn}</a></Menu.Item>)
-        })
-        console.log("children",children)
-        return (
-            <Menu >
-                {children}
-            </Menu>
-        )
     }
 
     onOtherConditionChecked = (e) =>{
@@ -154,40 +143,12 @@ class AdSearch extends Component{
         let children = [];
         const OtherConditionCheckedList = this.state.OtherConditionCheckedList;
         if(OtherConditionCheckedList.length>0){
-            // oc.map((con)=>{
-            //     if(OtherConditionCheckedList.indexOf(con.id)>-1){
-            //         children.push(this.getElement(con.props))
-            //     }
-            // })
             const _oc = {};
             oc.map((con)=>{
                 _oc[con.id]=con;
             })
-            // console.log(_oc)
-            /*let row_map = {};
-            let size = 0;
-            let length = 0;
             OtherConditionCheckedList.forEach((ocId)=>{
                 const condition = _oc[ocId];
-                if(condition){
-                    const s = parseInt(size / 6);
-                    if(row_map[s] == null) {
-                        let colList = [];
-                        colList.push(<Col span={4}>{this.getElement(condition.props)}</Col>);
-                        row_map[s] = colList;
-                        length++;
-                    } else {
-                        row_map[s].push(<Col span={4}>{this.getElement(condition.props)}</Col>);
-                    }
-                    size++;
-                }
-            });
-            for (let i=0;i<length;i++) {
-              children.push(<Row>{row_map[i]}</Row>)
-            }*/
-            OtherConditionCheckedList.forEach((ocId)=>{
-                const condition = _oc[ocId];
-                // console.log(condition)
                 if(condition){
                     children.push(this.getElement(condition.props))
                 }
@@ -198,8 +159,29 @@ class AdSearch extends Component{
 
     getOtherConditionContent = (oc) =>{
         let children = [];
+
+        const selectedTemplate = this.state.selectedTemplate;
+        let template;
+        let advancedcondition;
+        let advancedconditionObj;
+        if(selectedTemplate){
+            template = this.state.template[selectedTemplate]
+            if(typeof template.advancedcondition === 'string'){
+                advancedcondition = JSON.parse(template.advancedcondition)
+            }else{
+                advancedcondition = template.advancedcondition
+            }
+            advancedconditionObj = {};
+            advancedcondition.map((con)=>{
+                advancedconditionObj[con.fieldEn]=con;
+            })
+        }
         oc.map((con)=>{
-            children.push(<FormItem><Checkbox id={con.id} onChange={this.onOtherConditionChecked}>{con.props.fieldCn}</Checkbox></FormItem>)
+            let checked = false;
+            if(advancedconditionObj && advancedconditionObj[con.id]){
+                checked = true;
+            }
+            children.push(<FormItem><Checkbox id={con.id} defaultChecked={checked} onChange={this.onOtherConditionChecked}>{con.props.fieldCn}</Checkbox></FormItem>)
         })
         return (
             <Wrap>
@@ -211,9 +193,64 @@ class AdSearch extends Component{
         )
     }
 
+    getTemplateChildren = (templateSource) =>{
+        let children = [];
+        templateSource.map((tem)=>{
+            const {id,templateName} = tem;
+            children.push(<Option key={id} value={id}>{templateName}</Option>)
+        })
+        return (<FormItem><Select onSelect={this.onTemplateSelect} size={themeType} placeholder="我的查询" dropdownMatchSelectWidth={false} style={{width:selectWidth}}>{children}</Select></FormItem>)
+    }
+
+    onTemplateSelect = (value, option) =>{
+        const templateMap = this.state.template;
+        const template = templateMap[value];
+        let {advancedcondition,businessType} = template
+        if(typeof advancedcondition === 'string'){
+            advancedcondition = JSON.parse(advancedcondition)
+        }
+        let OtherConditionCheckedList = [];
+        advancedcondition.map((con)=>{
+            OtherConditionCheckedList.push(con.fieldEn)
+        })
+        this.setState({
+            selectedTemplate:value,
+            OtherConditionCheckedList
+        })
+    }
+
+    getSaveMySearchContent = (onSaveMySearch) =>{
+        let templateName = "";
+        function onChange(e) {
+            templateName = e.target.value
+        }
+        return(
+            <Wrap>
+                <Panel>
+                    <FormLayout inline inputSize={themeType}>
+                        <FormItem label="名称">
+                            <Input placeholder="请输入模板名" onChange={onChange}/>
+                        </FormItem>
+                        <FormItem>
+                            <Button children="保存" size={themeType} onClick={()=>{onSaveMySearch(templateName)}}/>
+                        </FormItem>
+                    </FormLayout>
+                </Panel>
+            </Wrap>
+        )
+    }
+
+    getTopButtonChildren = (topButton) =>{
+        let children = [];
+        topButton.map(({props})=>{
+            const {displayName,...otherProps} = props;
+            children.push(<FormItem><Button children={displayName} size={themeType} {...otherProps}/></FormItem>)
+        })
+        return children;
+    }
+
     render(){
-        const {searchCondition,defaultCondition,data} = this.props;
-        // console.log(searchCondition,defaultCondition)
+        const {topButton,searchCondition,defaultCondition,templateSource,onSearch,onReSet,onSaveMySearch} = this.props;
         let dc = [];
         let oc = [];
         searchCondition.map((con)=>{
@@ -223,12 +260,26 @@ class AdSearch extends Component{
                 oc.push(con)
             }
         })
-        // console.log(dc,oc)
-        const defaultConditionChildren = this.getDConChildren(dc,oc);
+        let topButtonChildren = this.getTopButtonChildren(topButton)
+        let defaultConditionChildren = this.getDConChildren(dc,oc);
+        if(onSearch){
+            defaultConditionChildren.push(<FormItem><Button children="查询" size={themeType} onClick={()=>onSearch()}/></FormItem>);
+        }
+        if(onReSet){
+            defaultConditionChildren.push(<FormItem><Button children="重置" size={themeType} onClick={()=>onReSet()}/></FormItem>);
+        }
+        if(onSaveMySearch){
+            defaultConditionChildren.push(<FormItem><Popover placement="bottom" trigger="click" content={this.getSaveMySearchContent(onSaveMySearch)}><Button children="存入我的查询" size={themeType}/></Popover></FormItem>);
+        }
+        if(templateSource && Array.isArray(templateSource) && templateSource.length>0){
+            defaultConditionChildren.push(this.getTemplateChildren(templateSource))
+        }
+
         const otherConditionChildren = this.getOtherConditionChildren(oc);
         return(
             <Wrap>
                 <Panel>
+                    <FormLayout key="topButton" children={topButtonChildren} inline inputSize={themeType}/>
                     <FormLayout key="defaultCondition" children={defaultConditionChildren} inline inputSize={themeType}/>
                     <FormLayout key="otherCondition" children={otherConditionChildren} inputSize={themeType} inline/>
                 </Panel>

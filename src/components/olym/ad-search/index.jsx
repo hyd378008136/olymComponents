@@ -197,7 +197,14 @@ class AdSearch extends Component{
         let children = [];
         templateSource.map((tem)=>{
             const {id,templateName} = tem;
-            children.push(<Option key={id} value={id}>{templateName}</Option>)
+            let del;
+            if(this.props.onDeleteMySearch){
+                del = (<a onClick={(event)=>{
+                    this.props.onDeleteMySearch(tem)
+                    event.stopPropagation();
+                }}><Icon type="cross" /></a>);
+            }
+            children.push(<Option key={id} value={id}>{templateName}{del}</Option>)
         })
         return (<FormItem><Select onSelect={this.onTemplateSelect} size={themeType} placeholder="我的查询" dropdownMatchSelectWidth={false} style={{width:selectWidth}}>{children}</Select></FormItem>)
     }
@@ -223,7 +230,7 @@ class AdSearch extends Component{
     }
 
     getSaveMySearchContent = (onSaveMySearch) =>{
-        let templateName = "";
+        let templateName = this.state.selectedTemplateName || "";
         let templateId = this.state.selectedTemplateId;
         function onChange(e) {
             templateName = e.target.value
@@ -236,7 +243,7 @@ class AdSearch extends Component{
                 <Panel>
                     <FormLayout inline inputSize={themeType}>
                         <FormItem label="名称">
-                            <Input placeholder="请输入模板名" onChange={onChange} defaultValue={this.state.selectedTemplateName}/>
+                            <Input placeholder="请输入模板名" onChange={onChange} defaultValue={templateName}/>
                         </FormItem>
                         <FormItem>
                             <Button children="保存" size={themeType} onClick={()=>{onSaveMySearch(templateName,conditionList,templateId)}}/>

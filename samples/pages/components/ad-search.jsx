@@ -219,6 +219,7 @@ class AdSearchSample extends Component{
                 onSearch={()=>{console.log("search")}}
                 onReSet={()=>{console.log("reset")}}
                 onSaveMySearch={(templateName)=>{console.log(templateName)}}
+                onDeleteMySearch={(template)=>{console.log("template",template)}}
             />
             </div>
         )

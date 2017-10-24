@@ -87,7 +87,7 @@ class Table extends Component{
         }
 
         if(customColumns && Array.isArray(customColumns) && customColumns.length>0){
-            title = (data) => <Button onClick={this.handleShow}>自定义列</Button>
+            title = (data) => <Button onClick={this.handleShow} size="small">自定义列</Button>
         }
 
         // 每次弹框都重新渲染

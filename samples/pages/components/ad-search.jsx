@@ -2,7 +2,7 @@ import React,{Component} from "react";
 
 import {AdSearch} from 'olym'
 
-import {Select} from 'antd'
+import {Select,Icon} from 'antd'
 
 const Option = Select.Option;
 
@@ -210,6 +210,7 @@ class AdSearchSample extends Component{
 
         const {data} = req;
         return(
+            <div>
             <AdSearch
                 topButton={topButton}
                 searchCondition={searchCondition}
@@ -219,6 +220,7 @@ class AdSearchSample extends Component{
                 onReSet={()=>{console.log("reset")}}
                 onSaveMySearch={(templateName)=>{console.log(templateName)}}
             />
+            </div>
         )
     }
 }

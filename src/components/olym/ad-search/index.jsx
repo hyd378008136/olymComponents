@@ -206,6 +206,7 @@ class AdSearch extends Component{
         const templateMap = this.state.template;
         const template = templateMap[value];
         let {advancedcondition,businessType} = template
+        console.log(template)
         if(typeof advancedcondition === 'string'){
             advancedcondition = JSON.parse(advancedcondition)
         }
@@ -215,24 +216,30 @@ class AdSearch extends Component{
         })
         this.setState({
             selectedTemplate:value,
+            selectedTemplateName:template.templateName,
+            selectedTemplateId:template.id,
             OtherConditionCheckedList
         })
     }
 
     getSaveMySearchContent = (onSaveMySearch) =>{
         let templateName = "";
+        let templateId = this.state.selectedTemplateId;
         function onChange(e) {
             templateName = e.target.value
+            templateId = -1;
         }
+
+        const conditionList = Array.from(new Set(this.state.OtherConditionCheckedList.concat(this.props.defaultCondition)));
         return(
             <Wrap>
                 <Panel>
                     <FormLayout inline inputSize={themeType}>
                         <FormItem label="名称">
-                            <Input placeholder="请输入模板名" onChange={onChange}/>
+                            <Input placeholder="请输入模板名" onChange={onChange} defaultValue={this.state.selectedTemplateName}/>
                         </FormItem>
                         <FormItem>
-                            <Button children="保存" size={themeType} onClick={()=>{onSaveMySearch(templateName)}}/>
+                            <Button children="保存" size={themeType} onClick={()=>{onSaveMySearch(templateName,conditionList,templateId)}}/>
                         </FormItem>
                     </FormLayout>
                 </Panel>

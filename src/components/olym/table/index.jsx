@@ -25,7 +25,7 @@ class Table extends Component{
         let userDefineColumns = [];
         customColumns.map((obj)=>{
             const dataIndex = obj.dataIndex;
-            if(obj.orderNo<0){
+            if(!obj.orderNo || obj.orderNo<0){
                 return;
             }
             if(columnsMap[dataIndex]){

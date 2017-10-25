@@ -333,7 +333,6 @@ class AdSearch extends Component{
                     <FormLayout key="topButton" children={topButtonChildren} inline inputSize={themeType}/>
                     <FormLayout key="defaultCondition" children={defaultConditionChildren} inline inputSize={themeType}/>
                     <FormLayout key="otherCondition" children={otherConditionChildren} inputSize={themeType} inline/>
-                    <RangePicker defaultValue={["2017-10-10","2017-11-11"]} format="yyyy-MM-dd"/>
                 </Panel>
             </Wrap>
         )

@@ -84,7 +84,7 @@ class Table extends Component{
         // 弹出框参数
         const modalOpts = {
             // ...customConfig,
-            // columnKeys:[],
+            columnKeys:_customColumns,
             visible: this.state.visible,
             onCancel: this.handleClose,
             onOk: onCustomChange,

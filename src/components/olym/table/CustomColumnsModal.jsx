@@ -50,9 +50,11 @@ class CustomColumnsModal extends Component {
     handleOk = () => {
         const {columnKeys} = this.props
         const {targetKeys, selectedKeys, dataSource, ...values} = this.state
-        values.pageSize = Number(values.pageSize)
-        values.columnKeys = targetKeys.map(key =>
-        columnKeys.filter(info => info.key === key)[0] || {key})
+        // values.pageSize = Number(values.pageSize)
+        console.log(columnKeys)
+        values.columnKeys = targetKeys.map((key) =>{
+                return columnKeys.filter(info => info.orderNo === key)[0] || {key}
+        })
         this.props.onOk(values)
         this.props.onCancel()
     }

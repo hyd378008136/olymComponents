@@ -18,7 +18,7 @@ const req = {
             "userId": "565599",
             "templateName": "测试模板名",
             "businessType": "2",
-            "advancedcondition": "[{\"fieldNum\":1,\"fieldCn\":\"创建时间\",\"fieldEn\":\"createdate\",\"fieldValue\":\"2017-07-20 ~ 2017-07-27\",\"fieldType\":\"date\"},{\"fieldNum\":2,\"fieldCn\":\"委托单位\",\"fieldEn\":\"customername\",\"fieldValue\":\"公司名称\",\"fieldType\":\"select\"},{\"fieldNum\":3,\"fieldCn\":\"各类编号\",\"fieldEn\":\"multi_number\",\"fieldValue\":\"EXP2017090005\",\"fieldType\":\"text\"},{\"fieldNum\":4,\"fieldCn\":\"起运港\",\"fieldEn\":\"loadport\",\"fieldValue\":\"NINGBO\",\"fieldType\":\"multi_select\"}]",
+            "advancedcondition": "[{\"fieldNum\":1,\"fieldCn\":\"创建时间\",\"fieldEn\":\"createdate\",\"fieldValue\":\"2017-07-20 ~ 2017-07-27\",\"fieldType\":\"date_range\"},{\"fieldNum\":2,\"fieldCn\":\"委托单位\",\"fieldEn\":\"customername\",\"fieldValue\":\"公司名称\",\"fieldType\":\"select\"},{\"fieldNum\":3,\"fieldCn\":\"各类编号\",\"fieldEn\":\"multi_number\",\"fieldValue\":\"EXP2017090005\",\"fieldType\":\"text\"},{\"fieldNum\":4,\"fieldCn\":\"起运港\",\"fieldEn\":\"loadport\",\"fieldValue\":\"NINGBO\",\"fieldType\":\"multi_select\"}]",
             "updateTime": "2017-10-18 00:00:00"
         },
         {
@@ -27,7 +27,7 @@ const req = {
             "userId": "565599",
             "templateName": "测试模板名2",
             "businessType": "1",
-            "advancedcondition": "[{\"fieldNum\":1,\"fieldCn\":\"创建时间\",\"fieldEn\":\"createdate\",\"fieldValue\":\"2017-07-20 ~ 2017-07-27\",\"fieldType\":\"date\"},{\"fieldNum\":2,\"fieldCn\":\"委托单位\",\"fieldEn\":\"customername\",\"fieldValue\":\"公司名称\",\"fieldType\":\"select\"},{\"fieldNum\":3,\"fieldCn\":\"各类编号\",\"fieldEn\":\"multi_number\",\"fieldValue\":\"EXP2017090005\",\"fieldType\":\"text\"},{\"fieldNum\":4,\"fieldCn\":\"起运港\",\"fieldEn\":\"loadport\",\"fieldValue\":\"NINGBO\",\"fieldType\":\"multi_select\"}]",
+            "advancedcondition": "[{\"fieldNum\":1,\"fieldCn\":\"创建时间\",\"fieldEn\":\"createdate\",\"fieldValue\":\"2017-07-20 ~ 2017-07-27\",\"fieldType\":\"date_range\"},{\"fieldNum\":2,\"fieldCn\":\"委托单位\",\"fieldEn\":\"customername\",\"fieldValue\":\"公司名称\",\"fieldType\":\"select\"},{\"fieldNum\":3,\"fieldCn\":\"各类编号\",\"fieldEn\":\"multi_number\",\"fieldValue\":\"EXP2017090005\",\"fieldType\":\"text\"},{\"fieldNum\":4,\"fieldCn\":\"起运港\",\"fieldEn\":\"loadport\",\"fieldValue\":\"NINGBO\",\"fieldType\":\"multi_select\"}]",
             "updateTime": "2017-10-17 00:00:00"
         },
         {
@@ -36,7 +36,7 @@ const req = {
             "userId": "565599",
             "templateName": "测试模板名4",
             "businessType": "4",
-            "advancedcondition": "[{\"fieldNum\":1,\"fieldCn\":\"创建时间\",\"fieldEn\":\"createdate\",\"fieldValue\":\"2017-07-20 ~ 2017-07-27\",\"fieldType\":\"date\"},{\"fieldNum\":2,\"fieldCn\":\"委托单位\",\"fieldEn\":\"customername\",\"fieldValue\":\"公司名称\",\"fieldType\":\"select\"},{\"fieldNum\":3,\"fieldCn\":\"各类编号\",\"fieldEn\":\"multi_number\",\"fieldValue\":\"EXP2017090005\",\"fieldType\":\"text\"},{\"fieldNum\":4,\"fieldCn\":\"起运港\",\"fieldEn\":\"loadport\",\"fieldValue\":\"NINGBO\",\"fieldType\":\"multi_select\"}]",
+            "advancedcondition": "[{\"fieldNum\":1,\"fieldCn\":\"创建时间\",\"fieldEn\":\"createdate\",\"fieldValue\":\"2017-07-20 ~ 2017-07-27\",\"fieldType\":\"date_range\"},{\"fieldNum\":2,\"fieldCn\":\"委托单位\",\"fieldEn\":\"customername\",\"fieldValue\":\"公司名称\",\"fieldType\":\"select\"},{\"fieldNum\":3,\"fieldCn\":\"各类编号\",\"fieldEn\":\"multi_number\",\"fieldValue\":\"EXP2017090005\",\"fieldType\":\"text\"},{\"fieldNum\":4,\"fieldCn\":\"起运港\",\"fieldEn\":\"loadport\",\"fieldValue\":\"NINGBO\",\"fieldType\":\"multi_select\"}]",
             "updateTime": "2017-10-18 00:00:00"
         }
     ]

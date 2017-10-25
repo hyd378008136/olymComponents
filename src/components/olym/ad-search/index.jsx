@@ -30,25 +30,27 @@ class AdSearch extends Component{
     getElement = (props) =>{
         console.log(props)
         const {fieldCn,fieldEn,fieldType,...otherProps} = props;
+        const fieldValue = props.fieldValue || "";
+        const InputGen = () =><Input id={fieldEn} {...otherProps} defaultValue={fieldValue}/>
         if(fieldType === 'text'){
             //input
             return (
                 <FormItem label={fieldCn} >
-                    <Input id={fieldEn} {...otherProps}/>
+                    <InputGen />
                 </FormItem>
             )
         }else if(fieldType === 'select'){
             //单选框
             return(
                 <FormItem label={fieldCn} labelWidth={this.getLabelWidth(fieldCn)}>
-                    <Select id={fieldEn} dropdownMatchSelectWidth={false} {...otherProps} size={themeType} placeholder='请选择' style={{width:selectWidth}}/>
+                    <Select id={fieldEn} dropdownMatchSelectWidth={false} {...otherProps} size={themeType} placeholder='请选择' style={{width:selectWidth}} defaultValue={fieldValue}/>
                 </FormItem>
             )
         }else if(fieldType === 'multi_select'){
             //多选框
             return(
                 <FormItem label={fieldCn} labelWidth={this.getLabelWidth(fieldCn)}>
-                    <Select id={fieldEn} {...otherProps} multiple dropdownMatchSelectWidth={false} size={themeType} placeholder='请选择' style={{minWidth:selectWidth}}/>
+                    <Select id={fieldEn} {...otherProps} defaultValue={fieldValue} multiple dropdownMatchSelectWidth={false} size={themeType} placeholder='请选择' style={{minWidth:selectWidth}}/>
                 </FormItem>
             )
         }else if(fieldType === 'date'){
@@ -60,9 +62,21 @@ class AdSearch extends Component{
             )
         }else if(fieldType === 'date_range'){
             //时间范围选择
+            console.log("date_range",fieldValue)
+            let defaultValue = [];
+            if(fieldValue && typeof fieldValue === 'string'){
+
+                //TODO 临时解决方案
+                defaultValue = fieldValue.split(" ~ ")
+            }else{
+                defaultValue = fieldValue
+            }
+
+            console.log("defaultValue",defaultValue)
+            const RangeGen = () =><RangePicker id={fieldEn} {...otherProps} defaultValue={defaultValue} format="yyyy-MM-dd"/>
             return(
                 <FormItem>
-                    <RangePicker id={fieldEn} {...otherProps} />
+                    <RangeGen />
                 </FormItem>
             )
         }
@@ -102,6 +116,7 @@ class AdSearch extends Component{
         dc.map((con)=>{
             const {props} = con;
             if(props){
+                const advancedconditionObj = this.getAdvancedconditionObj();
                 if(Array.isArray(props)){
                     const options = props.map((prop)=>{
                         const {fieldCn,fieldEn,fieldType,...otherProps} = prop;
@@ -112,11 +127,11 @@ class AdSearch extends Component{
                     const arrSelectValue = this.state.arrSelectValue || props[0].fieldEn;
                     props.map((prop)=>{
                         if(prop.fieldEn === arrSelectValue){
-                            children.push(this.getElement(prop))
+                            children.push(this.getElement(advancedconditionObj?advancedconditionObj[arrSelectValue]||prop:prop))
                         }
                     })
                 }else{
-                    children.push(this.getElement(props))
+                    children.push(this.getElement(advancedconditionObj?advancedconditionObj[props.fieldEn]||props:props))
                 }
             }
         })
@@ -139,18 +154,40 @@ class AdSearch extends Component{
         })
     }
 
+    getAdvancedconditionObj = () =>{
+        if(!this.state.template || !this.state.selectedTemplateId){
+            return;
+        }
+        const template = this.state.template[this.state.selectedTemplateId];
+        console.log("template",template)
+        let advancedcondition;
+        if(typeof template.advancedcondition === 'string'){
+            advancedcondition = JSON.parse(template.advancedcondition)
+        }else{
+            advancedcondition = template.advancedcondition
+        }
+        let advancedconditionObj = {};
+        advancedcondition.map((con)=>{
+            advancedconditionObj[con.fieldEn]=con;
+        })
+        return advancedconditionObj;
+    }
+
     getOtherConditionChildren = (oc) =>{
         let children = [];
         const OtherConditionCheckedList = this.state.OtherConditionCheckedList;
+
         if(OtherConditionCheckedList.length>0){
             const _oc = {};
             oc.map((con)=>{
                 _oc[con.id]=con;
             })
+            const advancedconditionObj = this.getAdvancedconditionObj();
             OtherConditionCheckedList.forEach((ocId)=>{
                 const condition = _oc[ocId];
                 if(condition){
-                    children.push(this.getElement(condition.props))
+                    console.log("condition",condition)
+                    children.push(this.getElement(advancedconditionObj[ocId] || condition.props))
                 }
             })
         }
@@ -296,6 +333,7 @@ class AdSearch extends Component{
                     <FormLayout key="topButton" children={topButtonChildren} inline inputSize={themeType}/>
                     <FormLayout key="defaultCondition" children={defaultConditionChildren} inline inputSize={themeType}/>
                     <FormLayout key="otherCondition" children={otherConditionChildren} inputSize={themeType} inline/>
+                    <RangePicker defaultValue={["2017-10-10","2017-11-11"]} format="yyyy-MM-dd"/>
                 </Panel>
             </Wrap>
         )

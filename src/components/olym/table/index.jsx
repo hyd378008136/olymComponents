@@ -58,6 +58,9 @@ class Table extends Component{
             const {orderNo,dataIndex,title} = col
             _customColumns.push({orderNo,dataIndex,title})
         })
+        _customColumns.sort((a,b)=>{
+            return a.orderNo-b.orderNo;
+        })
         //处理自定义列
         const userDefineColumns = this.getUserDefineCol(columns,_customColumns);
 

@@ -15,24 +15,42 @@ const themeType = 'small';
 class AdSearch extends Component{
     constructor(props) {
         super(props)
-        const templateSource = props.templateSource || [];
-        let template = {};
-        templateSource.map((tem)=>{
-            template[tem.id]=tem;
-        })
 
-        const searchCondition = props.searchCondition || [];
-        let searchConditionMap = {};
-        searchCondition.map((con)=>{
-            searchConditionMap[con.id] = con.props
-        })
+
+        // const searchCondition = props.searchCondition || [];
+        // let searchConditionMap = {};
+        // searchCondition.map((con)=>{
+        //     searchConditionMap[con.id] = con.props
+        // })
 //console.log("searchConditionMap",searchConditionMap)
         this.state = {
-            searchConditionMap,
+            searchConditionMap:{},
             OtherConditionCheckedList:[],
-            template
+            template:{}
         };
     }
+
+    componentWillReceiveProps(nextProps){
+        if(this.props !== nextProps){
+            const searchCondition = nextProps.searchCondition || [];
+            let searchConditionMap = {};
+            searchCondition.map((con)=>{
+                searchConditionMap[con.id] = con.props
+            })
+            const templateSource = nextProps.templateSource || [];
+            let template = {};
+            templateSource.map((tem)=>{
+                template[tem.id]=tem;
+            })
+            this.setState({
+                searchConditionMap,template
+            })
+        }
+    }
+    //
+    // componentWillUnmount(){
+    //
+    // }
 
     getElement = (props) =>{
 
@@ -49,11 +67,11 @@ class AdSearch extends Component{
             )
         }else if(fieldType === 'select'){
             //单选框
-           // console.log(props)
-            const SelectGen = () =><Select id={fieldEn} dropdownMatchSelectWidth={false} {...otherProps} {...this.state.searchConditionMap[fieldEn]} size={themeType} placeholder='请选择' style={{width:selectWidth}} defaultValue={fieldValue}/>
+            // console.log(props)
+            //  const SelectGen = () =><Select id={fieldEn} dropdownMatchSelectWidth={false} {...otherProps} {...this.state.searchConditionMap[fieldEn]} size={themeType} placeholder='请选择' style={{width:selectWidth}} defaultValue={fieldValue}/>
             return(
                 <FormItem label={fieldCn} labelWidth={this.getLabelWidth(fieldCn)}>
-                    <SelectGen />
+                    <Select id={fieldEn} dropdownMatchSelectWidth={false} {...otherProps} {...this.state.searchConditionMap[fieldEn]} size={themeType} placeholder='请选择' style={{width:selectWidth}} defaultValue={fieldValue}/>
                 </FormItem>
             )
         }else if(fieldType === 'multi_select'){
@@ -75,7 +93,7 @@ class AdSearch extends Component{
             )
         }else if(fieldType === 'date_range'){
             //时间范围选择
-           // console.log("date_range",fieldValue)
+            // console.log("date_range",fieldValue)
             let defaultValue = [];
             if(fieldValue && typeof fieldValue === 'string'){
 
@@ -96,11 +114,11 @@ class AdSearch extends Component{
     }
 
     getStringLength = (str)=> {
-      if (str == null) return 0;
-      if (typeof str != "string"){
-        str += "";
-      }
-      return str.replace(/[^\x00-\xff]/g,"01").length;
+        if (str == null) return 0;
+        if (typeof str != "string"){
+            str += "";
+        }
+        return str.replace(/[^\x00-\xff]/g,"01").length;
     }
 
     getLabelWidth = (labelName) => {
@@ -178,7 +196,7 @@ class AdSearch extends Component{
             return;
         }
         const template = this.state.template[this.state.selectedTemplateId];
-       // console.log("template",template)
+        // console.log("template",template)
         let advancedcondition;
         if(typeof template.advancedcondition === 'string'){
             advancedcondition = JSON.parse(template.advancedcondition)
@@ -205,7 +223,7 @@ class AdSearch extends Component{
             OtherConditionCheckedList.forEach((ocId)=>{
                 const condition = _oc[ocId];
                 if(condition){
-                  //  console.log("condition",condition)
+                    //  console.log("condition",condition)
                     children.push(this.getElement(advancedconditionObj?(advancedconditionObj[ocId]||condition.props):condition.props))
                 }
             })
@@ -279,7 +297,7 @@ class AdSearch extends Component{
         const templateMap = this.state.template;
         const template = templateMap[value];
         let {advancedcondition,businessType,templateName} = template
-       // console.log(template)
+        // console.log(template)
         if(typeof advancedcondition === 'string'){
             advancedcondition = JSON.parse(advancedcondition)
         }

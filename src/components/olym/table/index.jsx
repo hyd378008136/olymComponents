@@ -67,17 +67,17 @@ class Table extends Component{
         if(showSeq){
             //显示序号
             dataSource.map((data,index)=>{
-                console.log(index)
+                // console.log(index)
                 data["seq"]=index+1;
             })
-            console.log(dataSource)
+            // console.log(dataSource)
             userDefineColumns.unshift({
                 dataIndex:"seq",
                 key:"seq",
                 title:"序号",
                 width: '50px'
             })
-            console.log(userDefineColumns)
+            // console.log(userDefineColumns)
         }
 
         let title = this.props.title;

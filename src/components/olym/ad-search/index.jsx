@@ -346,7 +346,7 @@ class AdSearch extends Component{
                             <Input placeholder="请输入模板名" onChange={onChange} defaultValue={templateName}/>
                         </FormItem>
                         <FormItem>
-                            <Button children="保存" size={themeType} onClick={()=>{onSaveMySearch(templateName,conditionList,templateId)}}/>
+                            <Button children="保存" size={themeType} onClick={()=>{onSaveMySearch(templateName,conditionList,templateId,this.props.searchCondition,this.props.defaultCondition)}}/>
                         </FormItem>
                     </FormLayout>
                 </Panel>

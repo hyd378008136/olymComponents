@@ -325,7 +325,13 @@ class AdSearch extends Component{
             if(list.indexOf(con.fieldEn)>-1){
                 arrSelectValue = con.fieldEn
             }
-            OtherConditionCheckedList.push(con.fieldEn)
+            if(defaultCondition.indexOf(con.fieldEn)<0){
+                const propname = `${con.fieldEn}checked`;
+                this.setState({
+                    [propname]:true,
+                })
+                OtherConditionCheckedList.push(con.fieldEn)
+            }
         })
         this.setState({
             arrSelectValue,
@@ -334,6 +340,7 @@ class AdSearch extends Component{
             selectedTemplateId:template.id,
             OtherConditionCheckedList
         })
+        this.props.onTemplateSelect && this.props.onTemplateSelect(template)
     }
 
     getSaveMySearchContent = (onSaveMySearch) =>{
@@ -388,6 +395,7 @@ class AdSearch extends Component{
         })
         this.setState({
             selectedTemplateName:"",
+            arrSelectValue:"",
             OtherConditionCheckedList:[]
         })
         this.props.onReSet();

@@ -1,6 +1,9 @@
-import '../../style/index.less';
-import './index.less';
+'use strict';
 
-// style dependencies
-import '../../select/style';
-import '../../checkbox/style';
+require('../../style/index.less');
+
+require('./index.less');
+
+require('../../select/style');
+
+require('../../checkbox/style');

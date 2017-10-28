@@ -1,46 +1,44 @@
 @import "../../style/themes/default";
 @import "../../style/mixins/index";
 
-@slider-prefix-cls: ant-slider;
+@slider-prefix-cls: ~"@{ant-prefix}-slider";
 // slider color
-@slider-disabled-color: #ccc;
+@slider-disabled-color: @disabled-color;
 // tooltip
 @slider-tooltip-color: #fff;
-@slider-tooltip-bg: tint(#666, 4%);
+@slider-tooltip-bg: tint(@text-color, 4%);
 @slider-tooltip-arrow-width: 4px;
-@slider-tooltip-distance: @slider-tooltip-arrow-width + 4;
+@slider-tooltip-distance: @slider-tooltip-arrow-width + 4px;
 @slider-tooltip-arrow-color: @slider-tooltip-bg;
 
 .@{slider-prefix-cls} {
   position: relative;
-  margin: 10px 8px;
+  margin: 10px 6px;
+  padding: 4px 0;
   height: 12px;
-  border-radius: 5px;
-  background-color: #e9e9e9;
   cursor: pointer;
-  border-top: 4px solid #fff;
-  border-bottom: 4px solid #fff;
-  transition: background-color 0.3s ease;
 
-  &-track {
+  .vertical();
+
+  &-with-marks {
+    margin-bottom: 28px;
+  }
+
+  &-rail {
     position: absolute;
-    left: 0;
+    width: 100%;
     height: 4px;
-    border-radius: @border-radius-base;
-    background-color: tint(@primary-color, 60%);
-    z-index: 1;
+    border-radius: 2px;
+    background-color: @border-color-split;
     transition: background-color 0.3s ease;
   }
 
-  &:hover {
-    background-color: #e1e1e1;
-    .@{slider-prefix-cls}-handle {
-      border-color: tint(@primary-color, 20%);
-    }
-  }
-
-  &:hover &-track {
-    background-color: tint(@primary-color, 40%);
+  &-track {
+    position: absolute;
+    height: 4px;
+    border-radius: @border-radius-base;
+    background-color: tint(@primary-color, 60%);
+    transition: background-color 0.3s ease;
   }
 
   &-handle {
@@ -52,12 +50,13 @@
     cursor: pointer;
     border-radius: 50%;
     border: solid 2px tint(@primary-color, 50%);
-    background-color: #fff;
-    z-index: 2;
-    transition: border-color 0.3s ease;
+    background-color: @component-background;
+    transition: border-color 0.3s ease, transform .3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 
     &:hover {
-      border-color: tint(@primary-color, 20%);
+      border-color: @primary-5;
+      transform: scale(1.2);
+      transform-origin: center center;
     }
 
     &:active {
@@ -65,13 +64,24 @@
     }
   }
 
+  &:hover {
+    .@{slider-prefix-cls}-rail {
+      background-color: #e1e1e1;
+    }
+    .@{slider-prefix-cls}-track {
+      background-color: tint(@primary-color, 40%);
+    }
+    .@{slider-prefix-cls}-handle {
+      border-color: @primary-5;
+    }
+  }
+
   &-mark {
     position: absolute;
-    top: 10px;
+    top: 14px;
     left: 0;
     width: 100%;
-    font-size: 12px;
-    z-index: 3;
+    font-size: @font-size-base;
   }
 
   &-mark-text {
@@ -80,10 +90,10 @@
     vertical-align: middle;
     text-align: center;
     cursor: pointer;
-    color: #999;
+    color: @text-color-secondary;
 
     &-active {
-      color: #666;
+      color: @text-color;
     }
   }
 
@@ -92,7 +102,6 @@
     width: 100%;
     height: 4px;
     background: transparent;
-    z-index: 1;
   }
 
   &-dot {
@@ -101,8 +110,8 @@
     margin-left: -4px;
     width: 8px;
     height: 8px;
-    border: 2px solid #e9e9e9;
-    background-color: #fff;
+    border: 2px solid @border-color-split;
+    background-color: @component-background;
     cursor: pointer;
     border-radius: 50%;
     vertical-align: middle;
@@ -118,7 +127,7 @@
   }
 
   &-disabled {
-    background-color: #e9e9e9 !important;
+    cursor: not-allowed;
 
     .@{slider-prefix-cls}-track {
       background-color: @slider-disabled-color !important;
@@ -126,60 +135,61 @@
 
     .@{slider-prefix-cls}-handle,
     .@{slider-prefix-cls}-dot {
-      border-color: @slider-disabled-color!important;
-      background-color: #fff;
+      border-color: @slider-disabled-color !important;
+      background-color: @component-background;
       cursor: not-allowed;
+      box-shadow: none;
     }
 
     .@{slider-prefix-cls}-mark-text,
     .@{slider-prefix-cls}-dot {
-      cursor: not-allowed!important;
+      cursor: not-allowed !important;
     }
   }
+}
 
-  // slider tooltip style
-  &-tooltip {
-    position: absolute;
-    left: -9999px;
-    top: -9999px;
-    z-index: 4;
-    visibility: visible;
+.vertical() {
+  &-vertical {
+    width: 12px;
+    height: 100%;
+    margin: 6px 10px;
+    padding: 0 4px;
 
-    &-hidden {
-      display: none;
+    .@{slider-prefix-cls}-rail {
+      height: 100%;
+      width: 4px;
     }
 
-    &-placement-points-bc-tc {
-      padding: @slider-tooltip-arrow-width 0 @slider-tooltip-distance 0;
+    .@{slider-prefix-cls}-track {
+      width: 4px;
     }
 
-    &-inner {
-      padding: 6px;
-      min-width: 24px;
-      height: 24px;
-      font-size: @font-size-base;
-      line-height: 1;
-      color: @slider-tooltip-color;
-      text-align: center;
-      text-decoration: none;
-      background-color: @slider-tooltip-bg;
-      border-radius: @border-radius-base;
+    .@{slider-prefix-cls}-handle {
+      margin-left: -5px;
+      margin-bottom: -7px;
     }
 
-    &-arrow {
-      position: absolute;
-      width: 0;
-      height: 0;
-      border-color: transparent;
-      border-style: solid;
+    .@{slider-prefix-cls}-mark {
+      top: 0;
+      left: 12px;
+      width: 18px;
+      height: 100%;
     }
 
-    &-placement-points-bc-tc &-arrow {
-      bottom: @slider-tooltip-distance - @slider-tooltip-arrow-width;
-      left: 50%;
-      margin-left: -@slider-tooltip-arrow-width;
-      border-width: @slider-tooltip-arrow-width @slider-tooltip-arrow-width 0;
-      border-top-color: @slider-tooltip-arrow-color;
+    .@{slider-prefix-cls}-mark-text {
+      left: 4px;
+      white-space: nowrap;
+    }
+
+    .@{slider-prefix-cls}-step {
+      width: 4px;
+      height: 100%;
+    }
+
+    .@{slider-prefix-cls}-dot {
+      top: auto;
+      left: 2px;
+      margin-bottom: -4px;
     }
   }
 }

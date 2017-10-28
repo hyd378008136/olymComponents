@@ -1,5 +1,9 @@
-import '../../style/index.less';
-import './index.less';
+'use strict';
 
-// style dependencies
-import '../../progress/style';
+require('../../style/index.less');
+
+require('./index.less');
+
+require('../../progress/style');
+
+require('../../tooltip/style');

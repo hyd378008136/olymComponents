@@ -1,12 +1,13 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 /**
  * Created by Andrey Gayvoronsky on 13/04/16.
  */
-import TimepickerLocale from 'rc-time-picker/lib/locale/ru_RU';
-
-const locale = {
-  placeholder: 'Выберите время',
-  ... TimepickerLocale,
+var locale = {
+  placeholder: 'Выберите время'
 };
-
-export default locale;
-
+exports['default'] = locale;
+module.exports = exports['default'];

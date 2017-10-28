@@ -1,51 +1,56 @@
 @import "../../style/themes/default";
 @import "../../style/mixins/index";
 
-@collapse-prefix-cls: ant-collapse;
+@collapse-prefix-cls: ~"@{ant-prefix}-collapse";
+
+@collapse-header-bg: @background-color-base;
+@collapse-active-bg: @background-color-active;
 
 .collapse-close() {
-  .iconfont-size-under-12px(7px, 270deg);
+  .iconfont-size-under-12px(9px, 0);
 }
 .collapse-open() {
-  .iconfont-size-under-12px(7px, 360deg);
+  .iconfont-size-under-12px(9px, 90deg);
 }
 
 .@{collapse-prefix-cls} {
-  background-color: #f7f7f7;
-  border-radius: 3px;
-  border: 1px solid @border-color-base;
+  background-color: @collapse-header-bg;
+  border-radius: @border-radius-base;
+  border: @border-width-base @border-style-base @border-color-base;
+  border-bottom: 0;
 
   & > &-item {
-    border-top: 1px solid @border-color-base;
-    &:first-child {
-      border-top: 0;
+    border-bottom: @border-width-base @border-style-base @border-color-base;
+
+    &:last-child {
+      &,
+      & > .@{collapse-prefix-cls}-header {
+        border-radius: 0 0 @border-radius-base @border-radius-base;
+      }
     }
 
     > .@{collapse-prefix-cls}-header {
-      height: 38px;
-      line-height: 38px;
-      padding-left: 32px;
-      color: #666;
+      line-height: 22px;
+      padding: 8px 0 8px 32px;
+      color: @heading-color;
       cursor: pointer;
       position: relative;
+      transition: all .3s;
 
       .arrow {
         .collapse-close();
         .iconfont-mixin();
         position: absolute;
-        color: #666;
+        color: @text-color-secondary;
         display: inline-block;
-        margin-right: 8px;
+        font-weight: bold;
         line-height: 40px;
-        content: "\e611";
-        vertical-align: middle;
-        transition: transform 0.24s ease;
+        vertical-align: top;
+        transition: transform 0.24s;
         top: 0;
         left: 16px;
-        top: ~"16px \9";
-        left: ~"0 \9";
         &:before {
-          content: "\e611";
+          content: "\E61F";
         }
       }
     }
@@ -59,7 +64,7 @@
     overflow: hidden;
     color: @text-color;
     padding: 0 16px;
-    background-color: #fff;
+    background-color: @component-background;
 
     & > &-box {
       padding-top: 16px;
@@ -73,7 +78,7 @@
 
   &-item:last-child {
     > .@{collapse-prefix-cls}-content {
-      border-radius: 0 0 3px 3px;
+      border-radius: 0 0 @border-radius-base @border-radius-base;
     }
   }
 
@@ -81,5 +86,44 @@
     .arrow {
       .collapse-open();
     }
+  }
+
+  &-borderless {
+    background-color: @component-background;
+    border: 0;
+  }
+
+  &-borderless > &-item:last-child,
+  &-borderless > &-item:last-child &-header {
+    border-radius: 0;
+  }
+
+  &-borderless > &-item-active {
+    border: 0;
+  }
+
+  &-borderless > &-item > &-content {
+    background-color: transparent;
+    border-top: @border-width-base @border-style-base @border-color-base;
+  }
+
+  &-borderless > &-item > &-header {
+    transition: all .3s;
+    &:hover {
+      background-color: @collapse-header-bg;
+    }
+  }
+
+  & &-item-disabled > &-header {
+    &,
+    & > .arrow {
+      cursor: not-allowed;
+      color: @disabled-color;
+      background-color: @disabled-bg;
+    }
+  }
+
+  & > &-item:not(&-item-disabled) > .@{collapse-prefix-cls}-header:active {
+    background-color: @collapse-active-bg;
   }
 }

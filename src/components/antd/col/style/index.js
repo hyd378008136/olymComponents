@@ -1,2 +1,5 @@
-import '../../style/index.less';
-import '../../layout/style/index.less';
+'use strict';
+
+require('../../style/index.less');
+
+require('../../grid/style/index.less');

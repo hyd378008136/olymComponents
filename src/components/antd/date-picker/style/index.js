@@ -1,6 +1,9 @@
-import '../../style/index.less';
-import './index.less';
+'use strict';
 
-// style dependencies
-import '../../input/style';
-import '../../time-picker/style';
+require('../../style/index.less');
+
+require('./index.less');
+
+require('../../input/style');
+
+require('../../time-picker/style');

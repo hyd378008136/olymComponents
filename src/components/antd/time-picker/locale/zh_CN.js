@@ -1,8 +1,10 @@
-import TimepickerLocale from 'rc-time-picker/lib/locale/zh_CN';
+'use strict';
 
-const locale = {
-  placeholder: '请选择时间',
-  ... TimepickerLocale,
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var locale = {
+    placeholder: '请选择时间'
 };
-
-export default locale;
+exports['default'] = locale;
+module.exports = exports['default'];

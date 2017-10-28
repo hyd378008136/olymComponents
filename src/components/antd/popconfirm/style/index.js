@@ -1,2 +1,7 @@
-import '../../style/index.less';
-import '../../popover/style';
+'use strict';
+
+require('../../style/index.less');
+
+require('../../popover/style');
+
+require('../../button/style');

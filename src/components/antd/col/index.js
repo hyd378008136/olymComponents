@@ -1,4 +1,10 @@
-import { Col } from '../layout';
-import './style/index'
+'use strict';
 
-export default Col;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _grid = require('../grid');
+
+exports['default'] = _grid.Col;
+module.exports = exports['default'];

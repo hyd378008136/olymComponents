@@ -284,7 +284,7 @@ class AdSearch extends Component{
                 del = (<a onClick={(event)=>{
                     this.props.onDeleteMySearch(tem)
                     event.stopPropagation();
-                }}><Icon type="cross" /></a>);
+                }}><Icon type="cross" style={{float:'right',paddingTop:3}}/></a>);
             }
             children.push(<Option key={id} value={id}>{templateName}{del}</Option>)
         })

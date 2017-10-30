@@ -104,6 +104,7 @@ function setupCompiler(host, port, protocol) {
 function runDevServer(host, port, protocol) {
 
   var server = new WebpackDevServer(compiler, {
+      disableHostCheck:true,
       compress: true,
       clientLogLevel: 'none',
       contentBase: "./dist",//本地服务器所加载的页面所在的目录

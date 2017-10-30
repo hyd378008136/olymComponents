@@ -1,6 +1,6 @@
 {
   "name": "olymc",
-  "version": "0.1.0",
+  "version": "0.0.7",
   "description": "Olymtech Components",
   "main": "lib/index.js",
   "scripts": {
@@ -20,6 +20,8 @@
     "echarts": "^3.3.2",
     "gregorian-calendar": "~4.1.0",
     "gregorian-calendar-format": "~4.1.0",
+    "moment": "^2.18.1",
+    "moment-timezone": "^0.5.5",
     "object.omit": "^2.0.0",
     "rc-animate": "^2.4.1",
     "rc-calendar": "~9.0.0",

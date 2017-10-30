@@ -18,7 +18,7 @@
             "plugins": [
                 ["module-resolver", {"root": ["./src/components"]}],
                 ["import", [
-                    {"libraryName": "antd","libraryDirectory": "./"},
+                    {"libraryName": "antd","libraryDirectory": "./","style":true},
                     {"libraryName": "olym","libraryDirectory": "./"}
                 ]]
             ]
@@ -28,11 +28,10 @@
                 "transform-remove-console",
                 ["module-resolver", {
                     "root": ["./src/components"]
-
                 }
                 ],
                 ["import", [
-                    {"libraryName": "antd", "libraryDirectory": "../../../antd"},
+                    {"libraryName": "antd", "libraryDirectory": "../../../antd","style":true},
                     {"libraryName": "olym", "libraryDirectory": "../../../olym"}
                 ]]
             ]

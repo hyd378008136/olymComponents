@@ -54,26 +54,26 @@ class AdSearch extends Component{
     //
     // }
 
-    getElement = (props) =>{
+    getElement = (props,creatnew) =>{
 
         const {fieldCn,fieldEn,fieldType,...otherProps} = props;
         let fieldValue = props.fieldValue || "";
 
         if(fieldType === 'text'){
             //input
-            // const InputGen = () =><Input id={fieldEn} {...otherProps} {...this.state.searchConditionMap[fieldEn]} defaultValue={fieldValue}/>
+            const InputGen = () =><Input id={fieldEn} {...this.state.searchConditionMap[fieldEn]} defaultValue={fieldValue} {...otherProps}/>
             return (
                 <FormItem label={fieldCn} >
-                    <Input id={fieldEn} {...otherProps} {...this.state.searchConditionMap[fieldEn]} defaultValue={fieldValue}/>
+                    {creatnew?<InputGen/>:<Input id={fieldEn} {...this.state.searchConditionMap[fieldEn]} defaultValue={fieldValue} {...otherProps}/>}
                 </FormItem>
             )
         }else if(fieldType === 'select'){
             //单选框
             // console.log(props)
-            //  const SelectGen = () =><Select id={fieldEn} dropdownMatchSelectWidth={false} {...otherProps} {...this.state.searchConditionMap[fieldEn]} size={themeType} placeholder='请选择' style={{width:selectWidth}} defaultValue={fieldValue}/>
+            const SelectGen = () =><Select id={fieldEn} dropdownMatchSelectWidth={false} {...this.state.searchConditionMap[fieldEn]} size={themeType} placeholder='请选择' style={{width:selectWidth}} defaultValue={fieldValue} {...otherProps}/>
             return(
                 <FormItem label={fieldCn} labelWidth={this.getLabelWidth(fieldCn)}>
-                    <Select id={fieldEn} dropdownMatchSelectWidth={false} {...otherProps} {...this.state.searchConditionMap[fieldEn]} size={themeType} placeholder='请选择' style={{width:selectWidth}} defaultValue={fieldValue}/>
+                    {creatnew?<SelectGen/>:<Select id={fieldEn} dropdownMatchSelectWidth={false} {...this.state.searchConditionMap[fieldEn]} size={themeType} placeholder='请选择' style={{width:selectWidth}} defaultValue={fieldValue} {...otherProps}/>}
                 </FormItem>
             )
         }else if(fieldType === 'multi_select'){
@@ -81,16 +81,18 @@ class AdSearch extends Component{
             if(!fieldValue){
                 fieldValue = [];
             }
+            const SelectGen = () =><Select id={fieldEn} {...this.state.searchConditionMap[fieldEn]} defaultValue={fieldValue} multiple dropdownMatchSelectWidth={false} size={themeType} placeholder='请选择' style={{minWidth:selectWidth}} {...otherProps}/>
             return(
                 <FormItem label={fieldCn} labelWidth={this.getLabelWidth(fieldCn)}>
-                    <Select id={fieldEn} {...otherProps} {...this.state.searchConditionMap[fieldEn]} defaultValue={fieldValue} multiple dropdownMatchSelectWidth={false} size={themeType} placeholder='请选择' style={{minWidth:selectWidth}}/>
+                    {creatnew?<SelectGen/>:<Select id={fieldEn} {...this.state.searchConditionMap[fieldEn]} defaultValue={fieldValue} multiple dropdownMatchSelectWidth={false} size={themeType} placeholder='请选择' style={{minWidth:selectWidth}} {...otherProps}/>}
                 </FormItem>
             )
         }else if(fieldType === 'date'){
             //时间选择框
+            const DatePickerGen = () =><DatePicker id={fieldEn} {...this.state.searchConditionMap[fieldEn]} {...otherProps}/>
             return(
                 <FormItem>
-                    <DatePicker id={fieldEn} {...otherProps} {...this.state.searchConditionMap[fieldEn]}/>
+                    {creatnew?<DatePickerGen/>:<DatePicker id={fieldEn} {...this.state.searchConditionMap[fieldEn]} {...otherProps}/>}
                 </FormItem>
             )
         }else if(fieldType === 'date_range'){
@@ -100,16 +102,16 @@ class AdSearch extends Component{
             if(fieldValue && typeof fieldValue === 'string'){
 
                 //TODO 临时解决方案
-                defaultValue = fieldValue.split(" ~ ")
+                defaultValue = fieldValue.split(AdSearch.Split)
             }else{
                 defaultValue = fieldValue
             }
 
             //console.log("defaultValue",defaultValue)
-            // const RangeGen = () =><RangePicker id={fieldEn} {...otherProps} defaultValue={defaultValue} format="yyyy-MM-dd" {...this.state.searchConditionMap[fieldEn]}/>
+            const RangeGen = () =><RangePicker id={fieldEn} defaultValue={defaultValue} format="yyyy-MM-dd" {...this.state.searchConditionMap[fieldEn]} {...otherProps}/>
             return(
                 <FormItem>
-                    <RangePicker id={fieldEn} {...otherProps} defaultValue={defaultValue} format="yyyy-MM-dd" {...this.state.searchConditionMap[fieldEn]}/>
+                    {creatnew?<RangeGen/>:<RangePicker id={fieldEn} defaultValue={defaultValue} format="yyyy-MM-dd" {...this.state.searchConditionMap[fieldEn]} {...otherProps}/>}
                 </FormItem>
             )
         }
@@ -166,11 +168,11 @@ class AdSearch extends Component{
                     children.push(<FormItem><SelectGen/></FormItem>)
                     props.map((prop)=>{
                         if(prop.fieldEn === arrSelectValue){
-                            children.push(this.getElement(advancedconditionObj?advancedconditionObj[arrSelectValue]||prop:prop))
+                            children.push(this.getElement(advancedconditionObj?advancedconditionObj[arrSelectValue]||prop:prop,true))
                         }
                     })
                 }else{
-                    children.push(this.getElement(advancedconditionObj?advancedconditionObj[props.fieldEn]||props:props))
+                    children.push(this.getElement(advancedconditionObj?advancedconditionObj[props.fieldEn]||props:props,true))
                 }
             }
         })
@@ -359,11 +361,8 @@ class AdSearch extends Component{
         // const conditionList = Array.from(new Set(this.state.OtherConditionCheckedList.concat(this.props.defaultCondition)));
         //条件列表只返回选中的其他条件
         let conditionList = this.state.OtherConditionCheckedList;
-        // this.props.defaultCondition.forEach((con)=>{
-        //     conditionList.splice(conditionList.indexOf(con),1)
-        // })
-        //TODO 临时处理 没想好props是array的时候怎么处理
-        conditionList.splice(0,this.props.defaultCondition.length)
+        const checkedConditionList = this.clearDefaultCondition(conditionList,this.props.defaultCondition)
+        this.clearDefaultCondition(conditionList,this.props.defaultCondition);
         const InputGen = () =><Input placeholder="请输入模板名" onChange={onChange} defaultValue={templateName}/>
         return(
             <Wrap>
@@ -373,12 +372,36 @@ class AdSearch extends Component{
                             <InputGen />
                         </FormItem>
                         <FormItem>
-                            <Button children="保存" size={themeType} onClick={()=>{onSaveMySearch(templateName,conditionList,templateId,this.props.searchCondition,this.props.defaultCondition)}}/>
+                            <Button children="保存" size={themeType} onClick={()=>{onSaveMySearch(templateName,checkedConditionList,templateId,this.props.searchCondition,this.props.defaultCondition)}}/>
                         </FormItem>
                     </FormLayout>
                 </Panel>
             </Wrap>
         )
+    }
+
+    clearDefaultCondition = (conditionList,defaultCondition) =>{
+        let defaultConditionList = [];
+        let result = [];
+        const searchConditionMap = this.state.searchConditionMap;
+        defaultCondition.map((dc)=>{
+            const con = searchConditionMap[dc];
+            if(con){
+                if(Array.isArray(con)){
+                    con.forEach((c)=>{
+                        defaultConditionList.push(c.fieldEn)
+                    })
+                }else{
+                    defaultConditionList.push(dc)
+                }
+            }
+        })
+        conditionList.map((con)=>{
+            if(defaultConditionList.indexOf(con)<0){
+                result.push(con)
+            }
+        })
+        return result
     }
 
     getTopButtonChildren = (topButton) =>{
@@ -444,5 +467,5 @@ class AdSearch extends Component{
         )
     }
 }
-
+AdSearch.Split = " ~ ";
 export default AdSearch;

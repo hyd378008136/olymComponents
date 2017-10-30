@@ -330,8 +330,8 @@ class AdSearch extends Component{
                 this.setState({
                     [propname]:true,
                 })
-                OtherConditionCheckedList.push(con.fieldEn)
             }
+            OtherConditionCheckedList.push(con.fieldEn)
         })
         this.setState({
             arrSelectValue,
@@ -358,7 +358,12 @@ class AdSearch extends Component{
 
         // const conditionList = Array.from(new Set(this.state.OtherConditionCheckedList.concat(this.props.defaultCondition)));
         //条件列表只返回选中的其他条件
-        const conditionList = this.state.OtherConditionCheckedList;
+        let conditionList = this.state.OtherConditionCheckedList;
+        // this.props.defaultCondition.forEach((con)=>{
+        //     conditionList.splice(conditionList.indexOf(con),1)
+        // })
+        //TODO 临时处理 没想好props是array的时候怎么处理
+        conditionList.splice(0,this.props.defaultCondition.length)
         const InputGen = () =><Input placeholder="请输入模板名" onChange={onChange} defaultValue={templateName}/>
         return(
             <Wrap>

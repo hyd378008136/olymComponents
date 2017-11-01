@@ -57,7 +57,7 @@ const columns = [{
 
 const customColumns = [
     {orderNo:-1,dataIndex:"address",title:"地址"},
-    {orderNo:4,dataIndex:"key",title:"key"},
+    {orderNo:-1,dataIndex:"key",title:"key"},
     {orderNo:3,dataIndex:"name",title:"姓名"}
 ]
 

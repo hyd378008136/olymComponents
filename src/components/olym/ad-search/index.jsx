@@ -15,65 +15,114 @@ const themeType = 'small';
 class AdSearch extends Component{
     constructor(props) {
         super(props)
-        const templateSource = props.templateSource || [];
-        let template = {};
-        templateSource.map((tem)=>{
-            template[tem.id]=tem;
-        })
 
+
+        // const searchCondition = props.searchCondition || [];
+        // let searchConditionMap = {};
+        // searchCondition.map((con)=>{
+        //     searchConditionMap[con.id] = con.props
+        // })
+//console.log("searchConditionMap",searchConditionMap)
         this.state = {
+            searchConditionMap:{},
             OtherConditionCheckedList:[],
-            template
+            template:{}
         };
     }
 
-    getElement = (props) =>{
-        console.log(props)
+    componentWillReceiveProps(nextProps){
+        if(this.props !== nextProps){
+            const searchCondition = nextProps.searchCondition || [];
+            let searchConditionMap = {};
+            searchCondition.map((con)=>{
+                searchConditionMap[con.id] = con.props
+            })
+            const templateSource = nextProps.templateSource || [];
+            let template = {};
+            let templateNames = {};
+            templateSource.map((tem)=>{
+                template[tem.id]=tem;
+                templateNames[tem.templateName] = tem;
+            })
+            this.setState({
+                searchConditionMap,template,templateNames
+            })
+        }
+    }
+    //
+    // componentWillUnmount(){
+    //
+    // }
+
+    getElement = (props,creatnew) =>{
+
         const {fieldCn,fieldEn,fieldType,...otherProps} = props;
+        let fieldValue = props.fieldValue || "";
+
         if(fieldType === 'text'){
             //input
+            const InputGen = () =><Input id={fieldEn} {...this.state.searchConditionMap[fieldEn]} defaultValue={fieldValue} {...otherProps}/>
             return (
                 <FormItem label={fieldCn} >
-                    <Input id={fieldEn} {...otherProps}/>
+                    {creatnew?<InputGen/>:<Input id={fieldEn} {...this.state.searchConditionMap[fieldEn]} defaultValue={fieldValue} {...otherProps}/>}
                 </FormItem>
             )
         }else if(fieldType === 'select'){
             //单选框
+            // console.log(props)
+            const SelectGen = () =><Select id={fieldEn} dropdownMatchSelectWidth={false} {...this.state.searchConditionMap[fieldEn]} size={themeType} placeholder='请选择' style={{width:selectWidth}} defaultValue={fieldValue} {...otherProps}/>
             return(
                 <FormItem label={fieldCn} labelWidth={this.getLabelWidth(fieldCn)}>
-                    <Select id={fieldEn} dropdownMatchSelectWidth={false} {...otherProps} size={themeType} placeholder='请选择' style={{width:selectWidth}}/>
+                    {creatnew?<SelectGen/>:<Select id={fieldEn} dropdownMatchSelectWidth={false} {...this.state.searchConditionMap[fieldEn]} size={themeType} placeholder='请选择' style={{width:selectWidth}} defaultValue={fieldValue} {...otherProps}/>}
                 </FormItem>
             )
         }else if(fieldType === 'multi_select'){
             //多选框
+            if(!fieldValue){
+                fieldValue = [];
+            }
+            const SelectGen = () =><Select id={fieldEn} {...this.state.searchConditionMap[fieldEn]} defaultValue={fieldValue} multiple dropdownMatchSelectWidth={false} size={themeType} placeholder='请选择' style={{minWidth:selectWidth}} {...otherProps}/>
             return(
                 <FormItem label={fieldCn} labelWidth={this.getLabelWidth(fieldCn)}>
-                    <Select id={fieldEn} {...otherProps} multiple dropdownMatchSelectWidth={false} size={themeType} placeholder='请选择' style={{minWidth:selectWidth}}/>
+                    {creatnew?<SelectGen/>:<Select id={fieldEn} {...this.state.searchConditionMap[fieldEn]} defaultValue={fieldValue} multiple dropdownMatchSelectWidth={false} size={themeType} placeholder='请选择' style={{minWidth:selectWidth}} {...otherProps}/>}
                 </FormItem>
             )
         }else if(fieldType === 'date'){
             //时间选择框
+            const DatePickerGen = () =><DatePicker id={fieldEn} {...this.state.searchConditionMap[fieldEn]} {...otherProps}/>
             return(
                 <FormItem>
-                    <DatePicker id={fieldEn} {...otherProps} />
+                    {creatnew?<DatePickerGen/>:<DatePicker id={fieldEn} {...this.state.searchConditionMap[fieldEn]} {...otherProps}/>}
                 </FormItem>
             )
         }else if(fieldType === 'date_range'){
             //时间范围选择
+            // console.log("date_range",fieldValue)
+            let defaultValue = [];
+            if(fieldValue && typeof fieldValue === 'string'){
+
+                //TODO 临时解决方案
+                defaultValue = fieldValue.split(AdSearch.Split)
+            }else{
+                defaultValue = fieldValue
+            }
+
+            //console.log("defaultValue",defaultValue)
+            const RangeGen = () =><RangePicker id={fieldEn} defaultValue={defaultValue} format="yyyy-MM-dd" {...this.state.searchConditionMap[fieldEn]} {...otherProps}/>
             return(
                 <FormItem>
-                    <RangePicker id={fieldEn} {...otherProps} />
+                    {creatnew?<RangeGen/>:<RangePicker id={fieldEn} defaultValue={defaultValue} format="yyyy-MM-dd" {...this.state.searchConditionMap[fieldEn]} {...otherProps}/>}
                 </FormItem>
             )
         }
     }
 
     getStringLength = (str)=> {
-      if (str == null) return 0;
-      if (typeof str != "string"){
-        str += "";
-      }
-      return str.replace(/[^\x00-\xff]/g,"01").length;
+        if (str == null) return 0;
+        if (typeof str != "string"){
+            str += "";
+        }
+        return str.replace(/[^\x00-\xff]/g,"01").length;
     }
 
     getLabelWidth = (labelName) => {
@@ -102,21 +151,28 @@ class AdSearch extends Component{
         dc.map((con)=>{
             const {props} = con;
             if(props){
+                const advancedconditionObj = this.getAdvancedconditionObj();
                 if(Array.isArray(props)){
+                    const arrSelectValue = this.state.arrSelectValue || props[0].fieldEn;
+                    let selectDefaultValue = "";
                     const options = props.map((prop)=>{
                         const {fieldCn,fieldEn,fieldType,...otherProps} = prop;
+                        if(fieldEn === arrSelectValue){
+                            selectDefaultValue = fieldCn
+                        }
                         const optionProp = {fieldType,...otherProps}
                         return <Option value={fieldEn} {...optionProp}>{fieldCn}</Option>
                     })
-                    children.push(<FormItem><Select defaultValue={props[0].fieldCn} children={options} dropdownMatchSelectWidth={false} onSelect={this.onArraySelect} size={themeType} /></FormItem>)
-                    const arrSelectValue = this.state.arrSelectValue || props[0].fieldEn;
+                    //console.log("selectDefaultValue",selectDefaultValue)
+                    const SelectGen = () =><Select defaultValue={selectDefaultValue} children={options} dropdownMatchSelectWidth={false} onSelect={this.onArraySelect} size={themeType} />
+                    children.push(<FormItem><SelectGen/></FormItem>)
                     props.map((prop)=>{
                         if(prop.fieldEn === arrSelectValue){
-                            children.push(this.getElement(prop))
+                            children.push(this.getElement(advancedconditionObj?advancedconditionObj[arrSelectValue]||prop:prop,true))
                         }
                     })
                 }else{
-                    children.push(this.getElement(props))
+                    children.push(this.getElement(advancedconditionObj?advancedconditionObj[props.fieldEn]||props:props,true))
                 }
             }
         })
@@ -134,23 +190,47 @@ class AdSearch extends Component{
         }else{
             OtherConditionCheckedList = OtherConditionCheckedList.filter(item => item !== e.target.id)
         }
+        const propname = `${e.target.id}checked`
         this.setState({
+            [propname]:e.target.checked,
             OtherConditionCheckedList
         })
+    }
+
+    getAdvancedconditionObj = () =>{
+        if(!this.state.template || !this.state.selectedTemplateId){
+            return;
+        }
+        const template = this.state.template[this.state.selectedTemplateId];
+        // console.log("template",template)
+        let advancedcondition;
+        if(typeof template.advancedcondition === 'string'){
+            advancedcondition = JSON.parse(template.advancedcondition)
+        }else{
+            advancedcondition = template.advancedcondition
+        }
+        let advancedconditionObj = {};
+        advancedcondition.map((con)=>{
+            advancedconditionObj[con.fieldEn]=con;
+        })
+        return advancedconditionObj;
     }
 
     getOtherConditionChildren = (oc) =>{
         let children = [];
         const OtherConditionCheckedList = this.state.OtherConditionCheckedList;
+
         if(OtherConditionCheckedList.length>0){
             const _oc = {};
             oc.map((con)=>{
                 _oc[con.id]=con;
             })
+            const advancedconditionObj = this.getAdvancedconditionObj();
             OtherConditionCheckedList.forEach((ocId)=>{
                 const condition = _oc[ocId];
                 if(condition){
-                    children.push(this.getElement(condition.props))
+                    //  console.log("condition",condition)
+                    children.push(this.getElement(advancedconditionObj?(advancedconditionObj[ocId]||condition.props):condition.props))
                 }
             })
         }
@@ -161,6 +241,8 @@ class AdSearch extends Component{
         let children = [];
 
         const selectedTemplate = this.state.selectedTemplate;
+        const OtherConditionCheckedList = this.state.OtherConditionCheckedList;
+        console.log("OtherConditionCheckedList",OtherConditionCheckedList)
         let template;
         let advancedcondition;
         let advancedconditionObj;
@@ -178,10 +260,12 @@ class AdSearch extends Component{
         }
         oc.map((con)=>{
             let checked = false;
-            if(advancedconditionObj && advancedconditionObj[con.id]){
+            console.log(OtherConditionCheckedList.indexOf(con.id)>-1)
+            if(advancedconditionObj && advancedconditionObj[con.id] && OtherConditionCheckedList.indexOf(con.id)>-1){
                 checked = true;
             }
-            children.push(<FormItem><Checkbox id={con.id} defaultChecked={checked} onChange={this.onOtherConditionChecked}>{con.props.fieldCn}</Checkbox></FormItem>)
+            const propname = `${con.id}checked`;
+            children.push(<FormItem><Checkbox id={con.id} checked={this.state[propname]||false} onChange={this.onOtherConditionChecked}>{con.props.fieldCn}</Checkbox></FormItem>)
         })
         return (
             <Wrap>
@@ -202,56 +286,122 @@ class AdSearch extends Component{
                 del = (<a onClick={(event)=>{
                     this.props.onDeleteMySearch(tem)
                     event.stopPropagation();
-                }}><Icon type="cross" /></a>);
+                }}><Icon type="cross" style={{float:'right',paddingTop:3}}/></a>);
             }
             children.push(<Option key={id} value={id}>{templateName}{del}</Option>)
         })
-        return (<FormItem><Select onSelect={this.onTemplateSelect} size={themeType} placeholder="我的查询" dropdownMatchSelectWidth={false} style={{width:selectWidth}}>{children}</Select></FormItem>)
+        const value = this.state.selectedTemplateName || "";
+        const props = {
+            onSelect:this.onTemplateSelect,
+            size:themeType,
+            placeholder:"我的查询",
+            dropdownMatchSelectWidth:false,
+        }
+        if(value){
+            props.value = value
+        }
+        const SelectGen = () => <Select {...props} style={{width:selectWidth}}>{children}</Select>
+        return (<FormItem><SelectGen /></FormItem>)
     }
 
     onTemplateSelect = (value, option) =>{
         const templateMap = this.state.template;
         const template = templateMap[value];
-        let {advancedcondition,businessType} = template
-        console.log(template)
+        let {advancedcondition,businessType,templateName} = template
+        // console.log(template)
         if(typeof advancedcondition === 'string'){
             advancedcondition = JSON.parse(advancedcondition)
         }
         let OtherConditionCheckedList = [];
+        const {defaultCondition} = this.props;
+        let {searchConditionMap,arrSelectValue} = this.state;
+        let list = [];
+        defaultCondition.map((con)=>{
+            if(Array.isArray(searchConditionMap[con])){
+                searchConditionMap[con].map((c)=>{
+                    list.push(c.fieldEn)
+                })
+            }
+        })
         advancedcondition.map((con)=>{
+            if(list.indexOf(con.fieldEn)>-1){
+                arrSelectValue = con.fieldEn
+            }
+            if(defaultCondition.indexOf(con.fieldEn)<0){
+                const propname = `${con.fieldEn}checked`;
+                this.setState({
+                    [propname]:true,
+                })
+            }
             OtherConditionCheckedList.push(con.fieldEn)
         })
         this.setState({
+            arrSelectValue,
             selectedTemplate:value,
-            selectedTemplateName:template.templateName,
+            selectedTemplateName:templateName,
             selectedTemplateId:template.id,
             OtherConditionCheckedList
         })
+        this.props.onTemplateSelect && this.props.onTemplateSelect(template)
     }
 
     getSaveMySearchContent = (onSaveMySearch) =>{
         let templateName = this.state.selectedTemplateName || "";
         let templateId = this.state.selectedTemplateId;
+        const templateNames = this.state.templateNames;
         function onChange(e) {
             templateName = e.target.value
-            templateId = -1;
+            if(templateNames[templateName]){
+                templateId = templateNames[templateName].id;
+            }else{
+                templateId = -1;
+            }
         }
 
-        const conditionList = Array.from(new Set(this.state.OtherConditionCheckedList.concat(this.props.defaultCondition)));
+        // const conditionList = Array.from(new Set(this.state.OtherConditionCheckedList.concat(this.props.defaultCondition)));
+        //条件列表只返回选中的其他条件
+        let conditionList = this.state.OtherConditionCheckedList;
+        const checkedConditionList = this.clearDefaultCondition(conditionList,this.props.defaultCondition)
+        this.clearDefaultCondition(conditionList,this.props.defaultCondition);
+        const InputGen = () =><Input placeholder="请输入模板名" onChange={onChange} defaultValue={templateName}/>
         return(
             <Wrap>
                 <Panel>
                     <FormLayout inline inputSize={themeType}>
                         <FormItem label="名称">
-                            <Input placeholder="请输入模板名" onChange={onChange} defaultValue={templateName}/>
+                            <InputGen />
                         </FormItem>
                         <FormItem>
-                            <Button children="保存" size={themeType} onClick={()=>{onSaveMySearch(templateName,conditionList,templateId)}}/>
+                            <Button children="保存" size={themeType} onClick={()=>{onSaveMySearch(templateName,checkedConditionList,templateId,this.props.searchCondition,this.props.defaultCondition)}}/>
                         </FormItem>
                     </FormLayout>
                 </Panel>
             </Wrap>
         )
+    }
+
+    clearDefaultCondition = (conditionList,defaultCondition) =>{
+        let defaultConditionList = [];
+        let result = [];
+        const searchConditionMap = this.state.searchConditionMap;
+        defaultCondition.map((dc)=>{
+            const con = searchConditionMap[dc];
+            if(con){
+                if(Array.isArray(con)){
+                    con.forEach((c)=>{
+                        defaultConditionList.push(c.fieldEn)
+                    })
+                }else{
+                    defaultConditionList.push(dc)
+                }
+            }
+        })
+        conditionList.map((con)=>{
+            if(defaultConditionList.indexOf(con)<0){
+                result.push(con)
+            }
+        })
+        return result
     }
 
     getTopButtonChildren = (topButton) =>{
@@ -261,6 +411,22 @@ class AdSearch extends Component{
             children.push(<FormItem><Button children={displayName} size={themeType} {...otherProps}/></FormItem>)
         })
         return children;
+    }
+
+    onReset = () =>{
+        const OtherConditionCheckedList = this.state.OtherConditionCheckedList;
+        OtherConditionCheckedList.map((con)=>{
+            const propname = `${con}checked`;
+            this.setState({
+                [propname]:false
+            })
+        })
+        this.setState({
+            selectedTemplateName:"",
+            arrSelectValue:"",
+            OtherConditionCheckedList:[]
+        })
+        this.props.onReSet();
     }
 
     render(){
@@ -280,7 +446,7 @@ class AdSearch extends Component{
             defaultConditionChildren.push(<FormItem><Button children="查询" size={themeType} onClick={()=>onSearch()}/></FormItem>);
         }
         if(onReSet){
-            defaultConditionChildren.push(<FormItem><Button children="重置" size={themeType} onClick={()=>onReSet()}/></FormItem>);
+            defaultConditionChildren.push(<FormItem><Button children="重置" size={themeType} onClick={()=>this.onReset()}/></FormItem>);
         }
         if(onSaveMySearch){
             defaultConditionChildren.push(<FormItem><Popover placement="bottom" trigger="click" content={this.getSaveMySearchContent(onSaveMySearch)}><Button children="存入我的查询" size={themeType}/></Popover></FormItem>);
@@ -301,5 +467,5 @@ class AdSearch extends Component{
         )
     }
 }
-
+AdSearch.Split = " ~ ";
 export default AdSearch;

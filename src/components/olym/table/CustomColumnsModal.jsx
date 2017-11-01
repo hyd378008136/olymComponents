@@ -23,11 +23,12 @@ class CustomColumnsModal extends Component {
         let targetKeys = [];
         let dataSource = [];
         customColumns.map((col)=>{
+            // console.log("col",col)
             if(col.orderNo>0){
-                targetKeys.push(col.orderNo)
+                targetKeys.push(col.dataIndex)
             }
             const data = {
-                key: col.orderNo,
+                key: col.dataIndex,
                 ...col
             };
             dataSource.push(data)
@@ -50,9 +51,12 @@ class CustomColumnsModal extends Component {
     handleOk = () => {
         const {columnKeys} = this.props
         const {targetKeys, selectedKeys, dataSource, ...values} = this.state
-        values.pageSize = Number(values.pageSize)
-        values.columnKeys = targetKeys.map(key =>
-        columnKeys.filter(info => info.key === key)[0] || {key})
+        // values.pageSize = Number(values.pageSize)
+        console.log("columnKeys",columnKeys)
+        values.columnKeys = targetKeys.map((key) =>{
+                return columnKeys.filter(info => info.dataIndex === key)[0] || {key}
+        })
+        console.log("values",values)
         this.props.onOk(values)
         this.props.onCancel()
     }

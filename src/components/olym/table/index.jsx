@@ -51,24 +51,33 @@ class Table extends Component{
     }
 
     render(){
-        const {columns,customColumns,onCustomChange,showSeq,dataSource,...otherProps} = this.props
+        const {columns,customColumns,onCustomChange,showSeq,dataSource,...otherProps} = this.props;
+        //多传参数会报错。原因不知道。先把不要用的参数去掉
+        let _customColumns = [];
+        customColumns.map((col)=>{
+            const {orderNo,dataIndex,title} = col
+            _customColumns.push({orderNo,dataIndex,title})
+        })
+        _customColumns.sort((a,b)=>{
+            return a.orderNo-b.orderNo;
+        })
         //处理自定义列
-        const userDefineColumns = this.getUserDefineCol(columns,customColumns);
+        const userDefineColumns = this.getUserDefineCol(columns,_customColumns);
 
         if(showSeq){
             //显示序号
             dataSource.map((data,index)=>{
-                console.log(index)
+                // console.log(index)
                 data["seq"]=index+1;
             })
-            console.log(dataSource)
+            // console.log(dataSource)
             userDefineColumns.unshift({
                 dataIndex:"seq",
                 key:"seq",
                 title:"序号",
                 width: '50px'
             })
-            console.log(userDefineColumns)
+            // console.log(userDefineColumns)
         }
 
         let title = this.props.title;
@@ -78,15 +87,15 @@ class Table extends Component{
         // 弹出框参数
         const modalOpts = {
             // ...customConfig,
-            // columnKeys:[],
+            columnKeys:_customColumns,
             visible: this.state.visible,
             onCancel: this.handleClose,
             onOk: onCustomChange,
             // dataSource: []
-            customColumns
+            customColumns:_customColumns
         }
 
-        if(customColumns && Array.isArray(customColumns) && customColumns.length>0){
+        if(_customColumns && Array.isArray(_customColumns) && _customColumns.length>0){
             title = (data) => <Button onClick={this.handleShow} size="small">自定义列</Button>
         }
 

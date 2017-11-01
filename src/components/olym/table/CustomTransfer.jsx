@@ -35,7 +35,7 @@ class CustomTransfer extends Component {
                               handleFilter,handleClear, handleSelect, checkedKeys, searchPlaceholder, notFoundContent}) => {
 
         const {onSelectChange} = this.props
-
+console.log("dataSource",dataSource)
         function matchFilter(filterText, item, text) {
             if (filterOption) {
                 return filterOption(filterText, item);
@@ -49,7 +49,7 @@ class CustomTransfer extends Component {
             onSelectChange && onSelectChange(selectedItem, !result)
         }
 
-        const showItems = dataSource.map(item => {
+        const showItems = dataSource.filter(item => !!item).map(item => {
             const renderResult = render(item);
             let renderedText;
             let renderedEl;
@@ -72,7 +72,7 @@ class CustomTransfer extends Component {
                     <span>{renderedEl}</span>
                 </li>
             );
-        }).filter(item => !!item);
+        });
 
         return (
             <div className={showSearch ? `${prefixCls}-body ${prefixCls}-body-with-search` : `${prefixCls}-body`}>
@@ -97,9 +97,10 @@ class CustomTransfer extends Component {
     }
 
     render() {
-
+        console.log("render",this.props.dataSource)
+        const body = this.renderTransferBody;
         return (
-            <AntdTransfer {...this.props} body={this.renderTransferBody} />
+            <AntdTransfer {...this.props} body={body} />
         )
 
     }

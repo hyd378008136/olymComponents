@@ -24,6 +24,7 @@ function FormLayout({children,labelWidth,inline,inputType, ...props}) {
     // 复制children 并赋值额外属性
     // const _children = React.Children.map(children,(child)=>React.cloneElement(child,_childrenPros))
 
+    delete props.inputSize;
     return <div {...props} className={_class} >{children}</div>
 }
 

@@ -78,7 +78,12 @@ var Select = function (_React$Component) {
 
     function Select() {
         (0, _classCallCheck3['default'])(this, Select);
-        return (0, _possibleConstructorReturn3['default'])(this, (Select.__proto__ || Object.getPrototypeOf(Select)).apply(this, arguments));
+        var _this = (0, _possibleConstructorReturn3['default'])(this, (Select.__proto__ || Object.getPrototypeOf(Select)).apply(this, arguments));
+
+        _this.state = {
+            isFirstFocus: true
+        };
+        return _this;
     }
 
     (0, _createClass3['default'])(Select, [{
@@ -96,8 +101,8 @@ var Select = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _classNames;
-
+            var _classNames,
+                _this2 = this;
             var _a = this.props,
                 prefixCls = _a.prefixCls,
                 _a$className = _a.className,
@@ -127,7 +132,26 @@ var Select = function (_React$Component) {
                 tags: mode === 'tags' || tags,
                 combobox: isCombobox
             };
-            return _react2['default'].createElement(_rcSelect2['default'], (0, _extends3['default'])({}, restProps, modeConfig, { prefixCls: prefixCls, className: cls, optionLabelProp: optionLabelProp || 'children', notFoundContent: notFoundContent }));
+            return _react2['default'].createElement(_rcSelect2['default'], (0, _extends3['default'])({}, restProps, modeConfig, {
+                prefixCls: prefixCls,
+                className: cls,
+                optionLabelProp: optionLabelProp || 'children',
+                notFoundContent: notFoundContent,
+                onFocus: function onFocus() {
+                    // by FEN 为了解决第一次点击的时候不出数据
+                    return _this2.handlerfirstClick();
+                }
+            }));
+        }
+    },{
+        key: 'handlerfirstClick',
+        value: function handlerfirstClick() {
+            if (this.state.isFirstFocus) {
+                this.props.onFirstFocus && this.props.onFirstFocus();
+                this.setState({
+                    isFirstFocus: false
+                });
+            }
         }
     }]);
     return Select;

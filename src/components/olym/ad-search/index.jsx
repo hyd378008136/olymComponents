@@ -1,8 +1,9 @@
-import React,{Component} from "react";
+import React, {Component} from "react";
 
-import {FormLayout,Wrap,Panel} from 'olym'
+import {FormLayout, Panel, Wrap} from 'olym'
 
-import {Row,Col,Button,Input,Select,DatePicker,Menu, Dropdown, Icon,Popover,Checkbox } from 'antd'
+import {Button, Checkbox, Col, DatePicker, Dropdown, Icon, Input, Menu, Popover, Row, Select} from 'antd'
+import moment from 'moment'
 
 const RangePicker = DatePicker.RangePicker;
 const Option = Select.Option;
@@ -100,18 +101,24 @@ class AdSearch extends Component{
             // console.log("date_range",fieldValue)
             let defaultValue = [];
             if(fieldValue && typeof fieldValue === 'string'){
-
                 //TODO 临时解决方案
                 defaultValue = fieldValue.split(AdSearch.Split)
-            }else{
+            } else {
                 defaultValue = fieldValue
             }
 
+            if (typeof defaultValue[0] === 'string') {
+                defaultValue[0] = defaultValue[0] ? moment(defaultValue[0], "YYYY-MM-DD") : null;
+            }
+            if (typeof defaultValue[1] === 'string') {
+                defaultValue[1] =  defaultValue[1] ? moment(defaultValue[1], "YYYY-MM-DD") : null;
+            }
+
             //console.log("defaultValue",defaultValue)
-            const RangeGen = () =><RangePicker id={fieldEn} defaultValue={defaultValue} format="yyyy-MM-dd" {...this.state.searchConditionMap[fieldEn]} {...otherProps}/>
+            const RangeGen = () =><RangePicker id={fieldEn} defaultValue={defaultValue} format="YYYY-MM-DD" {...this.state.searchConditionMap[fieldEn]} {...otherProps}/>
             return(
                 <FormItem>
-                    {creatnew?<RangeGen/>:<RangePicker id={fieldEn} defaultValue={defaultValue} format="yyyy-MM-dd" {...this.state.searchConditionMap[fieldEn]} {...otherProps}/>}
+                    {creatnew?<RangeGen/>:<RangePicker id={fieldEn} defaultValue={defaultValue} format="YYYY-MM-DD" {...this.state.searchConditionMap[fieldEn]} {...otherProps}/>}
                 </FormItem>
             )
         }

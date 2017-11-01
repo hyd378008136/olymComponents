@@ -257,17 +257,21 @@
   }
   .ant-form-item-label {
     padding-top: 2px;
+    // antd 1.x 升级2.x修改
+    line-height: 16px !important;
   }
   .ant-input {
     padding: 1px 6px;
     height: 22px;
   }
   .ant-select-selection--single {
-    height: 22px;
+    // antd 1.x 升级2.x修改
+    height: 22px !important;
 
     .ant-select-selection-selected-value, .ant-select-selection__rendered {
-      line-height: 20px;
-      height: 22px;
+      // antd 1.x 升级2.x修改
+      line-height: 20px !important;
+      height: 22px !important;
     }
   }
   .ant-form-item-control{
@@ -356,3 +360,31 @@
   }
 }
 
+// antd 1.x 升级2.x修改
+.ant-table-small {
+  .ant-table-tbody > tr > td {
+    padding: 3px 4px !important;
+  }
+  .ant-table-thead > tr > th {
+    padding: 8px 4px !important;
+  }
+  .ant-table-thead > tr > th.ant-table-selection-column {
+    min-width: 30px !important;
+    width: 30px !important;
+    .ant-table-selection {
+      min-width: 30px !important;
+      width: 30px !important;
+    }
+  }
+  .ant-table-tbody > tr > td.ant-table-selection-column {
+    min-width: 30px !important;
+    width: 30px !important;
+  }
+  .ant-table-expand-icon-th, .ant-table-row-expand-icon-cell {
+    width: 34px !important;
+    min-width: 34px !important;
+  }
+}
+//.ant-select-search {
+//    margin-left: 5px !important;
+// }

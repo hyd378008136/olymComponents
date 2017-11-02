@@ -140,6 +140,11 @@ Nav.defaultProps = {
             icon: 'laptop',
             href:"/components/multiColSelect"
         },
+        {
+            label: 'rich-select 富下拉框',
+            icon: 'laptop',
+            href:"/components/RichSelect"
+        },
         // {
 			// label: 'Tabs 标签页',
         //     icon: 'laptop',

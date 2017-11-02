@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Dropdown, Input, Select} from 'antd';
+import {Select} from 'antd';
 import './styles/index'
 
 const Option = Select.Option;
@@ -9,9 +9,6 @@ const Option = Select.Option;
 class RichSelect extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            value: null,
-        }
     }
 
     static propTypes = {
@@ -29,18 +26,17 @@ class RichSelect extends Component {
     handleSelect = (value, option) => {
         const {dataBody, selectKey} = this.props;
         var index = option.props.index;
-        let obj = dataBody[index];
+        let obj = dataBody[index - 1];
         if (obj) {
             this.props.onSelect && this.props.onSelect(obj[selectKey], option, obj);
         }
     }
 
     render() {
-        window.__this = this;
-        const {dataHeader, dataBody, selectKey, style = {"width": "100%"}, notFoundContent, ...props} = this.props;
+        const {dataHeader, dataBody, selectKey, notFoundContent = "not found", dropdownMatchSelectWidth = false, ...props} = this.props;
         const hasDataBody = dataBody && dataBody.length > 0;
         const dropdownHeadData = dataHeader,
-            dropdownBodyData = hasDataBody ? dataBody : (notFoundContent || "not found");
+            dropdownBodyData = hasDataBody ? dataBody : notFoundContent;
         //console.log(dataHeader)
         // 拼接下拉框header部分结构
         const dropdownHeadElement = dropdownHeadData ? <Option key="title" disabled>{dropdownHeadData.map(val => <p
@@ -64,22 +60,15 @@ class RichSelect extends Component {
             })
         }
 
-        // console.log("dropdownBodyElement", dropdownBodyElement);
-
-        // var dropdwonMaxRows = props.dropdwonMaxRows || 8;
-        // const dropdwonMaxHeight = (dropdwonMaxRows + 1) * this.props.scrollHeight;
-        // const dropdownStyle = {maxHeight: dropdwonMaxHeight}
-
         return (
-            <Select ref="input" {...props} dropdownMatchSelectWidth={false}
-                    optionLabelProp={"value"} dropdownClassName={"rich-select"} style={style}
+            <Select ref="input" {...props} dropdownMatchSelectWidth={dropdownMatchSelectWidth}
+                    optionLabelProp={"value"} dropdownClassName={"rich-select"}
                     onSelect={this.handleSelect}>
                 {dropdownHeadElement}
                 {dropdownBodyElement}
             </Select>
         )
     }
-
 }
 
 export default RichSelect;

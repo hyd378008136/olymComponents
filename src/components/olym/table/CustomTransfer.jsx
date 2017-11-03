@@ -1,5 +1,5 @@
-import React,{Component} from 'react'
-import {Transfer as AntdTransfer, Checkbox} from 'antd'
+import React, {Component} from 'react'
+import {Checkbox, Transfer as AntdTransfer} from 'antd'
 import Animate from 'rc-animate'
 import Search from '../../antd/transfer/search'
 import Item from '../../antd/transfer/item';
@@ -13,7 +13,7 @@ export function isRenderResultPlainObject(result) {
 
 class CustomTransfer extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
             mounted: false,
@@ -32,11 +32,14 @@ class CustomTransfer extends Component {
         clearTimeout(this.timer);
     }
 
-    renderTransferBody = ({dataSource, render, showSearch, prefixCls, filter, filterOption,
-                              handleFilter,handleClear, handleSelect, checkedKeys, searchPlaceholder, notFoundContent, lazy}) => {
+    renderTransferBody = ({
+                              dataSource, render, showSearch, prefixCls, filter, filterOption,
+                              handleFilter, handleClear, handleSelect, checkedKeys, searchPlaceholder, notFoundContent
+                          }) => {
 
         const {onSelectChange} = this.props
-console.log("dataSource",dataSource)
+        console.log("dataSource", dataSource)
+
         function matchFilter(filterText, item, text) {
             if (filterOption) {
                 return filterOption(filterText, item);
@@ -67,6 +70,7 @@ console.log("dataSource",dataSource)
                 return null;
             }
             const checked = checkedKeys.indexOf(item.key) >= 0;
+            var lazy = {"height": 20, "offset": 20};
             return (
                 <Item
                     key={item.key}

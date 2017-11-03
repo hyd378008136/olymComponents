@@ -37,3 +37,8 @@
 .ant-transfer-operation .ant-btn {
     margin-left: 0px;
 }
+/* 穿梭框 高度调整为16px item的宽度也需要调整*/
+.ant-transfer-list-content-item{
+    min-height: 16px;
+    padding: 2px 2px;
+}

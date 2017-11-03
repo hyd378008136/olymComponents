@@ -18,24 +18,42 @@ class Table extends Component{
         if(!customColumns){
             return columns;
         }
-        let columnsMap = {};
-        columns.map((col)=>{
-            columnsMap[col.dataIndex]=col
-        })
         let userDefineColumns = [];
-        customColumns.map((obj)=>{
+        // let columnsMap = {};
+        // columns.map((col)=>{
+        //     columnsMap[col.dataIndex]=col
+        // })
+        let customColumnsMap = {};
+        customColumns.map((col)=>{
+            customColumnsMap[col.dataIndex] = col;
+        })
+        let extraColumns = [];
+        // customColumns.map((obj)=>{
+        //     const dataIndex = obj.dataIndex;
+        //     if(!obj.orderNo || obj.orderNo<0){
+        //         return;
+        //     }
+        //     if(columnsMap[dataIndex]){
+        //         const column = columnsMap[dataIndex];
+        //         column["orderNo"] = obj.orderNo;
+        //         userDefineColumns.push(column);
+        //     }else{
+        //         userDefineColumns.push(obj);
+        //     }
+        // })
+        columns.map((obj)=>{
             const dataIndex = obj.dataIndex;
-            if(!obj.orderNo || obj.orderNo<0){
+            if(!obj.orderNo || obj.orderNo < 0){
                 return;
             }
-            if(columnsMap[dataIndex]){
-                const column = columnsMap[dataIndex];
-                column["orderNo"] = obj.orderNo;
-                userDefineColumns.push(column);
-            }else{
+            if(customColumnsMap[dataIndex]){
+                obj.orderNo = customColumnsMap[dataIndex].orderNo;
                 userDefineColumns.push(obj);
+            }else{
+                extraColumns.push(obj)
             }
         })
+        userDefineColumns = userDefineColumns.concat(extraColumns);
         userDefineColumns.sort((a,b)=>{
             return a.orderNo-b.orderNo;
         })

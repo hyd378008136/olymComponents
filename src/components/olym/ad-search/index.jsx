@@ -13,21 +13,14 @@ const FormItem = FormLayout.FormItem;
 const selectWidth = 100;
 const themeType = 'small';
 
+let creatnew = true;
 class AdSearch extends Component{
     constructor(props) {
         super(props)
-
-
-        // const searchCondition = props.searchCondition || [];
-        // let searchConditionMap = {};
-        // searchCondition.map((con)=>{
-        //     searchConditionMap[con.id] = con.props
-        // })
-//console.log("searchConditionMap",searchConditionMap)
         this.state = {
             searchConditionMap:{},
             OtherConditionCheckedList:[],
-            template:{}
+            template:{},
         };
     }
 
@@ -151,6 +144,7 @@ class AdSearch extends Component{
         this.setState({
             arrSelectValue:value
         })
+        this.props.onArraySelect && this.props.onArraySelect(value,option)
     }
 
     getDConChildren = (dc,oc) =>{
@@ -175,11 +169,11 @@ class AdSearch extends Component{
                     children.push(<FormItem><SelectGen/></FormItem>)
                     props.map((prop)=>{
                         if(prop.fieldEn === arrSelectValue){
-                            children.push(this.getElement(advancedconditionObj?advancedconditionObj[arrSelectValue]||prop:prop,true))
+                            children.push(this.getElement(advancedconditionObj?advancedconditionObj[arrSelectValue]||prop:prop,creatnew))
                         }
                     })
                 }else{
-                    children.push(this.getElement(advancedconditionObj?advancedconditionObj[props.fieldEn]||props:props,true))
+                    children.push(this.getElement(advancedconditionObj?advancedconditionObj[props.fieldEn]||props:props,creatnew))
                 }
             }
         })
@@ -202,6 +196,7 @@ class AdSearch extends Component{
             [propname]:e.target.checked,
             OtherConditionCheckedList
         })
+        this.props.onOtherConditionChecked && this.props.onOtherConditionChecked(e);
     }
 
     getAdvancedconditionObj = () =>{
@@ -347,8 +342,10 @@ class AdSearch extends Component{
             selectedTemplate:value,
             selectedTemplateName:templateName,
             selectedTemplateId:template.id,
-            OtherConditionCheckedList
+            OtherConditionCheckedList,
         })
+
+        creatnew = true;
         this.props.onTemplateSelect && this.props.onTemplateSelect(template)
     }
 
@@ -431,8 +428,9 @@ class AdSearch extends Component{
         this.setState({
             selectedTemplateName:"",
             arrSelectValue:"",
-            OtherConditionCheckedList:[]
+            OtherConditionCheckedList:[],
         })
+        creatnew = true
         this.props.onReSet();
     }
 
@@ -463,6 +461,7 @@ class AdSearch extends Component{
         }
 
         const otherConditionChildren = this.getOtherConditionChildren(oc);
+        creatnew = false;
         return(
             <Wrap>
                 <Panel>

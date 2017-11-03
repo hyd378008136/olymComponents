@@ -2,6 +2,7 @@ import React,{Component} from 'react'
 import {Transfer as AntdTransfer, Checkbox} from 'antd'
 import Animate from 'rc-animate'
 import Search from '../../antd/transfer/search'
+import Item from '../../antd/transfer/item';
 
 export function isRenderResultPlainObject(result) {
     return result && !React.isValidElement(result) &&
@@ -32,7 +33,7 @@ class CustomTransfer extends Component {
     }
 
     renderTransferBody = ({dataSource, render, showSearch, prefixCls, filter, filterOption,
-                              handleFilter,handleClear, handleSelect, checkedKeys, searchPlaceholder, notFoundContent}) => {
+                              handleFilter,handleClear, handleSelect, checkedKeys, searchPlaceholder, notFoundContent, lazy}) => {
 
         const {onSelectChange} = this.props
 console.log("dataSource",dataSource)
@@ -65,12 +66,18 @@ console.log("dataSource",dataSource)
             if (filter && filter.trim() && !matchFilter(filter, item, renderedText)) {
                 return null;
             }
-
+            const checked = checkedKeys.indexOf(item.key) >= 0;
             return (
-                <li onClick={() => innerHandleSelect(item)} key={item.key} title={renderedText}>
-                    <Checkbox checked={checkedKeys.some(key => key === item.key)} />
-                    <span>{renderedEl}</span>
-                </li>
+                <Item
+                    key={item.key}
+                    item={item}
+                    lazy={lazy}
+                    renderedText={renderedText}
+                    renderedEl={renderedEl}
+                    checked={checked}
+                    prefixCls={prefixCls}
+                    onClick={innerHandleSelect}
+                />
             );
         });
 
@@ -85,6 +92,7 @@ console.log("dataSource",dataSource)
                     />
                 </div> : null}
                 <Animate component="ul"
+                         className={`${prefixCls}-content`}
                          transitionName={this.state.mounted ? `${prefixCls}-highlight` : ''}
                          transitionLeave={false}
                 >

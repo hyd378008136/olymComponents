@@ -169,7 +169,12 @@ class AdSearch extends Component{
                     children.push(<FormItem><SelectGen/></FormItem>)
                     props.map((prop)=>{
                         if(prop.fieldEn === arrSelectValue){
-                            children.push(this.getElement(advancedconditionObj?advancedconditionObj[arrSelectValue]||prop:prop,creatnew))
+                            let _prop = prop;
+                            if(advancedconditionObj){
+                                _prop = advancedconditionObj[arrSelectValue];
+                                _prop.onChange = prop.onChange
+                            }
+                            children.push(this.getElement(_prop,creatnew))
                         }
                     })
                 }else{

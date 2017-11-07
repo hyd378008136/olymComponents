@@ -210,17 +210,20 @@ class AdSearch extends Component{
         }
         const template = this.state.template[this.state.selectedTemplateId];
         // console.log("template",template)
-        let advancedcondition;
-        if(typeof template.advancedcondition === 'string'){
-            advancedcondition = JSON.parse(template.advancedcondition)
-        }else{
-            advancedcondition = template.advancedcondition
+        if(template){
+            let advancedcondition;
+            if(typeof template.advancedcondition === 'string'){
+                advancedcondition = JSON.parse(template.advancedcondition)
+            }else{
+                advancedcondition = template.advancedcondition
+            }
+            let advancedconditionObj = {};
+            advancedcondition.map((con)=>{
+                advancedconditionObj[con.fieldEn]=con;
+            })
+            return advancedconditionObj;
         }
-        let advancedconditionObj = {};
-        advancedcondition.map((con)=>{
-            advancedconditionObj[con.fieldEn]=con;
-        })
-        return advancedconditionObj;
+
     }
 
     getOtherConditionChildren = (oc) =>{
@@ -253,7 +256,7 @@ class AdSearch extends Component{
         let template;
         let advancedcondition;
         let advancedconditionObj;
-        if(selectedTemplate){
+        if(selectedTemplate && this.state.template[selectedTemplate]){
             template = this.state.template[selectedTemplate]
             if(typeof template.advancedcondition === 'string'){
                 advancedcondition = JSON.parse(template.advancedcondition)

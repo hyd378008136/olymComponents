@@ -1,3 +1,1 @@
-'use strict';
-
-require('../../style/index.less');
+import '../../style/index.less';

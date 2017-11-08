@@ -1,7 +1,4 @@
-'use strict';
-
-require('../../style/index.less');
-
-require('./index.less');
-
-require('../../grid/style');
+import '../../style/index.less';
+import './index.less';
+// style dependencies
+import '../../grid/style';

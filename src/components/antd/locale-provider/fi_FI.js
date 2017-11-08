@@ -1,69 +1,45 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _moment = require('moment');
-
-var _moment2 = _interopRequireDefault(_moment);
-
-var _fi_FI = require('rc-pagination/lib/locale/fi_FI');
-
-var _fi_FI2 = _interopRequireDefault(_fi_FI);
-
-var _fi_FI3 = require('../date-picker/locale/fi_FI');
-
-var _fi_FI4 = _interopRequireDefault(_fi_FI3);
-
-var _fi_FI5 = require('../time-picker/locale/fi_FI');
-
-var _fi_FI6 = _interopRequireDefault(_fi_FI5);
-
-var _fi_FI7 = require('../calendar/locale/fi_FI');
-
-var _fi_FI8 = _interopRequireDefault(_fi_FI7);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-_moment2['default'].locale('fi');
-exports['default'] = {
+import moment from 'moment';
+moment.locale('fi');
+import Pagination from 'rc-pagination/lib/locale/fi_FI';
+import DatePicker from '../date-picker/locale/fi_FI';
+import TimePicker from '../time-picker/locale/fi_FI';
+import Calendar from '../calendar/locale/fi_FI';
+export default {
     locale: 'fi',
-    Pagination: _fi_FI2['default'],
-    DatePicker: _fi_FI4['default'],
-    TimePicker: _fi_FI6['default'],
-    Calendar: _fi_FI8['default'],
+    Pagination,
+    DatePicker,
+    TimePicker,
+    Calendar,
     Table: {
         filterTitle: 'Suodatus valikko',
         filterConfirm: 'OK',
         filterReset: 'Tyhjennä',
         emptyText: 'Ei kohteita',
         selectAll: 'Valitse kaikki',
-        selectInvert: 'Valitse päinvastoin'
+        selectInvert: 'Valitse päinvastoin',
     },
     Modal: {
         okText: 'OK',
         cancelText: 'Peruuta',
-        justOkText: 'OK'
+        justOkText: 'OK',
     },
     Popconfirm: {
         okText: 'OK',
-        cancelText: 'Peruuta'
+        cancelText: 'Peruuta',
     },
     Transfer: {
         notFoundContent: 'Ei löytynyt',
         searchPlaceholder: 'Etsi täältä',
         itemUnit: 'kohde',
-        itemsUnit: 'kohdetta'
+        itemsUnit: 'kohdetta',
     },
     Select: {
-        notFoundContent: 'Ei löytynyt'
+        notFoundContent: 'Ei löytynyt',
     },
     Upload: {
         uploading: 'Lähetetään...',
         removeFile: 'Poista tiedosto',
         uploadError: 'Virhe lähetyksessä',
-        previewFile: 'Esikatsele tiedostoa'
-    }
+        previewFile: 'Esikatsele tiedostoa',
+    },
 };
-module.exports = exports['default'];

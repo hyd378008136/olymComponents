@@ -1,29 +1,10 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _extends2 = require('babel-runtime/helpers/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _fa_IR = require('rc-calendar/lib/locale/fa_IR');
-
-var _fa_IR2 = _interopRequireDefault(_fa_IR);
-
-var _fa_IR3 = require('../../time-picker/locale/fa_IR');
-
-var _fa_IR4 = _interopRequireDefault(_fa_IR3);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
+import CalendarLocale from 'rc-calendar/lib/locale/fa_IR';
+import TimePickerLocale from '../../time-picker/locale/fa_IR';
 // Merge into a locale object
-var locale = {
-    lang: (0, _extends3['default'])({ placeholder: 'انتخاب تاریخ', rangePlaceholder: ['تاریخ شروع', 'تاریخ پایان'] }, _fa_IR2['default']),
-    timePickerLocale: (0, _extends3['default'])({}, _fa_IR4['default'])
+const locale = {
+    lang: Object.assign({ placeholder: 'انتخاب تاریخ', rangePlaceholder: ['تاریخ شروع', 'تاریخ پایان'] }, CalendarLocale),
+    timePickerLocale: Object.assign({}, TimePickerLocale),
 };
 // All settings at:
 // https://github.com/ant-design/ant-design/blob/master/components/date-picker/locale/example.json
-exports['default'] = locale;
-module.exports = exports['default'];
+export default locale;

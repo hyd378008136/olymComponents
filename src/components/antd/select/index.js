@@ -1,174 +1,74 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _extends2 = require('babel-runtime/helpers/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
-
-var _defineProperty3 = _interopRequireDefault(_defineProperty2);
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _rcSelect = require('rc-select');
-
-var _rcSelect2 = _interopRequireDefault(_rcSelect);
-
-var _classnames = require('classnames');
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _warning = require('../_util/warning');
-
-var _warning2 = _interopRequireDefault(_warning);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var __rest = undefined && undefined.__rest || function (s, e) {
+var __rest = (this && this.__rest) || function (s, e) {
     var t = {};
-    for (var p in s) {
-        if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-    }if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-        if (e.indexOf(p[i]) < 0) t[p[i]] = s[p[i]];
-    }return t;
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
+            t[p[i]] = s[p[i]];
+    return t;
 };
-
-var SelectPropTypes = {
-    prefixCls: _propTypes2['default'].string,
-    className: _propTypes2['default'].string,
-    size: _propTypes2['default'].oneOf(['default', 'large', 'small']),
-    combobox: _propTypes2['default'].bool,
-    notFoundContent: _propTypes2['default'].any,
-    showSearch: _propTypes2['default'].bool,
-    optionLabelProp: _propTypes2['default'].string,
-    transitionName: _propTypes2['default'].string,
-    choiceTransitionName: _propTypes2['default'].string
+import React from 'react';
+import PropTypes from 'prop-types';
+import RcSelect, { Option, OptGroup } from 'rc-select';
+import classNames from 'classnames';
+import warning from '../_util/warning';
+const SelectPropTypes = {
+    prefixCls: PropTypes.string,
+    className: PropTypes.string,
+    size: PropTypes.oneOf(['default', 'large', 'small']),
+    combobox: PropTypes.bool,
+    notFoundContent: PropTypes.any,
+    showSearch: PropTypes.bool,
+    optionLabelProp: PropTypes.string,
+    transitionName: PropTypes.string,
+    choiceTransitionName: PropTypes.string,
 };
 // => It is needless to export the declaration of below two inner components.
 // export { Option, OptGroup };
-
-var Select = function (_React$Component) {
-    (0, _inherits3['default'])(Select, _React$Component);
-
-    function Select() {
-        (0, _classCallCheck3['default'])(this, Select);
-        var _this = (0, _possibleConstructorReturn3['default'])(this, (Select.__proto__ || Object.getPrototypeOf(Select)).apply(this, arguments));
-
-        _this.state = {
-            isFirstFocus: true
+export default class Select extends React.Component {
+    getLocale() {
+        const { antLocale } = this.context;
+        if (antLocale && antLocale.Select) {
+            return antLocale.Select;
+        }
+        return {
+            notFoundContent: '无匹配结果',
         };
-        return _this;
     }
-
-    (0, _createClass3['default'])(Select, [{
-        key: 'getLocale',
-        value: function getLocale() {
-            var antLocale = this.context.antLocale;
-
-            if (antLocale && antLocale.Select) {
-                return antLocale.Select;
-            }
-            return {
-                notFoundContent: '无匹配结果'
-            };
+    render() {
+        const _a = this.props, { prefixCls, className = '', size, mode, 
+        // @deprecated
+        multiple, tags, combobox } = _a, restProps = __rest(_a, ["prefixCls", "className", "size", "mode", "multiple", "tags", "combobox"]);
+        warning(!multiple && !tags && !combobox, '`Select[multiple|tags|combobox]` is deprecated, please use `Select[mode]` instead.');
+        const cls = classNames({
+            [`${prefixCls}-lg`]: size === 'large',
+            [`${prefixCls}-sm`]: size === 'small',
+        }, className);
+        const locale = this.getLocale();
+        let { notFoundContent = locale.notFoundContent, optionLabelProp } = this.props;
+        const isCombobox = mode === 'combobox' || combobox;
+        if (isCombobox) {
+            notFoundContent = null;
+            // children 带 dom 结构时，无法填入输入框
+            optionLabelProp = optionLabelProp || 'value';
         }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _classNames,
-                _this2 = this;
-            var _a = this.props,
-                prefixCls = _a.prefixCls,
-                _a$className = _a.className,
-                className = _a$className === undefined ? '' : _a$className,
-                size = _a.size,
-                mode = _a.mode,
-                multiple = _a.multiple,
-                tags = _a.tags,
-                combobox = _a.combobox,
-                restProps = __rest(_a, ["prefixCls", "className", "size", "mode", "multiple", "tags", "combobox"]);
-            (0, _warning2['default'])(!multiple && !tags && !combobox, '`Select[multiple|tags|combobox]` is deprecated, please use `Select[mode]` instead.');
-            var cls = (0, _classnames2['default'])((_classNames = {}, (0, _defineProperty3['default'])(_classNames, prefixCls + '-lg', size === 'large'), (0, _defineProperty3['default'])(_classNames, prefixCls + '-sm', size === 'small'), _classNames), className);
-            var locale = this.getLocale();
-            var _props = this.props,
-                _props$notFoundConten = _props.notFoundContent,
-                notFoundContent = _props$notFoundConten === undefined ? locale.notFoundContent : _props$notFoundConten,
-                optionLabelProp = _props.optionLabelProp;
-
-            var isCombobox = mode === 'combobox' || combobox;
-            if (isCombobox) {
-                notFoundContent = null;
-                // children 带 dom 结构时，无法填入输入框
-                optionLabelProp = optionLabelProp || 'value';
-            }
-            var modeConfig = {
-                multiple: mode === 'multiple' || multiple,
-                tags: mode === 'tags' || tags,
-                combobox: isCombobox
-            };
-            return _react2['default'].createElement(_rcSelect2['default'], (0, _extends3['default'])({}, restProps, modeConfig, {
-                prefixCls: prefixCls,
-                className: cls,
-                optionLabelProp: optionLabelProp || 'children',
-                notFoundContent: notFoundContent,
-                onFocus: function onFocus() {
-                    // by FEN 为了解决第一次点击的时候不出数据
-                    return _this2.handlerfirstClick();
-                }
-            }));
-        }
-    },{
-        key: 'handlerfirstClick',
-        value: function handlerfirstClick() {
-            if (this.state.isFirstFocus) {
-                this.props.onFirstFocus && this.props.onFirstFocus();
-                this.setState({
-                    isFirstFocus: false
-                });
-            }
-        }
-    }]);
-    return Select;
-}(_react2['default'].Component);
-
-exports['default'] = Select;
-
-Select.Option = _rcSelect.Option;
-Select.OptGroup = _rcSelect.OptGroup;
+        const modeConfig = {
+            multiple: mode === 'multiple' || multiple,
+            tags: mode === 'tags' || tags,
+            combobox: isCombobox,
+        };
+        return (React.createElement(RcSelect, Object.assign({}, restProps, modeConfig, { prefixCls: prefixCls, className: cls, optionLabelProp: optionLabelProp || 'children', notFoundContent: notFoundContent })));
+    }
+}
+Select.Option = Option;
+Select.OptGroup = OptGroup;
 Select.defaultProps = {
     prefixCls: 'ant-select',
     showSearch: false,
     transitionName: 'slide-up',
-    choiceTransitionName: 'zoom'
+    choiceTransitionName: 'zoom',
 };
 Select.propTypes = SelectPropTypes;
 Select.contextTypes = {
-    antLocale: _propTypes2['default'].object
+    antLocale: PropTypes.object,
 };
-module.exports = exports['default'];

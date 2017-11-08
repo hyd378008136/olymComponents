@@ -1,21 +1,16 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var animation = void 0;
+let animation;
 function isCssAnimationSupported() {
     if (animation !== undefined) {
         return animation;
     }
-    var domPrefixes = 'Webkit Moz O ms Khtml'.split(' ');
-    var elm = document.createElement('div');
+    const domPrefixes = 'Webkit Moz O ms Khtml'.split(' ');
+    const elm = document.createElement('div');
     if (elm.style.animationName !== undefined) {
         animation = true;
     }
     if (animation !== undefined) {
-        for (var i = 0; i < domPrefixes.length; i++) {
-            if (elm.style[domPrefixes[i] + 'AnimationName'] !== undefined) {
+        for (let i = 0; i < domPrefixes.length; i++) {
+            if (elm.style[`${domPrefixes[i]}AnimationName`] !== undefined) {
                 animation = true;
                 break;
             }
@@ -24,5 +19,4 @@ function isCssAnimationSupported() {
     animation = animation || false;
     return animation;
 }
-exports['default'] = isCssAnimationSupported;
-module.exports = exports['default'];
+export default isCssAnimationSupported;

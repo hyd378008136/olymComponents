@@ -1,9 +1,5 @@
-'use strict';
-
-require('../../style/index.less');
-
-require('./index.less');
-
-require('../../select/style');
-
-require('../../input/style');
+import '../../style/index.less';
+import './index.less';
+// style dependencies
+import '../../select/style';
+import '../../input/style';

@@ -24,7 +24,7 @@ module.exports = {
             : config.dev.assetsPublicPath
     },
     resolve: {
-        extensions: ['', '.js', '.jsx', '.json']
+        extensions: ['', '.js', '.jsx', '.json','.ts', '.tsx']
     },
     resolveLoader: {
         root: [resolve("node_modules")],
@@ -41,7 +41,15 @@ module.exports = {
             //     formatter: require('eslint-friendly-formatter')
             //   }
             // },
-
+            {
+                test: /\.(ts|tsx)$/,
+                loader: 'ts',
+                // enforce: "pre",
+                include: [resolve('src/components/antd')],
+                // options: {
+                //   formatter: require('eslint-friendly-formatter')
+                // }
+            },
             {
                 test: /\.(js|jsx)$/,
                 loader: 'react-hot!babel',

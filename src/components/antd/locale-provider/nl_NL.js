@@ -1,69 +1,45 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _moment = require('moment');
-
-var _moment2 = _interopRequireDefault(_moment);
-
-var _nl_NL = require('rc-pagination/lib/locale/nl_NL');
-
-var _nl_NL2 = _interopRequireDefault(_nl_NL);
-
-var _nl_NL3 = require('../date-picker/locale/nl_NL');
-
-var _nl_NL4 = _interopRequireDefault(_nl_NL3);
-
-var _nl_NL5 = require('../time-picker/locale/nl_NL');
-
-var _nl_NL6 = _interopRequireDefault(_nl_NL5);
-
-var _nl_NL7 = require('../calendar/locale/nl_NL');
-
-var _nl_NL8 = _interopRequireDefault(_nl_NL7);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-_moment2['default'].locale('nl');
-exports['default'] = {
+import moment from 'moment';
+moment.locale('nl');
+import Pagination from 'rc-pagination/lib/locale/nl_NL';
+import DatePicker from '../date-picker/locale/nl_NL';
+import TimePicker from '../time-picker/locale/nl_NL';
+import Calendar from '../calendar/locale/nl_NL';
+export default {
     locale: 'nl',
-    Pagination: _nl_NL2['default'],
-    DatePicker: _nl_NL4['default'],
-    TimePicker: _nl_NL6['default'],
-    Calendar: _nl_NL8['default'],
+    Pagination,
+    DatePicker,
+    TimePicker,
+    Calendar,
     Table: {
         filterTitle: 'Filteren',
         filterConfirm: 'OK',
         filterReset: 'Reset',
         emptyText: 'Geen gegevens',
         selectAll: 'Selecteer huidige pagina',
-        selectInvert: 'Deselecteer huidige pagina'
+        selectInvert: 'Deselecteer huidige pagina',
     },
     Modal: {
         okText: 'OK',
         cancelText: 'Annuleren',
-        justOkText: 'OK'
+        justOkText: 'OK',
     },
     Popconfirm: {
         okText: 'OK',
-        cancelText: 'Annuleren'
+        cancelText: 'Annuleren',
     },
     Transfer: {
         notFoundContent: 'Niet gevonden',
         searchPlaceholder: 'Zoeken',
         itemUnit: 'item',
-        itemsUnit: 'items'
+        itemsUnit: 'items',
     },
     Select: {
-        notFoundContent: 'Niet gevonden'
+        notFoundContent: 'Niet gevonden',
     },
     Upload: {
         uploading: 'Uploaden...',
         removeFile: 'Verwijder bestand',
         uploadError: 'Fout tijdens uploaden',
-        previewFile: 'Bekijk bestand'
-    }
+        previewFile: 'Bekijk bestand',
+    },
 };
-module.exports = exports['default'];

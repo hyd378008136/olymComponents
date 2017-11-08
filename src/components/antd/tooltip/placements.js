@@ -1,98 +1,73 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _extends2 = require('babel-runtime/helpers/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
-
-exports.getOverflowOptions = getOverflowOptions;
-exports['default'] = getPlacements;
-
-var _placements = require('rc-tooltip/lib/placements');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var autoAdjustOverflowEnabled = {
+import { placements as rcPlacements } from 'rc-tooltip/lib/placements';
+const autoAdjustOverflowEnabled = {
     adjustX: 1,
-    adjustY: 1
+    adjustY: 1,
 };
-var autoAdjustOverflowDisabled = {
+const autoAdjustOverflowDisabled = {
     adjustX: 0,
-    adjustY: 0
+    adjustY: 0,
 };
-var targetOffset = [0, 0];
-function getOverflowOptions(autoAdjustOverflow) {
+const targetOffset = [0, 0];
+export function getOverflowOptions(autoAdjustOverflow) {
     if (typeof autoAdjustOverflow === 'boolean') {
         return autoAdjustOverflow ? autoAdjustOverflowEnabled : autoAdjustOverflowDisabled;
     }
-    return (0, _extends3['default'])({}, autoAdjustOverflowDisabled, autoAdjustOverflow);
+    return Object.assign({}, autoAdjustOverflowDisabled, autoAdjustOverflow);
 }
-function getPlacements() {
-    var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var _config$arrowWidth = config.arrowWidth,
-        arrowWidth = _config$arrowWidth === undefined ? 5 : _config$arrowWidth,
-        _config$horizontalArr = config.horizontalArrowShift,
-        horizontalArrowShift = _config$horizontalArr === undefined ? 16 : _config$horizontalArr,
-        _config$verticalArrow = config.verticalArrowShift,
-        verticalArrowShift = _config$verticalArrow === undefined ? 12 : _config$verticalArrow,
-        _config$autoAdjustOve = config.autoAdjustOverflow,
-        autoAdjustOverflow = _config$autoAdjustOve === undefined ? true : _config$autoAdjustOve;
-
-    var placementMap = {
+export default function getPlacements(config = {}) {
+    const { arrowWidth = 5, horizontalArrowShift = 16, verticalArrowShift = 12, autoAdjustOverflow = true } = config;
+    const placementMap = {
         left: {
             points: ['cr', 'cl'],
-            offset: [-4, 0]
+            offset: [-4, 0],
         },
         right: {
             points: ['cl', 'cr'],
-            offset: [4, 0]
+            offset: [4, 0],
         },
         top: {
             points: ['bc', 'tc'],
-            offset: [0, -4]
+            offset: [0, -4],
         },
         bottom: {
             points: ['tc', 'bc'],
-            offset: [0, 4]
+            offset: [0, 4],
         },
         topLeft: {
             points: ['bl', 'tc'],
-            offset: [-(horizontalArrowShift + arrowWidth), -4]
+            offset: [-(horizontalArrowShift + arrowWidth), -4],
         },
         leftTop: {
             points: ['tr', 'cl'],
-            offset: [-4, -(verticalArrowShift + arrowWidth)]
+            offset: [-4, -(verticalArrowShift + arrowWidth)],
         },
         topRight: {
             points: ['br', 'tc'],
-            offset: [horizontalArrowShift + arrowWidth, -4]
+            offset: [horizontalArrowShift + arrowWidth, -4],
         },
         rightTop: {
             points: ['tl', 'cr'],
-            offset: [4, -(verticalArrowShift + arrowWidth)]
+            offset: [4, -(verticalArrowShift + arrowWidth)],
         },
         bottomRight: {
             points: ['tr', 'bc'],
-            offset: [horizontalArrowShift + arrowWidth, 4]
+            offset: [horizontalArrowShift + arrowWidth, 4],
         },
         rightBottom: {
             points: ['bl', 'cr'],
-            offset: [4, verticalArrowShift + arrowWidth]
+            offset: [4, verticalArrowShift + arrowWidth],
         },
         bottomLeft: {
             points: ['tl', 'bc'],
-            offset: [-(horizontalArrowShift + arrowWidth), 4]
+            offset: [-(horizontalArrowShift + arrowWidth), 4],
         },
         leftBottom: {
             points: ['br', 'cl'],
-            offset: [-4, verticalArrowShift + arrowWidth]
-        }
+            offset: [-4, verticalArrowShift + arrowWidth],
+        },
     };
-    Object.keys(placementMap).forEach(function (key) {
-        placementMap[key] = config.arrowPointAtCenter ? (0, _extends3['default'])({}, placementMap[key], { overflow: getOverflowOptions(autoAdjustOverflow), targetOffset: targetOffset }) : (0, _extends3['default'])({}, _placements.placements[key], { overflow: getOverflowOptions(autoAdjustOverflow) });
+    Object.keys(placementMap).forEach(key => {
+        placementMap[key] = config.arrowPointAtCenter ? Object.assign({}, placementMap[key], { overflow: getOverflowOptions(autoAdjustOverflow), targetOffset }) : Object.assign({}, rcPlacements[key], { overflow: getOverflowOptions(autoAdjustOverflow) });
     });
     return placementMap;
 }

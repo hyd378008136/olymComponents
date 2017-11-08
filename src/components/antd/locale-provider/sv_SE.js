@@ -1,61 +1,37 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _moment = require('moment');
-
-var _moment2 = _interopRequireDefault(_moment);
-
-var _sv_SE = require('rc-pagination/lib/locale/sv_SE');
-
-var _sv_SE2 = _interopRequireDefault(_sv_SE);
-
-var _sv_SE3 = require('../date-picker/locale/sv_SE');
-
-var _sv_SE4 = _interopRequireDefault(_sv_SE3);
-
-var _sv_SE5 = require('../time-picker/locale/sv_SE');
-
-var _sv_SE6 = _interopRequireDefault(_sv_SE5);
-
-var _sv_SE7 = require('../calendar/locale/sv_SE');
-
-var _sv_SE8 = _interopRequireDefault(_sv_SE7);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-_moment2['default'].locale('sv');
-exports['default'] = {
+import moment from 'moment';
+moment.locale('sv');
+import Pagination from 'rc-pagination/lib/locale/sv_SE';
+import DatePicker from '../date-picker/locale/sv_SE';
+import TimePicker from '../time-picker/locale/sv_SE';
+import Calendar from '../calendar/locale/sv_SE';
+export default {
     locale: 'sv',
-    Pagination: _sv_SE2['default'],
-    DatePicker: _sv_SE4['default'],
-    TimePicker: _sv_SE6['default'],
-    Calendar: _sv_SE8['default'],
+    Pagination,
+    DatePicker,
+    TimePicker,
+    Calendar,
     Table: {
         filterTitle: 'Filtermeny',
         filterConfirm: 'OK',
         filterReset: 'Rensa',
-        emptyText: 'Ingen information'
+        emptyText: 'Ingen information',
     },
     Modal: {
         okText: 'OK',
         cancelText: 'Avbryt',
-        justOkText: 'OK'
+        justOkText: 'OK',
     },
     Popconfirm: {
         okText: 'OK',
-        cancelText: 'Avbryt'
+        cancelText: 'Avbryt',
     },
     Transfer: {
         notFoundContent: 'Info saknas',
         searchPlaceholder: 'Sök',
         itemUnit: 'element',
-        itemsUnit: 'element'
+        itemsUnit: 'element',
     },
     Select: {
-        notFoundContent: 'Info saknas'
-    }
+        notFoundContent: 'Info saknas',
+    },
 };
-module.exports = exports['default'];

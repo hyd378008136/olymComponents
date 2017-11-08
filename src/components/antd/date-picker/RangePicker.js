@@ -1,89 +1,24 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _extends2 = require('babel-runtime/helpers/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
-
-var _defineProperty3 = _interopRequireDefault(_defineProperty2);
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _slicedToArray2 = require('babel-runtime/helpers/slicedToArray');
-
-var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _moment = require('moment');
-
-var _moment2 = _interopRequireDefault(_moment);
-
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _RangeCalendar = require('rc-calendar/lib/RangeCalendar');
-
-var _RangeCalendar2 = _interopRequireDefault(_RangeCalendar);
-
-var _Picker = require('rc-calendar/lib/Picker');
-
-var _Picker2 = _interopRequireDefault(_Picker);
-
-var _classnames = require('classnames');
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _icon = require('../icon');
-
-var _icon2 = _interopRequireDefault(_icon);
-
-var _getLocale = require('../_util/getLocale');
-
-var _warning = require('../_util/warning');
-
-var _warning2 = _interopRequireDefault(_warning);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
+/* tslint:disable jsx-no-multiline-js */
+import React from 'react';
+import moment from 'moment';
+import PropTypes from 'prop-types';
+import RangeCalendar from 'rc-calendar/lib/RangeCalendar';
+import RcDatePicker from 'rc-calendar/lib/Picker';
+import classNames from 'classnames';
+import Icon from '../icon';
+import { getLocaleCode } from '../_util/getLocale';
+import warning from '../_util/warning';
 function getShowDateFromValue(value) {
-    var _value = (0, _slicedToArray3['default'])(value, 2),
-        start = _value[0],
-        end = _value[1];
+    const [start, end] = value;
     // value could be an empty array, then we should not reset showDate
-
-
     if (!start && !end) {
         return;
     }
-    var newEnd = end && end.isSame(start, 'month') ? end.clone().add(1, 'month') : end;
+    const newEnd = end && end.isSame(start, 'month') ? end.clone().add(1, 'month') : end;
     return [start, newEnd];
-} /* tslint:disable jsx-no-multiline-js */
-
+}
 function formatValue(value, format) {
-    return value && value.format(format) || '';
+    return (value && value.format(format)) || '';
 }
 function pickerValueAdapter(value) {
     if (!value) {
@@ -96,232 +31,153 @@ function pickerValueAdapter(value) {
 }
 function isEmptyArray(arr) {
     if (Array.isArray(arr)) {
-        return arr.length === 0 || arr.every(function (i) {
-            return !i;
-        });
+        return arr.length === 0 || arr.every(i => !i);
     }
     return false;
 }
-
-var RangePicker = function (_React$Component) {
-    (0, _inherits3['default'])(RangePicker, _React$Component);
-
-    function RangePicker(props) {
-        (0, _classCallCheck3['default'])(this, RangePicker);
-
-        var _this = (0, _possibleConstructorReturn3['default'])(this, (RangePicker.__proto__ || Object.getPrototypeOf(RangePicker)).call(this, props));
-
-        _this.clearSelection = function (e) {
+export default class RangePicker extends React.Component {
+    constructor(props) {
+        super(props);
+        this.clearSelection = (e) => {
             e.preventDefault();
             e.stopPropagation();
-            _this.setState({ value: [] });
-            _this.handleChange([]);
+            this.setState({ value: [] });
+            this.handleChange([]);
         };
-        _this.clearHoverValue = function () {
-            return _this.setState({ hoverValue: [] });
-        };
-        _this.handleChange = function (value) {
-            var props = _this.props;
+        this.clearHoverValue = () => this.setState({ hoverValue: [] });
+        this.handleChange = (value) => {
+            const props = this.props;
             if (!('value' in props)) {
-                _this.setState(function (_ref) {
-                    var showDate = _ref.showDate;
-                    return {
-                        value: value,
-                        showDate: getShowDateFromValue(value) || showDate
-                    };
-                });
+                this.setState(({ showDate }) => ({
+                    value,
+                    showDate: getShowDateFromValue(value) || showDate,
+                }));
             }
-            props.onChange(value, [formatValue(value[0], props.format), formatValue(value[1], props.format)]);
+            props.onChange(value, [
+                formatValue(value[0], props.format),
+                formatValue(value[1], props.format),
+            ]);
         };
-        _this.handleOpenChange = function (open) {
-            if (!('open' in _this.props)) {
-                _this.setState({ open: open });
+        this.handleOpenChange = (open) => {
+            if (!('open' in this.props)) {
+                this.setState({ open });
             }
-            var onOpenChange = _this.props.onOpenChange;
-
+            const { onOpenChange } = this.props;
             if (onOpenChange) {
                 onOpenChange(open);
             }
         };
-        _this.handleShowDateChange = function (showDate) {
-            return _this.setState({ showDate: showDate });
-        };
-        _this.handleHoverChange = function (hoverValue) {
-            return _this.setState({ hoverValue: hoverValue });
-        };
-        _this.renderFooter = function () {
-            var _this$props = _this.props,
-                prefixCls = _this$props.prefixCls,
-                ranges = _this$props.ranges,
-                renderExtraFooter = _this$props.renderExtraFooter;
-
+        this.handleShowDateChange = showDate => this.setState({ showDate });
+        this.handleHoverChange = hoverValue => this.setState({ hoverValue });
+        this.renderFooter = (...args) => {
+            const { prefixCls, ranges, renderExtraFooter } = this.props;
             if (!ranges && !renderExtraFooter) {
                 return null;
             }
-            var customFooter = renderExtraFooter ? _react2['default'].createElement(
-                'div',
-                { className: prefixCls + '-footer-extra', key: 'extra' },
-                renderExtraFooter.apply(undefined, arguments)
-            ) : null;
-            var operations = Object.keys(ranges || {}).map(function (range) {
-                var value = ranges[range];
-                return _react2['default'].createElement(
-                    'a',
-                    { key: range, onClick: function onClick() {
-                            return _this.setValue(value, true);
-                        }, onMouseEnter: function onMouseEnter() {
-                            return _this.setState({ hoverValue: value });
-                        }, onMouseLeave: _this.clearHoverValue },
-                    range
-                );
+            const customFooter = renderExtraFooter ? (React.createElement("div", { className: `${prefixCls}-footer-extra`, key: "extra" }, renderExtraFooter(...args))) : null;
+            const operations = Object.keys(ranges || {}).map((range) => {
+                const value = ranges[range];
+                return (React.createElement("a", { key: range, onClick: () => this.setValue(value, true), onMouseEnter: () => this.setState({ hoverValue: value }), onMouseLeave: this.clearHoverValue }, range));
             });
-            var rangeNode = _react2['default'].createElement(
-                'div',
-                { className: prefixCls + '-footer-extra ' + prefixCls + '-range-quick-selector', key: 'range' },
-                operations
-            );
+            const rangeNode = (React.createElement("div", { className: `${prefixCls}-footer-extra ${prefixCls}-range-quick-selector`, key: "range" }, operations));
             return [rangeNode, customFooter];
         };
-        var value = props.value || props.defaultValue || [];
-        if (value[0] && !_moment2['default'].isMoment(value[0]) || value[1] && !_moment2['default'].isMoment(value[1])) {
-            throw new Error('The value/defaultValue of RangePicker must be a moment object array after `antd@2.0`, ' + 'see: https://u.ant.design/date-picker-value');
+        const value = props.value || props.defaultValue || [];
+        if (value[0] && !moment.isMoment(value[0]) ||
+            value[1] && !moment.isMoment(value[1])) {
+            throw new Error('The value/defaultValue of RangePicker must be a moment object array after `antd@2.0`, ' +
+                'see: https://u.ant.design/date-picker-value');
         }
-        var pickerValue = !value || isEmptyArray(value) ? props.defaultPickerValue : value;
-        _this.state = {
-            value: value,
-            showDate: pickerValueAdapter(pickerValue || (0, _moment2['default'])()),
+        const pickerValue = !value || isEmptyArray(value) ? props.defaultPickerValue : value;
+        this.state = {
+            value,
+            showDate: pickerValueAdapter(pickerValue || moment()),
             open: props.open,
-            hoverValue: []
+            hoverValue: [],
         };
-        return _this;
     }
-
-    (0, _createClass3['default'])(RangePicker, [{
-        key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps(nextProps) {
-            if ('value' in nextProps) {
-                var state = this.state;
-                var value = nextProps.value || [];
-                this.setState({
-                    value: value,
-                    showDate: getShowDateFromValue(value) || state.showDate
-                });
+    componentWillReceiveProps(nextProps) {
+        if ('value' in nextProps) {
+            const state = this.state;
+            const value = nextProps.value || [];
+            this.setState({
+                value,
+                showDate: getShowDateFromValue(value) || state.showDate,
+            });
+        }
+        if ('open' in nextProps) {
+            this.setState({
+                open: nextProps.open,
+            });
+        }
+    }
+    setValue(value, hidePanel) {
+        this.handleChange(value);
+        if ((hidePanel || !this.props.showTime) && !('open' in this.props)) {
+            this.setState({ open: false });
+        }
+    }
+    render() {
+        const { state, props, context } = this;
+        const { value, showDate, hoverValue, open } = state;
+        const localeCode = getLocaleCode(context);
+        if (value && localeCode) {
+            if (value[0]) {
+                value[0].locale(localeCode);
             }
-            if ('open' in nextProps) {
-                this.setState({
-                    open: nextProps.open
-                });
+            if (value[1]) {
+                value[1].locale(localeCode);
             }
         }
-    }, {
-        key: 'setValue',
-        value: function setValue(value, hidePanel) {
-            this.handleChange(value);
-            if ((hidePanel || !this.props.showTime) && !('open' in this.props)) {
-                this.setState({ open: false });
-            }
+        const { prefixCls, popupStyle, style, disabledDate, disabledTime, showTime, showToday, ranges, onOk, locale, format, } = props;
+        warning(!('onOK' in props), 'It should be `RangePicker[onOk]`, instead of `onOK`!');
+        const calendarClassName = classNames({
+            [`${prefixCls}-time`]: showTime,
+            [`${prefixCls}-range-with-ranges`]: ranges,
+        });
+        // 需要选择时间时，点击 ok 时才触发 onChange
+        let pickerChangeHandler = {
+            onChange: this.handleChange,
+        };
+        let calendarHandler = {
+            onOk: this.handleChange,
+        };
+        if (props.timePicker) {
+            pickerChangeHandler.onChange = changedValue => this.handleChange(changedValue);
         }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _classNames,
-                _this2 = this;
-
-            var state = this.state,
-                props = this.props,
-                context = this.context;
-            var value = state.value,
-                showDate = state.showDate,
-                hoverValue = state.hoverValue,
-                open = state.open;
-
-            var localeCode = (0, _getLocale.getLocaleCode)(context);
-            if (value && localeCode) {
-                if (value[0]) {
-                    value[0].locale(localeCode);
-                }
-                if (value[1]) {
-                    value[1].locale(localeCode);
-                }
-            }
-            var prefixCls = props.prefixCls,
-                popupStyle = props.popupStyle,
-                style = props.style,
-                disabledDate = props.disabledDate,
-                disabledTime = props.disabledTime,
-                showTime = props.showTime,
-                showToday = props.showToday,
-                ranges = props.ranges,
-                onOk = props.onOk,
-                locale = props.locale,
-                format = props.format;
-
-            (0, _warning2['default'])(!('onOK' in props), 'It should be `RangePicker[onOk]`, instead of `onOK`!');
-            var calendarClassName = (0, _classnames2['default'])((_classNames = {}, (0, _defineProperty3['default'])(_classNames, prefixCls + '-time', showTime), (0, _defineProperty3['default'])(_classNames, prefixCls + '-range-with-ranges', ranges), _classNames));
-            // 需要选择时间时，点击 ok 时才触发 onChange
-            var pickerChangeHandler = {
-                onChange: this.handleChange
-            };
-            var calendarHandler = {
-                onOk: this.handleChange
-            };
-            if (props.timePicker) {
-                pickerChangeHandler.onChange = function (changedValue) {
-                    return _this2.handleChange(changedValue);
-                };
-            } else {
-                calendarHandler = {};
-            }
-            var startPlaceholder = 'placeholder' in props ? props.placeholder[0] : locale.lang.rangePlaceholder[0];
-            var endPlaceholder = 'placeholder' in props ? props.placeholder[1] : locale.lang.rangePlaceholder[1];
-            var calendar = _react2['default'].createElement(_RangeCalendar2['default'], (0, _extends3['default'])({}, calendarHandler, { format: format, prefixCls: prefixCls, className: calendarClassName, renderFooter: this.renderFooter, timePicker: props.timePicker, disabledDate: disabledDate, disabledTime: disabledTime, dateInputPlaceholder: [startPlaceholder, endPlaceholder], locale: locale.lang, onOk: onOk, value: showDate, onValueChange: this.handleShowDateChange, hoverValue: hoverValue, onHoverChange: this.handleHoverChange, showToday: showToday }));
-            // default width for showTime
-            var pickerStyle = {};
-            if (props.showTime) {
-                pickerStyle.width = style && style.width || 300;
-            }
-            var clearIcon = !props.disabled && props.allowClear && value && (value[0] || value[1]) ? _react2['default'].createElement(_icon2['default'], { type: 'cross-circle', className: prefixCls + '-picker-clear', onClick: this.clearSelection }) : null;
-            var input = function input(_ref2) {
-                var inputValue = _ref2.value;
-
-                var start = inputValue[0];
-                var end = inputValue[1];
-                return _react2['default'].createElement(
-                    'span',
-                    { className: props.pickerInputClass },
-                    _react2['default'].createElement('input', { disabled: props.disabled, readOnly: true, value: start && start.format(props.format) || '', placeholder: startPlaceholder, className: prefixCls + '-range-picker-input' }),
-                    _react2['default'].createElement(
-                        'span',
-                        { className: prefixCls + '-range-picker-separator' },
-                        ' ~ '
-                    ),
-                    _react2['default'].createElement('input', { disabled: props.disabled, readOnly: true, value: end && end.format(props.format) || '', placeholder: endPlaceholder, className: prefixCls + '-range-picker-input' }),
-                    clearIcon,
-                    _react2['default'].createElement('span', { className: prefixCls + '-picker-icon' })
-                );
-            };
-            return _react2['default'].createElement(
-                'span',
-                { className: (0, _classnames2['default'])(props.className, props.pickerClass), style: (0, _extends3['default'])({}, style, pickerStyle) },
-                _react2['default'].createElement(
-                    _Picker2['default'],
-                    (0, _extends3['default'])({}, props, pickerChangeHandler, { calendar: calendar, value: value, open: open, onOpenChange: this.handleOpenChange, prefixCls: prefixCls + '-picker-container', style: popupStyle }),
-                    input
-                )
-            );
+        else {
+            calendarHandler = {};
         }
-    }]);
-    return RangePicker;
-}(_react2['default'].Component);
-
-exports['default'] = RangePicker;
-
+        const startPlaceholder = ('placeholder' in props)
+            ? props.placeholder[0] : locale.lang.rangePlaceholder[0];
+        const endPlaceholder = ('placeholder' in props)
+            ? props.placeholder[1] : locale.lang.rangePlaceholder[1];
+        const calendar = (React.createElement(RangeCalendar, Object.assign({}, calendarHandler, { format: format, prefixCls: prefixCls, className: calendarClassName, renderFooter: this.renderFooter, timePicker: props.timePicker, disabledDate: disabledDate, disabledTime: disabledTime, dateInputPlaceholder: [startPlaceholder, endPlaceholder], locale: locale.lang, onOk: onOk, value: showDate, onValueChange: this.handleShowDateChange, hoverValue: hoverValue, onHoverChange: this.handleHoverChange, showToday: showToday })));
+        // default width for showTime
+        const pickerStyle = {};
+        if (props.showTime) {
+            pickerStyle.width = (style && style.width) || 300;
+        }
+        const clearIcon = (!props.disabled && props.allowClear && value && (value[0] || value[1])) ? (React.createElement(Icon, { type: "cross-circle", className: `${prefixCls}-picker-clear`, onClick: this.clearSelection })) : null;
+        const input = ({ value: inputValue }) => {
+            const start = inputValue[0];
+            const end = inputValue[1];
+            return (React.createElement("span", { className: props.pickerInputClass },
+                React.createElement("input", { disabled: props.disabled, readOnly: true, value: (start && start.format(props.format)) || '', placeholder: startPlaceholder, className: `${prefixCls}-range-picker-input` }),
+                React.createElement("span", { className: `${prefixCls}-range-picker-separator` }, " ~ "),
+                React.createElement("input", { disabled: props.disabled, readOnly: true, value: (end && end.format(props.format)) || '', placeholder: endPlaceholder, className: `${prefixCls}-range-picker-input` }),
+                clearIcon,
+                React.createElement("span", { className: `${prefixCls}-picker-icon` })));
+        };
+        return (React.createElement("span", { className: classNames(props.className, props.pickerClass), style: Object.assign({}, style, pickerStyle) },
+            React.createElement(RcDatePicker, Object.assign({}, props, pickerChangeHandler, { calendar: calendar, value: value, open: open, onOpenChange: this.handleOpenChange, prefixCls: `${prefixCls}-picker-container`, style: popupStyle }), input)));
+    }
+}
 RangePicker.contextTypes = {
-    antLocale: _propTypes2['default'].object
+    antLocale: PropTypes.object,
 };
 RangePicker.defaultProps = {
     prefixCls: 'ant-calendar',
     allowClear: true,
-    showToday: false
+    showToday: false,
 };
-module.exports = exports['default'];

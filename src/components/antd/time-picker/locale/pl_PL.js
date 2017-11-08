@@ -1,10 +1,4 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var locale = {
-    placeholder: 'Wybierz godzinę'
+const locale = {
+    placeholder: 'Wybierz godzinę',
 };
-exports['default'] = locale;
-module.exports = exports['default'];
+export default locale;

@@ -1,69 +1,45 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _moment = require('moment');
-
-var _moment2 = _interopRequireDefault(_moment);
-
-var _pt_BR = require('rc-pagination/lib/locale/pt_BR');
-
-var _pt_BR2 = _interopRequireDefault(_pt_BR);
-
-var _pt_BR3 = require('../date-picker/locale/pt_BR');
-
-var _pt_BR4 = _interopRequireDefault(_pt_BR3);
-
-var _pt_BR5 = require('../time-picker/locale/pt_BR');
-
-var _pt_BR6 = _interopRequireDefault(_pt_BR5);
-
-var _pt_BR7 = require('../calendar/locale/pt_BR');
-
-var _pt_BR8 = _interopRequireDefault(_pt_BR7);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-_moment2['default'].locale('pt-br');
-exports['default'] = {
+import moment from 'moment';
+moment.locale('pt-br');
+import Pagination from 'rc-pagination/lib/locale/pt_BR';
+import DatePicker from '../date-picker/locale/pt_BR';
+import TimePicker from '../time-picker/locale/pt_BR';
+import Calendar from '../calendar/locale/pt_BR';
+export default {
     locale: 'pt-br',
-    Pagination: _pt_BR2['default'],
-    DatePicker: _pt_BR4['default'],
-    TimePicker: _pt_BR6['default'],
-    Calendar: _pt_BR8['default'],
+    Pagination,
+    DatePicker,
+    TimePicker,
+    Calendar,
     Table: {
         filterTitle: 'Filtro',
         filterConfirm: 'OK',
         filterReset: 'Resetar',
         emptyText: 'Não há dados',
         selectAll: 'Selecionar página atual',
-        selectInvert: 'Inverter seleção'
+        selectInvert: 'Inverter seleção',
     },
     Modal: {
         okText: 'OK',
         cancelText: 'Cancelar',
-        justOkText: 'OK'
+        justOkText: 'OK',
     },
     Popconfirm: {
         okText: 'OK',
-        cancelText: 'Cancelar'
+        cancelText: 'Cancelar',
     },
     Transfer: {
         notFoundContent: 'Não encontrado',
         searchPlaceholder: 'Procurar',
         itemUnit: 'item',
-        itemsUnit: 'items'
+        itemsUnit: 'items',
     },
     Select: {
-        notFoundContent: 'Não encontrado'
+        notFoundContent: 'Não encontrado',
     },
     Upload: {
         uploading: 'Enviando...',
         removeFile: 'Remover arquivo',
         uploadError: 'Erro no envio',
-        previewFile: 'Visualizar arquivo'
-    }
+        previewFile: 'Visualizar arquivo',
+    },
 };
-module.exports = exports['default'];

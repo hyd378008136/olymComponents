@@ -1,47 +1,19 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _extends2 = require('babel-runtime/helpers/extends');
-
-var _extends3 = _interopRequireDefault(_extends2);
-
-var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
-
-var _defineProperty3 = _interopRequireDefault(_defineProperty2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _classnames = require('classnames');
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var __rest = undefined && undefined.__rest || function (s, e) {
+var __rest = (this && this.__rest) || function (s, e) {
     var t = {};
-    for (var p in s) {
-        if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-    }if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-        if (e.indexOf(p[i]) < 0) t[p[i]] = s[p[i]];
-    }return t;
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
+            t[p[i]] = s[p[i]];
+    return t;
 };
-
-var ButtonGroup = function ButtonGroup(props) {
-    var _props$prefixCls = props.prefixCls,
-        prefixCls = _props$prefixCls === undefined ? 'ant-btn-group' : _props$prefixCls,
-        size = props.size,
-        className = props.className,
-        others = __rest(props, ["prefixCls", "size", "className"]);
+import React from 'react';
+import classNames from 'classnames';
+const ButtonGroup = (props) => {
+    const { prefixCls = 'ant-btn-group', size, className } = props, others = __rest(props, ["prefixCls", "size", "className"]);
     // large => lg
     // small => sm
-
-
-    var sizeCls = '';
+    let sizeCls = '';
     switch (size) {
         case 'large':
             sizeCls = 'lg';
@@ -51,8 +23,9 @@ var ButtonGroup = function ButtonGroup(props) {
         default:
             break;
     }
-    var classes = (0, _classnames2['default'])(prefixCls, (0, _defineProperty3['default'])({}, prefixCls + '-' + sizeCls, sizeCls), className);
-    return _react2['default'].createElement('div', (0, _extends3['default'])({}, others, { className: classes }));
+    const classes = classNames(prefixCls, {
+        [`${prefixCls}-${sizeCls}`]: sizeCls,
+    }, className);
+    return React.createElement("div", Object.assign({}, others, { className: classes }));
 };
-exports['default'] = ButtonGroup;
-module.exports = exports['default'];
+export default ButtonGroup;

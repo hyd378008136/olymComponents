@@ -1,21 +1,14 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports['default'] = getScroll;
-function getScroll(target, top) {
+export default function getScroll(target, top) {
     if (typeof window === 'undefined') {
         return 0;
     }
-    var prop = top ? 'pageYOffset' : 'pageXOffset';
-    var method = top ? 'scrollTop' : 'scrollLeft';
-    var isWindow = target === window;
-    var ret = isWindow ? target[prop] : target[method];
+    const prop = top ? 'pageYOffset' : 'pageXOffset';
+    const method = top ? 'scrollTop' : 'scrollLeft';
+    const isWindow = target === window;
+    let ret = isWindow ? target[prop] : target[method];
     // ie6,7,8 standard mode
     if (isWindow && typeof ret !== 'number') {
         ret = window.document.documentElement[method];
     }
     return ret;
 }
-module.exports = exports['default'];

@@ -1,294 +1,150 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
-
-var _defineProperty3 = _interopRequireDefault(_defineProperty2);
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _rcMenu = require('rc-menu');
-
-var _rcMenu2 = _interopRequireDefault(_rcMenu);
-
-var _domClosest = require('dom-closest');
-
-var _domClosest2 = _interopRequireDefault(_domClosest);
-
-var _classnames = require('classnames');
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _dropdown = require('../dropdown');
-
-var _dropdown2 = _interopRequireDefault(_dropdown);
-
-var _icon = require('../icon');
-
-var _icon2 = _interopRequireDefault(_icon);
-
-var _checkbox = require('../checkbox');
-
-var _checkbox2 = _interopRequireDefault(_checkbox);
-
-var _radio = require('../radio');
-
-var _radio2 = _interopRequireDefault(_radio);
-
-var _FilterDropdownMenuWrapper = require('./FilterDropdownMenuWrapper');
-
-var _FilterDropdownMenuWrapper2 = _interopRequireDefault(_FilterDropdownMenuWrapper);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var FilterMenu = function (_React$Component) {
-    (0, _inherits3['default'])(FilterMenu, _React$Component);
-
-    function FilterMenu(props) {
-        (0, _classCallCheck3['default'])(this, FilterMenu);
-
-        var _this = (0, _possibleConstructorReturn3['default'])(this, (FilterMenu.__proto__ || Object.getPrototypeOf(FilterMenu)).call(this, props));
-
-        _this.setNeverShown = function (column) {
-            var rootNode = _reactDom2['default'].findDOMNode(_this);
-            var filterBelongToScrollBody = !!(0, _domClosest2['default'])(rootNode, '.ant-table-scroll');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Menu, { SubMenu, Item as MenuItem } from 'rc-menu';
+import closest from 'dom-closest';
+import classNames from 'classnames';
+import Dropdown from '../dropdown';
+import Icon from '../icon';
+import Checkbox from '../checkbox';
+import Radio from '../radio';
+import FilterDropdownMenuWrapper from './FilterDropdownMenuWrapper';
+export default class FilterMenu extends React.Component {
+    constructor(props) {
+        super(props);
+        this.setNeverShown = (column) => {
+            const rootNode = ReactDOM.findDOMNode(this);
+            const filterBelongToScrollBody = !!closest(rootNode, `.ant-table-scroll`);
             if (filterBelongToScrollBody) {
                 // When fixed column have filters, there will be two dropdown menus
                 // Filter dropdown menu inside scroll body should never be shown
                 // To fix https://github.com/ant-design/ant-design/issues/5010 and
                 // https://github.com/ant-design/ant-design/issues/7909
-                _this.neverShown = !!column.fixed;
+                this.neverShown = !!column.fixed;
             }
         };
-        _this.setSelectedKeys = function (_ref) {
-            var selectedKeys = _ref.selectedKeys;
-
-            _this.setState({ selectedKeys: selectedKeys });
+        this.setSelectedKeys = ({ selectedKeys }) => {
+            this.setState({ selectedKeys });
         };
-        _this.handleClearFilters = function () {
-            _this.setState({
-                selectedKeys: []
-            }, _this.handleConfirm);
+        this.handleClearFilters = () => {
+            this.setState({
+                selectedKeys: [],
+            }, this.handleConfirm);
         };
-        _this.handleConfirm = function () {
-            _this.setVisible(false);
-            _this.confirmFilter();
+        this.handleConfirm = () => {
+            this.setVisible(false);
+            this.confirmFilter();
         };
-        _this.onVisibleChange = function (visible) {
-            _this.setVisible(visible);
+        this.onVisibleChange = (visible) => {
+            this.setVisible(visible);
             if (!visible) {
-                _this.confirmFilter();
+                this.confirmFilter();
             }
         };
-        _this.handleMenuItemClick = function (info) {
+        this.handleMenuItemClick = (info) => {
             if (info.keyPath.length <= 1) {
                 return;
             }
-            var keyPathOfSelectedItem = _this.state.keyPathOfSelectedItem;
-            if (_this.state.selectedKeys.indexOf(info.key) >= 0) {
+            const keyPathOfSelectedItem = this.state.keyPathOfSelectedItem;
+            if (this.state.selectedKeys.indexOf(info.key) >= 0) {
                 // deselect SubMenu child
                 delete keyPathOfSelectedItem[info.key];
-            } else {
+            }
+            else {
                 // select SubMenu child
                 keyPathOfSelectedItem[info.key] = info.keyPath;
             }
-            _this.setState({ keyPathOfSelectedItem: keyPathOfSelectedItem });
+            this.setState({ keyPathOfSelectedItem });
         };
-        _this.renderFilterIcon = function () {
-            var _this$props = _this.props,
-                column = _this$props.column,
-                locale = _this$props.locale,
-                prefixCls = _this$props.prefixCls;
-
-            var filterIcon = column.filterIcon;
-            var dropdownSelectedClass = _this.props.selectedKeys.length > 0 ? prefixCls + '-selected' : '';
-            return filterIcon ? _react2['default'].cloneElement(filterIcon, {
+        this.renderFilterIcon = () => {
+            const { column, locale, prefixCls } = this.props;
+            const filterIcon = column.filterIcon;
+            const dropdownSelectedClass = this.props.selectedKeys.length > 0 ? `${prefixCls}-selected` : '';
+            return filterIcon ? React.cloneElement(filterIcon, {
                 title: locale.filterTitle,
-                className: (0, _classnames2['default'])(filterIcon.className, (0, _defineProperty3['default'])({}, prefixCls + '-icon', true))
-            }) : _react2['default'].createElement(_icon2['default'], { title: locale.filterTitle, type: 'filter', className: dropdownSelectedClass });
+                className: classNames(filterIcon.className, {
+                    [`${prefixCls}-icon`]: true,
+                }),
+            }) : React.createElement(Icon, { title: locale.filterTitle, type: "filter", className: dropdownSelectedClass });
         };
-        var visible = 'filterDropdownVisible' in props.column ? props.column.filterDropdownVisible : false;
-        _this.state = {
+        const visible = ('filterDropdownVisible' in props.column) ?
+            props.column.filterDropdownVisible : false;
+        this.state = {
             selectedKeys: props.selectedKeys,
             keyPathOfSelectedItem: {},
-            visible: visible
+            visible,
         };
-        return _this;
     }
-
-    (0, _createClass3['default'])(FilterMenu, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            var column = this.props.column;
-
-            this.setNeverShown(column);
+    componentDidMount() {
+        const { column } = this.props;
+        this.setNeverShown(column);
+    }
+    componentWillReceiveProps(nextProps) {
+        const { column } = nextProps;
+        this.setNeverShown(column);
+        const newState = {};
+        if ('selectedKeys' in nextProps) {
+            newState.selectedKeys = nextProps.selectedKeys;
         }
-    }, {
-        key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps(nextProps) {
-            var column = nextProps.column;
-
-            this.setNeverShown(column);
-            var newState = {};
-            if ('selectedKeys' in nextProps) {
-                newState.selectedKeys = nextProps.selectedKeys;
+        if ('filterDropdownVisible' in column) {
+            newState.visible = column.filterDropdownVisible;
+        }
+        if (Object.keys(newState).length > 0) {
+            this.setState(newState);
+        }
+    }
+    setVisible(visible) {
+        const { column } = this.props;
+        if (!('filterDropdownVisible' in column)) {
+            this.setState({ visible });
+        }
+        if (column.onFilterDropdownVisibleChange) {
+            column.onFilterDropdownVisibleChange(visible);
+        }
+    }
+    confirmFilter() {
+        if (this.state.selectedKeys !== this.props.selectedKeys) {
+            this.props.confirmFilter(this.props.column, this.state.selectedKeys);
+        }
+    }
+    renderMenuItem(item) {
+        const { column } = this.props;
+        const multiple = ('filterMultiple' in column) ? column.filterMultiple : true;
+        const input = multiple ? (React.createElement(Checkbox, { checked: this.state.selectedKeys.indexOf(item.value.toString()) >= 0 })) : (React.createElement(Radio, { checked: this.state.selectedKeys.indexOf(item.value.toString()) >= 0 }));
+        return (React.createElement(MenuItem, { key: item.value },
+            input,
+            React.createElement("span", null, item.text)));
+    }
+    hasSubMenu() {
+        const { column: { filters = [] } } = this.props;
+        return filters.some(item => !!(item.children && item.children.length > 0));
+    }
+    renderMenus(items) {
+        return items.map(item => {
+            if (item.children && item.children.length > 0) {
+                const { keyPathOfSelectedItem } = this.state;
+                const containSelected = Object.keys(keyPathOfSelectedItem).some(key => keyPathOfSelectedItem[key].indexOf(item.value) >= 0);
+                const subMenuCls = containSelected ? `${this.props.dropdownPrefixCls}-submenu-contain-selected` : '';
+                return (React.createElement(SubMenu, { title: item.text, className: subMenuCls, key: item.value.toString() }, this.renderMenus(item.children)));
             }
-            if ('filterDropdownVisible' in column) {
-                newState.visible = column.filterDropdownVisible;
-            }
-            if (Object.keys(newState).length > 0) {
-                this.setState(newState);
-            }
-        }
-    }, {
-        key: 'setVisible',
-        value: function setVisible(visible) {
-            var column = this.props.column;
-
-            if (!('filterDropdownVisible' in column)) {
-                this.setState({ visible: visible });
-            }
-            if (column.onFilterDropdownVisibleChange) {
-                column.onFilterDropdownVisibleChange(visible);
-            }
-        }
-    }, {
-        key: 'confirmFilter',
-        value: function confirmFilter() {
-            if (this.state.selectedKeys !== this.props.selectedKeys) {
-                this.props.confirmFilter(this.props.column, this.state.selectedKeys);
-            }
-        }
-    }, {
-        key: 'renderMenuItem',
-        value: function renderMenuItem(item) {
-            var column = this.props.column;
-
-            var multiple = 'filterMultiple' in column ? column.filterMultiple : true;
-            var input = multiple ? _react2['default'].createElement(_checkbox2['default'], { checked: this.state.selectedKeys.indexOf(item.value.toString()) >= 0 }) : _react2['default'].createElement(_radio2['default'], { checked: this.state.selectedKeys.indexOf(item.value.toString()) >= 0 });
-            return _react2['default'].createElement(
-                _rcMenu.Item,
-                { key: item.value },
-                input,
-                _react2['default'].createElement(
-                    'span',
-                    null,
-                    item.text
-                )
-            );
-        }
-    }, {
-        key: 'hasSubMenu',
-        value: function hasSubMenu() {
-            var _props$column$filters = this.props.column.filters,
-                filters = _props$column$filters === undefined ? [] : _props$column$filters;
-
-            return filters.some(function (item) {
-                return !!(item.children && item.children.length > 0);
-            });
-        }
-    }, {
-        key: 'renderMenus',
-        value: function renderMenus(items) {
-            var _this2 = this;
-
-            return items.map(function (item) {
-                if (item.children && item.children.length > 0) {
-                    var keyPathOfSelectedItem = _this2.state.keyPathOfSelectedItem;
-
-                    var containSelected = Object.keys(keyPathOfSelectedItem).some(function (key) {
-                        return keyPathOfSelectedItem[key].indexOf(item.value) >= 0;
-                    });
-                    var subMenuCls = containSelected ? _this2.props.dropdownPrefixCls + '-submenu-contain-selected' : '';
-                    return _react2['default'].createElement(
-                        _rcMenu.SubMenu,
-                        { title: item.text, className: subMenuCls, key: item.value.toString() },
-                        _this2.renderMenus(item.children)
-                    );
-                }
-                return _this2.renderMenuItem(item);
-            });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _props = this.props,
-                column = _props.column,
-                locale = _props.locale,
-                prefixCls = _props.prefixCls,
-                dropdownPrefixCls = _props.dropdownPrefixCls,
-                getPopupContainer = _props.getPopupContainer;
-            // default multiple selection in filter dropdown
-
-            var multiple = 'filterMultiple' in column ? column.filterMultiple : true;
-            var dropdownMenuClass = (0, _classnames2['default'])((0, _defineProperty3['default'])({}, dropdownPrefixCls + '-menu-without-submenu', !this.hasSubMenu()));
-            var menus = column.filterDropdown ? _react2['default'].createElement(
-                _FilterDropdownMenuWrapper2['default'],
-                null,
-                column.filterDropdown
-            ) : _react2['default'].createElement(
-                _FilterDropdownMenuWrapper2['default'],
-                { className: prefixCls + '-dropdown' },
-                _react2['default'].createElement(
-                    _rcMenu2['default'],
-                    { multiple: multiple, onClick: this.handleMenuItemClick, prefixCls: dropdownPrefixCls + '-menu', className: dropdownMenuClass, onSelect: this.setSelectedKeys, onDeselect: this.setSelectedKeys, selectedKeys: this.state.selectedKeys },
-                    this.renderMenus(column.filters)
-                ),
-                _react2['default'].createElement(
-                    'div',
-                    { className: prefixCls + '-dropdown-btns' },
-                    _react2['default'].createElement(
-                        'a',
-                        { className: prefixCls + '-dropdown-link confirm', onClick: this.handleConfirm },
-                        locale.filterConfirm
-                    ),
-                    _react2['default'].createElement(
-                        'a',
-                        { className: prefixCls + '-dropdown-link clear', onClick: this.handleClearFilters },
-                        locale.filterReset
-                    )
-                )
-            );
-            return _react2['default'].createElement(
-                _dropdown2['default'],
-                { trigger: ['click'], overlay: menus, visible: this.neverShown ? false : this.state.visible, onVisibleChange: this.onVisibleChange, getPopupContainer: getPopupContainer },
-                this.renderFilterIcon()
-            );
-        }
-    }]);
-    return FilterMenu;
-}(_react2['default'].Component);
-
-exports['default'] = FilterMenu;
-
+            return this.renderMenuItem(item);
+        });
+    }
+    render() {
+        const { column, locale, prefixCls, dropdownPrefixCls, getPopupContainer } = this.props;
+        // default multiple selection in filter dropdown
+        const multiple = ('filterMultiple' in column) ? column.filterMultiple : true;
+        const dropdownMenuClass = classNames({
+            [`${dropdownPrefixCls}-menu-without-submenu`]: !this.hasSubMenu(),
+        });
+        const menus = column.filterDropdown ? (React.createElement(FilterDropdownMenuWrapper, null, column.filterDropdown)) : (React.createElement(FilterDropdownMenuWrapper, { className: `${prefixCls}-dropdown` },
+            React.createElement(Menu, { multiple: multiple, onClick: this.handleMenuItemClick, prefixCls: `${dropdownPrefixCls}-menu`, className: dropdownMenuClass, onSelect: this.setSelectedKeys, onDeselect: this.setSelectedKeys, selectedKeys: this.state.selectedKeys }, this.renderMenus(column.filters)),
+            React.createElement("div", { className: `${prefixCls}-dropdown-btns` },
+                React.createElement("a", { className: `${prefixCls}-dropdown-link confirm`, onClick: this.handleConfirm }, locale.filterConfirm),
+                React.createElement("a", { className: `${prefixCls}-dropdown-link clear`, onClick: this.handleClearFilters }, locale.filterReset))));
+        return (React.createElement(Dropdown, { trigger: ['click'], overlay: menus, visible: this.neverShown ? false : this.state.visible, onVisibleChange: this.onVisibleChange, getPopupContainer: getPopupContainer }, this.renderFilterIcon()));
+    }
+}
 FilterMenu.defaultProps = {
-    handleFilter: function handleFilter() {},
-
-    column: {}
+    handleFilter() { },
+    column: {},
 };
-module.exports = exports['default'];

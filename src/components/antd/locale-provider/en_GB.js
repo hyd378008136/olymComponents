@@ -1,69 +1,45 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _moment = require('moment');
-
-var _moment2 = _interopRequireDefault(_moment);
-
-var _en_GB = require('rc-pagination/lib/locale/en_GB');
-
-var _en_GB2 = _interopRequireDefault(_en_GB);
-
-var _en_GB3 = require('../date-picker/locale/en_GB');
-
-var _en_GB4 = _interopRequireDefault(_en_GB3);
-
-var _en_GB5 = require('../time-picker/locale/en_GB');
-
-var _en_GB6 = _interopRequireDefault(_en_GB5);
-
-var _en_GB7 = require('../calendar/locale/en_GB');
-
-var _en_GB8 = _interopRequireDefault(_en_GB7);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-_moment2['default'].locale('en-gb');
-exports['default'] = {
+import moment from 'moment';
+moment.locale('en-gb');
+import Pagination from 'rc-pagination/lib/locale/en_GB';
+import DatePicker from '../date-picker/locale/en_GB';
+import TimePicker from '../time-picker/locale/en_GB';
+import Calendar from '../calendar/locale/en_GB';
+export default {
     locale: 'en-gb',
-    Pagination: _en_GB2['default'],
-    DatePicker: _en_GB4['default'],
-    TimePicker: _en_GB6['default'],
-    Calendar: _en_GB8['default'],
+    Pagination,
+    DatePicker,
+    TimePicker,
+    Calendar,
     Table: {
         filterTitle: 'Filter menu',
         filterConfirm: 'OK',
         filterReset: 'Reset',
         emptyText: 'No data',
         selectAll: 'Select current page',
-        selectInvert: 'Invert current page'
+        selectInvert: 'Invert current page',
     },
     Modal: {
         okText: 'OK',
         cancelText: 'Cancel',
-        justOkText: 'OK'
+        justOkText: 'OK',
     },
     Popconfirm: {
         okText: 'OK',
-        cancelText: 'Cancel'
+        cancelText: 'Cancel',
     },
     Transfer: {
         notFoundContent: 'Not Found',
         searchPlaceholder: 'Search here',
         itemUnit: 'item',
-        itemsUnit: 'items'
+        itemsUnit: 'items',
     },
     Select: {
-        notFoundContent: 'Not Found'
+        notFoundContent: 'Not Found',
     },
     Upload: {
         uploading: 'Uploading...',
         removeFile: 'Remove file',
         uploadError: 'Upload error',
-        previewFile: 'Preview file'
-    }
+        previewFile: 'Preview file',
+    },
 };
-module.exports = exports['default'];

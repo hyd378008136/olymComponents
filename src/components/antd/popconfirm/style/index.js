@@ -1,7 +1,4 @@
-'use strict';
-
-require('../../style/index.less');
-
-require('../../popover/style');
-
-require('../../button/style');
+import '../../style/index.less';
+// style dependencies
+import '../../popover/style';
+import '../../button/style';

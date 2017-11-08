@@ -1,7 +1,4 @@
-'use strict';
-
-require('../../style/index.less');
-
-require('./index.less');
-
-require('../../tooltip/style');
+import '../../style/index.less';
+import './index.less';
+// style dependencies
+import '../../tooltip/style';

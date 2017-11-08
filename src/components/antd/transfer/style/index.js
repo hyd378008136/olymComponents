@@ -1,11 +1,6 @@
-'use strict';
-
-require('../../style/index.less');
-
-require('./index.less');
-
-require('../../checkbox/style');
-
-require('../../button/style');
-
-require('../../input/style');
+import '../../style/index.less';
+import './index.less';
+// style dependencies
+import '../../checkbox/style';
+import '../../button/style';
+import '../../input/style';

@@ -30,7 +30,7 @@ function setupCompiler(host, port, protocol) {
     // ie8 不使用热加载, 但需配置es3ify
       webpackConfig.module.postLoaders = [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         include: [/node_modules/,/src/,/samples/],
         loaders: ['es3ify'],
       },

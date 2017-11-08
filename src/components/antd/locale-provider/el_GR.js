@@ -1,69 +1,45 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _moment = require('moment');
-
-var _moment2 = _interopRequireDefault(_moment);
-
-var _el_GR = require('rc-pagination/lib/locale/el_GR');
-
-var _el_GR2 = _interopRequireDefault(_el_GR);
-
-var _el_GR3 = require('../date-picker/locale/el_GR');
-
-var _el_GR4 = _interopRequireDefault(_el_GR3);
-
-var _el_GR5 = require('../time-picker/locale/el_GR');
-
-var _el_GR6 = _interopRequireDefault(_el_GR5);
-
-var _el_GR7 = require('../calendar/locale/el_GR');
-
-var _el_GR8 = _interopRequireDefault(_el_GR7);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-_moment2['default'].locale('el');
-exports['default'] = {
+import moment from 'moment';
+moment.locale('el');
+import Pagination from 'rc-pagination/lib/locale/el_GR';
+import DatePicker from '../date-picker/locale/el_GR';
+import TimePicker from '../time-picker/locale/el_GR';
+import Calendar from '../calendar/locale/el_GR';
+export default {
     locale: 'el',
-    Pagination: _el_GR2['default'],
-    DatePicker: _el_GR4['default'],
-    TimePicker: _el_GR6['default'],
-    Calendar: _el_GR8['default'],
+    Pagination,
+    DatePicker,
+    TimePicker,
+    Calendar,
     Table: {
         filterTitle: 'Μενού φίλτρων',
         filterConfirm: 'ΟΚ',
         filterReset: 'Επαναφορά',
         emptyText: 'Δεν υπάρχουν δεδομένα',
         selectAll: 'Επιλογή τρέχουσας σελίδας',
-        selectInvert: 'Αντιστροφή τρέχουσας σελίδας'
+        selectInvert: 'Αντιστροφή τρέχουσας σελίδας',
     },
     Modal: {
         okText: 'ΟΚ',
         cancelText: 'Άκυρο',
-        justOkText: 'ΟΚ'
+        justOkText: 'ΟΚ',
     },
     Popconfirm: {
         okText: 'ΟΚ',
-        cancelText: 'Άκυρο'
+        cancelText: 'Άκυρο',
     },
     Transfer: {
         notFoundContent: 'Δεν βρέθηκε',
         searchPlaceholder: 'Αναζήτηση',
         itemUnit: 'αντικείμενο',
-        itemsUnit: 'αντικείμενα'
+        itemsUnit: 'αντικείμενα',
     },
     Select: {
-        notFoundContent: 'Δεν βρέθηκε'
+        notFoundContent: 'Δεν βρέθηκε',
     },
     Upload: {
         uploading: 'Μεταφόρτωση...',
         removeFile: 'Αφαίρεση αρχείου',
         uploadError: 'Σφάλμα μεταφόρτωσης',
-        previewFile: 'Προεπισκόπηση αρχείου'
-    }
+        previewFile: 'Προεπισκόπηση αρχείου',
+    },
 };
-module.exports = exports['default'];

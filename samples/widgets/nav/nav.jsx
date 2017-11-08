@@ -70,11 +70,11 @@ Nav.defaultProps = {
         //     icon: 'laptop',
         //     href:"/components/checkbox"
         // },
-        // {
-			// label: 'DatePicker 日期选择框',
-        //     icon: 'laptop',
-        //     href:"/components/datePicker"
-        // },
+        {
+			label: 'DatePicker 日期选择框',
+            icon: 'laptop',
+            href:"/components/datePicker"
+        },
         // {
 			// label: 'Dropdown 下拉菜单',
         //     icon: 'laptop',

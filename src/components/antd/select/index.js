@@ -26,6 +26,21 @@ const SelectPropTypes = {
 // => It is needless to export the declaration of below two inner components.
 // export { Option, OptGroup };
 export default class Select extends React.Component {
+    constructor(props) {
+        super(props);
+        // by FEN 为了解决第一次点击的时候不出数据
+        this.handlerfirstFocus = () => {
+            if (this.state.isFirstFocus) {
+                this.props.onFirstFocus && this.props.onFirstFocus();
+                this.setState({
+                    isFirstFocus: false
+                });
+            }
+        };
+        this.state = {
+            isFirstFocus: true
+        };
+    }
     getLocale() {
         const { antLocale } = this.context;
         if (antLocale && antLocale.Select) {
@@ -57,7 +72,7 @@ export default class Select extends React.Component {
             tags: mode === 'tags' || tags,
             combobox: isCombobox,
         };
-        return (React.createElement(RcSelect, Object.assign({}, restProps, modeConfig, { prefixCls: prefixCls, className: cls, optionLabelProp: optionLabelProp || 'children', notFoundContent: notFoundContent })));
+        return (React.createElement(RcSelect, Object.assign({}, restProps, modeConfig, { prefixCls: prefixCls, className: cls, optionLabelProp: optionLabelProp || 'children', notFoundContent: notFoundContent, onFocus: this.handlerfirstFocus })));
     }
 }
 Select.Option = Option;

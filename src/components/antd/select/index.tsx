@@ -87,6 +87,13 @@ export default class Select extends React.Component<SelectProps, any> {
   static Option = Option as React.ClassicComponentClass<OptionProps>;
   static OptGroup = OptGroup as React.ClassicComponentClass<OptGroupProps>;
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            isFirstFocus: true
+        }
+    }
+
   static defaultProps = {
     prefixCls: 'ant-select',
     showSearch: false,
@@ -111,6 +118,15 @@ export default class Select extends React.Component<SelectProps, any> {
       notFoundContent: '无匹配结果',
     };
   }
+    // by FEN 为了解决第一次点击的时候不出数据
+    handlerfirstFocus = () => {
+        if (this.state.isFirstFocus) {
+            this.props.onFirstFocus && this.props.onFirstFocus();
+            this.setState({
+                isFirstFocus: false
+            });
+        }
+    }
 
   render() {
     const {
@@ -157,6 +173,7 @@ export default class Select extends React.Component<SelectProps, any> {
         className={cls}
         optionLabelProp={optionLabelProp || 'children'}
         notFoundContent={notFoundContent}
+        onFocus={this.handlerfirstFocus}
       />
     );
   }

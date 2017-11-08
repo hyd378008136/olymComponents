@@ -10,8 +10,25 @@ class DatePicker extends Component{
     }
 
     render(){
+        const {id,onChange,value,...otherProps} = this.props;
+        const format = this.props.format || "YYYY-MM-DD";
+        let _value;
+        if(typeof value === 'string'){
+            _value = moment(value,format)
+        }else{
+            _value = value
+        }
+        const props = {
+            id,
+            value:_value,
+            ...otherProps,
+            format
+        }
+        if(onChange){
+            props.onChange = (dates)=>onChange(id,dates)
+        }
         return(
-            <ADatePicker {...this.props}/>
+            <ADatePicker {...props}/>
         )
     }
 }

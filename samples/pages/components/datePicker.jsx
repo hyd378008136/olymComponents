@@ -12,8 +12,8 @@ class DatePickerSample extends Component{
     render(){
         return(
             <div>
-                <RangePicker id="p" onChange={(dates,dateStrings,id)=>{
-                    console.log(dates,dateStrings,id)
+                <RangePicker id="p" onChange={(id,dates,dateStrings)=>{
+                    console.log(id,dates,dateStrings)
                 }}/>
             </div>
         )

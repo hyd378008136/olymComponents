@@ -119,14 +119,14 @@ class Table extends Component {
             if (null != customCtns) {
                 title = (data) => {
                     let ctns = [];
-                    ctns.push(<Button onClick={this.handleShow} size="small">自定义列</Button>);
+                    ctns.push(<Button onClick={this.handleShow} size="small" key="custom">自定义列</Button>);
                     customCtns.map((obj) => {
                         ctns.push(obj);
                     })
                     return ctns;
                 }
             } else {
-                title = (data) => <Button onClick={this.handleShow} size="small">自定义列</Button>
+                title = (data) => <Button onClick={this.handleShow} size="small" key="custom">自定义列</Button>
             }
         }
         // 每次弹框都重新渲染

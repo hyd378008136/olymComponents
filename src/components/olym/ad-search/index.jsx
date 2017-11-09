@@ -158,7 +158,7 @@ class AdSearch extends Component{
                 size : themeType,
             }
             return (
-                <FormItem label={fieldCn} >
+                <FormItem label={fieldCn} key={fieldEn}>
                     <Input {...inputProps}/>
                 </FormItem>
             )
@@ -174,7 +174,7 @@ class AdSearch extends Component{
                 onChange : this.onElementSelectChange,
             }
             return(
-                <FormItem label={fieldCn} labelWidth={this.getLabelWidth(fieldCn)}>
+                <FormItem label={fieldCn} labelWidth={this.getLabelWidth(fieldCn)} key={fieldEn}>
                     <Select style={{width:selectWidth}} {...selectProps}/>
                 </FormItem>
             )
@@ -194,7 +194,7 @@ class AdSearch extends Component{
                 mode : "multiple",
             }
             return(
-                <FormItem label={fieldCn} labelWidth={this.getLabelWidth(fieldCn)}>
+                <FormItem label={fieldCn} labelWidth={this.getLabelWidth(fieldCn)} key={fieldEn}>
                     <Select style={{minWidth:selectWidth}} {...selectProps}/>
                 </FormItem>
             )
@@ -207,7 +207,7 @@ class AdSearch extends Component{
                 onChange : this.onElementDateChange,
             }
             return(
-                <FormItem>
+                <FormItem key={fieldEn}>
                     <DatePicker {...dateProps}/>
                 </FormItem>
             )
@@ -222,7 +222,7 @@ class AdSearch extends Component{
                 onChange : this.onElementDateChange,
             }
             return(
-                <FormItem>
+                <FormItem key={fieldEn}>
                     <RangePicker {...dateProps}/>
                 </FormItem>
             )
@@ -246,11 +246,11 @@ class AdSearch extends Component{
                             selectedArrayValue = this.creatElement(prop)
                         }
                         const optionProp = {fieldType,...otherProps}
-                        options.push(<Option value={fieldEn} name={id} {...optionProp}>{fieldCn}</Option>)
+                        options.push(<Option key={id} value={fieldEn} name={id} {...optionProp}>{fieldCn}</Option>)
                     });
 
                     const SelectGen = () =><Select defaultValue={selectDefaultValue} children={options} dropdownMatchSelectWidth={false} onSelect={this.onArraySelect} size={themeType} />
-                    children.push(<FormItem><SelectGen/></FormItem>)
+                    children.push(<FormItem key={id}><SelectGen/></FormItem>)
                     if(selectedArrayValue){
                         children.push(selectedArrayValue)
                     }
@@ -260,7 +260,7 @@ class AdSearch extends Component{
             }
         });
         if(extraCondition.length>0){
-            children.push(<FormItem><Popover title={<span>其他条件</span>} content={this.getOtherConditionContent(extraCondition)} placement="bottom" trigger="click"><a>+条件<Icon type="down" size={themeType}/></a></Popover></FormItem>)
+            children.push(<FormItem key="extra"><Popover title={<span>其他条件</span>} content={this.getOtherConditionContent(extraCondition)} placement="bottom" trigger="click"><a>+条件<Icon type="down" size={themeType}/></a></Popover></FormItem>)
         }
         return children;
     };
@@ -270,7 +270,7 @@ class AdSearch extends Component{
         oc.map((con)=>{
             let checked = false;
             const propname = `${con.id}checked`;
-            children.push(<FormItem><Checkbox id={con.id} checked={this.state[propname]||false} onChange={this.onExtraConditionChecked}>{con.props.fieldCn}</Checkbox></FormItem>)
+            children.push(<FormItem key={con.id}><Checkbox id={con.id} checked={this.state[propname]||false} onChange={this.onExtraConditionChecked}>{con.props.fieldCn}</Checkbox></FormItem>)
         });
 
 
@@ -397,7 +397,7 @@ class AdSearch extends Component{
                 del = (<a onClick={(event)=>{
                     this.props.onDeleteMySearch(tem)
                     event.stopPropagation();
-                }}><Icon type="cross" style={{float:'right',paddingTop:3}}/></a>);
+                }} className="selected_del"><Icon type="cross" style={{float:'right',paddingTop:3}}/></a>);
             }
 
             children.push(<Option key={id} value={templateName}>{templateName}{del}</Option>)
@@ -409,7 +409,7 @@ class AdSearch extends Component{
             dropdownMatchSelectWidth:false,
             value:this.state.selectedTemplateName
         }
-        return (<FormItem><Select {...props} style={{width:selectWidth}}>{children}</Select></FormItem>)
+        return (<FormItem key="templateChildren"><Select {...props} style={{width:selectWidth}}>{children}</Select></FormItem>)
     };
 
     onTemplateSelect = (value) =>{
@@ -462,13 +462,13 @@ class AdSearch extends Component{
         const {data} = this.state;
         let defaultConditionChildren = this.creatDefaultCondition(defaultCondition,extraCondition);
         if(onSearch){
-            defaultConditionChildren.push(<FormItem><Button children="查询" size={themeType} onClick={()=>onSearch({data})}/></FormItem>);
+            defaultConditionChildren.push(<FormItem key="onSearch"><Button children="查询" size={themeType} onClick={()=>onSearch({data})}/></FormItem>);
         }
         if(onReSet){
-            defaultConditionChildren.push(<FormItem><Button children="重置" size={themeType} onClick={()=>this.onReset()}/></FormItem>);
+            defaultConditionChildren.push(<FormItem key="onReSet"><Button children="重置" size={themeType} onClick={()=>this.onReset()}/></FormItem>);
         }
         if(onSaveMySearch){
-            defaultConditionChildren.push(<FormItem><Popover placement="bottom" trigger="click" content={this.getSaveMySearchContent(onSaveMySearch)}><Button children="存入我的查询" size={themeType}/></Popover></FormItem>);
+            defaultConditionChildren.push(<FormItem key="onSaveMySearch"><Popover placement="bottom" trigger="click" content={this.getSaveMySearchContent(onSaveMySearch)}><Button children="存入我的查询" size={themeType}/></Popover></FormItem>);
         }
         if(templateSource && Array.isArray(templateSource) && templateSource.length>0){
             defaultConditionChildren.push(this.getTemplateChildren(templateSource))
@@ -477,14 +477,16 @@ class AdSearch extends Component{
         const extraConditionChildren = this.getExtraConditionChildren(extraCondition);
         return(
             <Wrap>
-                {customTopLine && <FormLayout key="customTopLine">
-                    <CustomTopLine content={customTopLine}/>
-                </FormLayout>}
-                <FormLayout key="defaultConditionChildren" children={defaultConditionChildren} inline inputSize={themeType}/>
-                <FormLayout key="extraConditionChildren" children={extraConditionChildren} inline inputSize={themeType}/>
-                {customFootLine && <FormLayout key="customFootLine">
-                    <CustomFootLine content={customFootLine}/>
-                </FormLayout>}
+                <Panel>
+                    {customTopLine && <FormLayout key="customTopLine">
+                        <CustomTopLine content={customTopLine}/>
+                    </FormLayout>}
+                    <FormLayout key="defaultConditionChildren" children={defaultConditionChildren} inline inputSize={themeType}/>
+                    <FormLayout key="extraConditionChildren" children={extraConditionChildren} inline inputSize={themeType}/>
+                    {customFootLine && <FormLayout key="customFootLine">
+                        <CustomFootLine content={customFootLine}/>
+                    </FormLayout>}
+                </Panel>
             </Wrap>
         )
     }

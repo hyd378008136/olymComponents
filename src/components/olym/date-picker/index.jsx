@@ -2,6 +2,7 @@ import React,{Component} from "react";
 
 import {DatePicker as ADatePicker} from 'antd'
 import RangePicker from './RangePicker'
+import moment from 'moment'
 
 class DatePicker extends Component{
     constructor(props) {
@@ -25,7 +26,7 @@ class DatePicker extends Component{
             format
         }
         if(onChange){
-            props.onChange = (dates)=>onChange(id,dates)
+            props.onChange = (dates,dateString)=>onChange(id,dates,dateString)
         }
         return(
             <ADatePicker {...props}/>

@@ -37,7 +37,7 @@ class AdSearch extends Component{
     }
 
     componentWillReceiveProps(nextProps){
-        if(this.props.templateSource.length !== nextProps.templateSource.length){
+        if(this.props.templateSource && nextProps.templateSource && this.props.templateSource.length !== nextProps.templateSource.length){
             const template = this.initTemplate(nextProps);
             let templateNames = {};
             for(let id in template){
@@ -231,7 +231,7 @@ class AdSearch extends Component{
 
     creatDefaultCondition = (defaultCondition,extraCondition) =>{
         let children = [];
-        defaultCondition.map((con)=>{
+        defaultCondition && defaultCondition.map((con)=>{
             const {props,id} = con
             if(props){
                 if(Array.isArray(props)){
@@ -259,7 +259,7 @@ class AdSearch extends Component{
                 }
             }
         });
-        if(extraCondition.length>0){
+        if(extraCondition && extraCondition.length>0){
             children.push(<FormItem key="extra"><Popover title={<span>其他条件</span>} content={this.getOtherConditionContent(extraCondition)} placement="bottom" trigger="click"><a>+条件<Icon type="down" size={themeType}/></a></Popover></FormItem>)
         }
         return children;

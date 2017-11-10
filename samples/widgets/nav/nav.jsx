@@ -144,7 +144,13 @@ Nav.defaultProps = {
             label: 'rich-select 富下拉框',
             icon: 'laptop',
             href:"/components/RichSelect"
+        },{
+            label: 'Layout布局',
+            icon: 'laptop',
+            href:"/components/layout"
         },
+
+
         // {
 			// label: 'Tabs 标签页',
         //     icon: 'laptop',

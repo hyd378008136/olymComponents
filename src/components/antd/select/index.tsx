@@ -126,6 +126,7 @@ export default class Select extends React.Component<SelectProps, any> {
                 isFirstFocus: false
             });
         }
+        this.props.onFocus && this.props.onFocus();
     }
 
   render() {

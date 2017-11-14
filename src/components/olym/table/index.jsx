@@ -15,7 +15,7 @@ class Table extends Component {
     }
 
     getUserDefineCol = (columns, customColumns) => {
-        if (!customColumns) {
+        if (!customColumns || customColumns.length === 0) {
             return columns;
         }
         let userDefineColumns = [];
@@ -75,7 +75,7 @@ class Table extends Component {
         const {columns, customColumns, onCustomChange, showSeq, dataSource, customCtns, ...otherProps} = this.props;
         //多传参数会报错。原因不知道。先把不要用的参数去掉
         let _customColumns = [];
-        customColumns.map((col) => {
+        customColumns && customColumns.map((col) => {
             const {orderNo, dataIndex, title} = col
             _customColumns.push({orderNo, dataIndex, title})
         })
@@ -115,20 +115,36 @@ class Table extends Component {
             customColumns: _customColumns
         }
 
-        if (_customColumns && Array.isArray(_customColumns) && _customColumns.length > 0) {
-            if (null != customCtns) {
-                title = (data) => {
-                    let ctns = [];
+        // if (_customColumns && Array.isArray(_customColumns) && _customColumns.length > 0) {
+            // if (customCtns) {
+            //     title = (data) => {
+            //         let ctns = [];
+            //         ctns.push(<Button onClick={this.handleShow} size="small" key="custom">自定义列</Button>);
+            //         customCtns.map((obj) => {
+            //             ctns.push(obj);
+            //         })
+            //         return ctns;
+            //     }
+            // } else {
+            //     title = (data) => <Button onClick={this.handleShow} size="small" key="custom">自定义列</Button>
+            // }
+            // title = (data) => <Button onClick={this.handleShow} size="small" key="custom">自定义列</Button>
+        // }
+
+        if(customCtns){
+            title = (data) => {
+                let ctns = [];
+                if (_customColumns && Array.isArray(_customColumns) && _customColumns.length > 0) {
                     ctns.push(<Button onClick={this.handleShow} size="small" key="custom">自定义列</Button>);
-                    customCtns.map((obj) => {
-                        ctns.push(obj);
-                    })
-                    return ctns;
                 }
-            } else {
-                title = (data) => <Button onClick={this.handleShow} size="small" key="custom">自定义列</Button>
+                customCtns.map((obj) => {
+                    ctns.push(obj);
+                })
+                return ctns;
             }
         }
+
+
         // 每次弹框都重新渲染
         const CustomColumnsModalGen = () => <CustomColumnsModal {...modalOpts} />
 

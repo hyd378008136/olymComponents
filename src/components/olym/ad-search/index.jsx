@@ -353,12 +353,21 @@ class AdSearch extends Component{
         // this.clearDefaultCondition(conditionList,this.props.defaultCondition);
 
         const conditions = this.props.defaultCondition.concat(this.props.extraCondition);
+        const inputProps = {
+            id:"templateName",
+            placeholder:"请输入模板名",
+            onChange:this.onTemplateNameChange,
+            value:this.state.templateName
+        };
+        if(this.props.templateNameMaxLength){
+            inputProps.max = this.props.templateNameMaxLength
+        }
         return(
             <Wrap>
                 <Panel>
                     <FormLayout inline inputSize={themeType} key="template">
                         <FormItem label="名称">
-                            <Input id="templateName" placeholder="请输入模板名" onChange={this.onTemplateNameChange} value={this.state.templateName}/>
+                            <Input {...inputProps}/>
                         </FormItem>
                         <FormItem>
                             <Button children="保存" size={themeType} onClick={()=>{onSaveMySearch(templateName,templateId,this.state.data,conditions)}}/>
@@ -455,6 +464,7 @@ class AdSearch extends Component{
             arrSelectValue,
             extraConditionCheckedList
         })
+        this.props.onArraySelect && this.props.onArraySelect(arrSelectValue)
     }
 
     render(){

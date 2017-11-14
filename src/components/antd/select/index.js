@@ -36,6 +36,7 @@ export default class Select extends React.Component {
                     isFirstFocus: false
                 });
             }
+            this.props.onFocus && this.props.onFocus();
         };
         this.state = {
             isFirstFocus: true

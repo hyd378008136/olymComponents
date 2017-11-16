@@ -5,6 +5,7 @@ import {Table as ATable, Button, Modal} from 'antd';
 import CustomColumnsModal from './CustomColumnsModal'
 
 import './style.css'
+import '../styles/common.less'
 
 class Table extends Component {
     constructor(props) {
@@ -43,9 +44,9 @@ class Table extends Component {
         // })
         columns.map((obj) => {
             const dataIndex = obj.dataIndex;
-            if (!obj.orderNo || obj.orderNo < 0) {
-                return;
-            }
+            // if (!obj.orderNo || obj.orderNo < 0) {
+            //     return;
+            // }
             if(!obj.key){
                 obj.key = obj.dataIndex;
             }
@@ -56,6 +57,7 @@ class Table extends Component {
                 extraColumns.push(obj)
             }
         })
+        console.log(customColumnsMap)
         userDefineColumns = userDefineColumns.concat(extraColumns);
         userDefineColumns.sort((a, b) => {
             return a.orderNo - b.orderNo;
@@ -83,6 +85,7 @@ class Table extends Component {
             return a.orderNo - b.orderNo;
         })
         //处理自定义列
+        // console.log(columns, _customColumns)
         const userDefineColumns = this.getUserDefineCol(columns, _customColumns);
 
         if (showSeq) {
@@ -132,15 +135,34 @@ class Table extends Component {
         // }
 
         if(customCtns){
-            title = (data) => {
-                let ctns = [];
-                if (_customColumns && Array.isArray(_customColumns) && _customColumns.length > 0) {
+            if(_customColumns && Array.isArray(_customColumns) && _customColumns.length > 0){
+                title = (data) =>{
+                    let ctns = [];
                     ctns.push(<Button onClick={this.handleShow} size="small" key="custom">自定义列</Button>);
+                    customCtns.map((obj) => {
+                        // obj.props.className = "custom_other_btn_right"
+                        const {props,...others} = obj;
+                        const _obj = {
+                            props:{
+                                ...props,
+                                className:"custom_other_btn_right",
+
+                            },
+                            ...others
+                        }
+                        console.log(_obj)
+                        ctns.push(_obj);
+                    })
+                    // ctns.push(<div className="tar">
+                    //     {customCtns}
+                    // </div>)
+                    return ctns;
                 }
-                customCtns.map((obj) => {
-                    ctns.push(obj);
-                })
-                return ctns;
+            }else{
+                title = () =>
+                <div className="tar">
+                    {customCtns}
+                </div>
             }
         }
 

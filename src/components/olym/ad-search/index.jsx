@@ -16,16 +16,19 @@ class AdSearch extends Component{
 
     constructor(props) {
         super(props)
-        const data = this.initData(props);
+        const {data,dcList,ocMap} = this.initData(props);
         const template = this.initTemplate(props);
         let templateNames = {};
         for(let id in template){
             templateNames[template[id].templateName] = id
         }
+        console.log(data,dcList,ocMap)
         let selectedTemplateName;
         this.state = {
             data,
-            extraConditionCheckedList:[],
+            dcList,
+            ocMap,
+            // extraConditionCheckedList:[],
             template,
             templateNames,
             selectedTemplateName
@@ -58,25 +61,32 @@ class AdSearch extends Component{
             throw  new TypeError('AdSearch 组件的 defaultCondition 只接受 "Array" 格式的数据');
         }
         let data = {};
+        let dcList = [];
+        let ocMap = {};
         defaultCondition.map(({id,props})=>{
             if(Array.isArray(props)){
                 props.map((p)=>{
                     data[p.fieldEn] = p.fieldValue;
+                    dcList.push(p.fieldEn)
                 })
             }else{
                 data[props.fieldEn] = props.fieldValue;
+                dcList.push(props.fieldEn)
             }
         });
         extraCondition && extraCondition.map(({id,props})=>{
             if(Array.isArray(props)){
                 props.map((p)=>{
                     data[p.fieldEn] = p.fieldValue;
+                    ocMap[p.fieldEn] = p.fieldCn;
                 })
             }else{
                 data[props.fieldEn] = props.fieldValue;
+                ocMap[props.fieldEn] = props.fieldCn;
             }
         });
-        return data
+        console.log("ocMap",ocMap)
+        return {data,dcList,ocMap}
     }
 
     initTemplate = (props) =>{
@@ -260,63 +270,89 @@ class AdSearch extends Component{
             }
         });
         if(extraCondition && extraCondition.length>0){
-            children.push(<FormItem key="extra"><Popover title={<span>其他条件</span>} content={this.getOtherConditionContent(extraCondition)} placement="bottom" trigger="click"><a>+条件<Icon type="down" size={themeType}/></a></Popover></FormItem>)
+            // children.push(<FormItem key="extra"><Popover title={<span>其他条件</span>} content={this.getOtherConditionContent(extraCondition)} placement="bottom" trigger="click"><a>+条件<Icon type="down" size={themeType}/></a></Popover></FormItem>)
+            children.push(<FormItem key="extra" label="条件按">
+                <Select size="small" dropdownMatchSelectWidth={false}
+                        placeholder="条件筛选" style={{minWidth:80}}
+                        onSelect={this.onExtraConditionSelect}
+                        value={this.state.extraCondition}
+                >
+                    {extraCondition.map(({props})=>{
+                        return <Option name={props.fieldEn} key={props.fieldEn}>{props.fieldCn}</Option>
+                    })}
+                </Select>
+            </FormItem>)
+            children.push(<FormItem>
+                <Input onChange={this.onExtraSearchValueChange} value={this.state.extraSearchValue} onPressEnter={this.onSearch}/>
+            </FormItem>)
         }
         return children;
     };
 
-    getOtherConditionContent = (oc) =>{
-        let children = [];
-        oc.map((con)=>{
-            let checked = false;
-            const propname = `${con.id}checked`;
-            children.push(<FormItem key={con.id}><Checkbox id={con.id} checked={this.state[propname]||false} onChange={this.onExtraConditionChecked}>{con.props.fieldCn}</Checkbox></FormItem>)
-        });
-
-
-        return (
-            <Wrap style={{width:500}}>
-                <Panel>
-                    <FormLayout key="ocContent" children={children} inline inputSize={themeType}/>
-                </Panel>
-            </Wrap>
-        )
-    };
-
-    onExtraConditionChecked = (e) =>{
-        let {extraConditionCheckedList,data} = this.state;
-        if(e.target.checked){
-            extraConditionCheckedList.push(e.target.id)
-        }else{
-            extraConditionCheckedList = extraConditionCheckedList.filter(item => item !== e.target.id)
-            data[e.target.id] = e.target.value;
-        }
-        const propname = `${e.target.id}checked`;
+    onExtraConditionSelect = (value,option) =>{
         this.setState({
-            [propname]:e.target.checked,
-            extraConditionCheckedList,
-            data
+            extraCondition:value
         })
     };
 
-    onReset = () =>{
-        const extraConditionCheckedList = this.state.extraConditionCheckedList;
-        extraConditionCheckedList.map((con)=>{
-            const propname = `${con}checked`;
-            this.setState({
-                [propname]:false
-            })
-        })
-        const data = this.initData(this.props);
-        let selectedTemplateName;
+    onExtraSearchValueChange = (e) =>{
         this.setState({
-            selectedTemplateName,
-            arrSelectValue:"",
-            extraConditionCheckedList:[],
-            data
+            extraSearchValue:e.target.value
         })
-        this.props.onReSet();
-    };
+    }
+
+    // getOtherConditionContent = (oc) =>{
+    //     let children = [];
+    //     oc.map((con)=>{
+    //         let checked = false;
+    //         const propname = `${con.id}checked`;
+    //         children.push(<FormItem key={con.id}><Checkbox id={con.id} checked={this.state[propname]||false} onChange={this.onExtraConditionChecked}>{con.props.fieldCn}</Checkbox></FormItem>)
+    //     });
+    //
+    //
+    //     return (
+    //         <Wrap style={{width:500}}>
+    //             <Panel>
+    //                 <FormLayout key="ocContent" children={children} inline inputSize={themeType}/>
+    //             </Panel>
+    //         </Wrap>
+    //     )
+    // };
+
+    // onExtraConditionChecked = (e) =>{
+    //     let {extraConditionCheckedList,data} = this.state;
+    //     if(e.target.checked){
+    //         extraConditionCheckedList.push(e.target.id)
+    //     }else{
+    //         extraConditionCheckedList = extraConditionCheckedList.filter(item => item !== e.target.id)
+    //         data[e.target.id] = e.target.value;
+    //     }
+    //     const propname = `${e.target.id}checked`;
+    //     this.setState({
+    //         [propname]:e.target.checked,
+    //         extraConditionCheckedList,
+    //         data
+    //     })
+    // };
+
+    // onReset = () =>{
+    //     const extraConditionCheckedList = this.state.extraConditionCheckedList;
+    //     extraConditionCheckedList.map((con)=>{
+    //         const propname = `${con}checked`;
+    //         this.setState({
+    //             [propname]:false
+    //         })
+    //     })
+    //     const data = this.initData(this.props);
+    //     let selectedTemplateName;
+    //     this.setState({
+    //         selectedTemplateName,
+    //         arrSelectValue:"",
+    //         extraConditionCheckedList:[],
+    //         data
+    //     })
+    //     this.props.onReSet();
+    // };
 
 
     onTemplateNameChange = (e) =>{
@@ -378,24 +414,53 @@ class AdSearch extends Component{
         )
     };
 
-    getExtraConditionChildren = (oc) =>{
+    getExtraConditionChildren = () =>{
         let children = [];
-        const extraConditionCheckedList = this.state.extraConditionCheckedList;
+        const {data,dcList,ocMap} = this.state;
+        let temp = [];
+        for(let key in data){
+            if(data[key] && dcList.indexOf(key) === -1){
+                const value = data[key];
+                const fieldCn = ocMap[key]
+                if(fieldCn){
+                    if(Array.isArray(value)){
+                        value.map((v)=>{
+                            const str = fieldCn+"："+v
+                            temp.push({key,str,v})
 
-        if(extraConditionCheckedList.length>0){
-            const _oc = {};
-            oc.map((con)=>{
-                _oc[con.id]=con;
-            });
-            extraConditionCheckedList.map((ocId)=>{
-                const condition = _oc[ocId];
-                if(condition){
-                    children.push(this.creatElement(condition.props))
+                        })
+                    }else if(typeof value === 'string'){
+                        const str = fieldCn+"："+value
+                        temp.push({key,str,value})
+                    }
+
                 }
-            })
+            }
         }
+        temp.map(({key,str,v},index)=>{
+            children.push(<FormItem key={key+index}>
+                <Tag closable onClose={(e)=>this.onTagClose(key,v)}>{str}</Tag>
+            </FormItem>)
+        })
         return children;
     };
+
+    onTagClose = (key,v) =>{
+        // console.log(key,v)
+        let data = this.state.data;
+        let targetList = data[key];
+        const newList = targetList.filter(item => item !== v)
+        // console.log(newList);
+        data[key] = newList;
+        this.doSearch(data);
+        this.setState({
+            data
+        })
+    };
+
+    doSearch = (data) =>{
+        this.props.onSearch && this.props.onSearch({data})
+    }
 
     getTemplateChildren = (templateSource) =>{
         let children = [];
@@ -408,7 +473,7 @@ class AdSearch extends Component{
                     event.stopPropagation();
                 }} className="selected_del"><Icon type="cross" style={{float:'right',paddingTop:3}}/></a>);
             }
-
+            // console.log(tem)
             children.push(<Option key={id} value={templateName}>{templateName}{del}</Option>)
         });
         const props = {
@@ -432,7 +497,7 @@ class AdSearch extends Component{
             advancedcondition = JSON.parse(advancedcondition)
         }
 
-        let extraConditionCheckedList = [];
+        // let extraConditionCheckedList = [];
         let list = [];
         const {defaultCondition} = this.props;
         defaultCondition.map((con)=>{
@@ -450,11 +515,11 @@ class AdSearch extends Component{
             const id = adc.fieldEn;
             const fv = adc.fieldValue;
             data[id] = fv;
-            const propname = `${id}checked`;
-            extraConditionCheckedList.push(id)
-            this.setState({
-                [propname]:true
-            })
+            // const propname = `${id}checked`;
+            // extraConditionCheckedList.push(id)
+            // this.setState({
+            //     [propname]:true
+            // })
         });
         this.setState({
             selectedTemplateName:value,
@@ -462,21 +527,53 @@ class AdSearch extends Component{
             templateName:value,
             data,
             arrSelectValue,
-            extraConditionCheckedList
+            // extraConditionCheckedList
         })
         this.props.onArraySelect && this.props.onArraySelect(arrSelectValue)
+        this.doSearch(data)
+    };
+
+    onSearch = () =>{
+        let {data,extraCondition,extraSearchValue} = this.state;
+
+        //组装查询条件，并且清空查询条件，如果只选了条件而没有输入则不清空
+        if(extraCondition && extraSearchValue){
+            if(data[extraCondition]){
+                let value = data[extraCondition];
+                if(Array.isArray(value)){
+                    value.push(extraSearchValue);
+                    data[extraCondition] = value;
+                }else{
+                    let list = [value];
+                    list.push(extraSearchValue);
+                    data[extraCondition] = list;
+                }
+            }else{
+                data[extraCondition] = [extraSearchValue];
+            }
+            extraCondition=undefined
+            extraSearchValue=''
+        }
+
+        this.doSearch(data);
+        console.log(data,extraCondition,extraSearchValue)
+        this.setState({
+            data,
+            extraCondition,
+            extraSearchValue
+        })
     }
 
     render(){
-        const {customTopLine,customFootLine,extraCondition,defaultCondition,onSearch,onReSet,onSaveMySearch,templateSource,...otherProps} = this.props;
+        const {customTopLine,customFootLine,extraCondition,defaultCondition,onSearch,onSaveMySearch,templateSource,...otherProps} = this.props;
         const {data} = this.state;
         let defaultConditionChildren = this.creatDefaultCondition(defaultCondition,extraCondition);
         if(onSearch){
-            defaultConditionChildren.push(<FormItem key="onSearch"><Button children="查询" size={themeType} onClick={()=>onSearch({data})}/></FormItem>);
+            defaultConditionChildren.push(<FormItem key="onSearch"><Button children="查询" size={themeType} onClick={this.onSearch}/></FormItem>);
         }
-        if(onReSet){
-            defaultConditionChildren.push(<FormItem key="onReSet"><Button children="重置" size={themeType} onClick={()=>this.onReset()}/></FormItem>);
-        }
+        // if(onReSet){
+        //     defaultConditionChildren.push(<FormItem key="onReSet"><Button children="重置" size={themeType} onClick={()=>this.onReset()}/></FormItem>);
+        // }
         if(onSaveMySearch){
             defaultConditionChildren.push(<FormItem key="onSaveMySearch"><Popover placement="bottom" trigger="click" content={this.getSaveMySearchContent(onSaveMySearch)}><Button children="存入我的查询" size={themeType}/></Popover></FormItem>);
         }
@@ -484,7 +581,7 @@ class AdSearch extends Component{
             defaultConditionChildren.push(this.getTemplateChildren(templateSource))
         }
 
-        const extraConditionChildren = this.getExtraConditionChildren(extraCondition);
+        const extraConditionChildren = this.getExtraConditionChildren();
         return(
             <Wrap>
                 <Panel>
@@ -492,7 +589,19 @@ class AdSearch extends Component{
                         <CustomTopLine content={customTopLine}/>
                     </FormLayout>}
                     <FormLayout key="defaultConditionChildren" children={defaultConditionChildren} inline inputSize={themeType}/>
-                    <FormLayout key="extraConditionChildren" children={extraConditionChildren} inline inputSize={themeType}/>
+                    <FormLayout key="extraConditionChildren" inline inputSize={themeType}>
+                        <If condition={extraConditionChildren.length >0}>
+                            <Row>
+                                <Col span={1}>
+                                    <FormItem label="搜索条件"/>
+                                </Col>
+                                <Col span={23}>
+                                    <div style={{paddingLeft:15}}>{extraConditionChildren}</div>
+
+                                </Col>
+                            </Row>
+                        </If>
+                    </FormLayout>
                     {customFootLine && <FormLayout key="customFootLine">
                         <CustomFootLine content={customFootLine}/>
                     </FormLayout>}

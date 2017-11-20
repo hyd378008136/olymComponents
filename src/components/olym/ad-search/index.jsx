@@ -282,7 +282,7 @@ class AdSearch extends Component{
                     })}
                 </Select>
             </FormItem>)
-            children.push(<FormItem>
+            children.push(<FormItem key="extraSearchValue">
                 <Input onChange={this.onExtraSearchValueChange} value={this.state.extraSearchValue} onPressEnter={this.onSearch}/>
             </FormItem>)
         }
@@ -582,6 +582,20 @@ class AdSearch extends Component{
         }
 
         const extraConditionChildren = this.getExtraConditionChildren();
+        const ex = () =>{
+            if(extraConditionChildren.length >0){
+                return(
+                    <Row>
+                        <Col span={1}>
+                            <FormItem label="搜索条件" key="con"/>
+                        </Col>
+                        <Col span={23}>
+                            <div style={{paddingLeft:15}}>{extraConditionChildren}</div>
+                        </Col>
+                    </Row>
+                )
+            }
+        }
         return(
             <Wrap>
                 <Panel>
@@ -589,18 +603,17 @@ class AdSearch extends Component{
                         <CustomTopLine content={customTopLine}/>
                     </FormLayout>}
                     <FormLayout key="defaultConditionChildren" children={defaultConditionChildren} inline inputSize={themeType}/>
-                    <FormLayout key="extraConditionChildren" inline inputSize={themeType}>
-                        <If condition={extraConditionChildren.length >0}>
-                            <Row>
-                                <Col span={1}>
-                                    <FormItem label="搜索条件"/>
-                                </Col>
-                                <Col span={23}>
-                                    <div style={{paddingLeft:15}}>{extraConditionChildren}</div>
-
-                                </Col>
-                            </Row>
-                        </If>
+                    <FormLayout key="extraConditionChildren" inline inputSize={themeType} children={ex()}>
+                        {/*<If condition={extraConditionChildren.length >0}>*/}
+                        {/*<Row>*/}
+                        {/*<Col span={1}>*/}
+                        {/*<FormItem label="搜索条件"/>*/}
+                        {/*</Col>*/}
+                        {/*<Col span={23}>*/}
+                        {/*<div style={{paddingLeft:15}}>{extraConditionChildren}</div>*/}
+                        {/*</Col>*/}
+                        {/*</Row>*/}
+                        {/*</If>*/}
                     </FormLayout>
                     {customFootLine && <FormLayout key="customFootLine">
                         <CustomFootLine content={customFootLine}/>

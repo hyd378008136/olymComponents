@@ -164,6 +164,8 @@ class Table extends Component {
                     {customCtns}
                 </div>
             }
+        }else{
+            title = () =><Button onClick={this.handleShow} size="small" key="custom">自定义列</Button>;
         }
 
 

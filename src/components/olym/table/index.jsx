@@ -51,8 +51,11 @@ class Table extends Component {
                 obj.key = obj.dataIndex;
             }
             if (customColumnsMap[dataIndex]) {
-                obj.orderNo = customColumnsMap[dataIndex].orderNo;
-                userDefineColumns.push(obj);
+                const customCol = customColumnsMap[dataIndex];
+                if(customCol.orderNo && customCol.orderNo > -1){
+                    obj.orderNo = customColumnsMap[dataIndex].orderNo;
+                    userDefineColumns.push(obj);
+                }
             } else {
                 extraColumns.push(obj)
             }

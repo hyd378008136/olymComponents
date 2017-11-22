@@ -91,16 +91,16 @@ class Table extends Component {
         // console.log(columns, _customColumns)
         const userDefineColumns = this.getUserDefineCol(columns, _customColumns);
 
-        if (showSeq) {
+        if (showSeq && userDefineColumns[0] && userDefineColumns[0].key !== 'olymc_seq') {
             //显示序号
             dataSource.map((data, index) => {
                 // console.log(index)
-                data["seq"] = index + 1;
+                data["olymc_seq"] = index + 1;
             })
             // console.log(dataSource)
             userDefineColumns.unshift({
-                dataIndex: "seq",
-                key: "seq",
+                dataIndex: "olymc_seq",
+                key: "olymc_seq",
                 title: "序号",
                 width: '50px'
             })

@@ -50,6 +50,14 @@ class AdSearch extends Component{
                 template,templateNames
             })
         }
+        if(this.props.extraCondition && nextProps.extraCondition && this.props.extraCondition !== nextProps.extraCondition){
+            const {data,dcList,ocMap} = this.initData(nextProps);
+            this.setState({
+                // data,
+                // dcList,
+                ocMap,
+            })
+        }
     }
 
     initData = (props) =>{
@@ -78,11 +86,11 @@ class AdSearch extends Component{
             if(Array.isArray(props)){
                 props.map((p)=>{
                     data[p.fieldEn] = p.fieldValue;
-                    ocMap[p.fieldEn] = p.fieldCn;
+                    ocMap[p.fieldEn] = p;
                 })
             }else{
                 data[props.fieldEn] = props.fieldValue;
-                ocMap[props.fieldEn] = props.fieldCn;
+                ocMap[props.fieldEn] = props;
             }
         });
         console.log("ocMap",ocMap)
@@ -239,6 +247,35 @@ class AdSearch extends Component{
         }
     }
 
+    //跟上面那个方法差不多 创建 条件按 的那个搜索框，目前只支持单选和输入框
+    creatExtraSearchValueField = (props) =>{
+        const {fieldCn,fieldEn,fieldType,...otherProps} = props;
+        // let fieldValue = props.fieldValue || "";
+
+        if(fieldType === "select" || fieldType === "multi_select"){
+            const selectProps = {
+                ...otherProps,
+                id : fieldEn,
+                dropdownMatchSelectWidth : false,
+                size : themeType,
+                placeholder : '请选择',
+                value : this.state.extraSearchValue,
+                onSelect : this.onExtraSearchValueSelect,
+            };
+            return(
+                <FormItem key="extraSearchValue">
+                    <Select style={{width:selectWidth}} {...selectProps}/>
+                </FormItem>
+            )
+        }else{
+            return (
+                <FormItem key="extraSearchValue">
+                    <Input onChange={this.onExtraSearchValueChange} value={this.state.extraSearchValue} onPressEnter={this.onSearch}/>
+                </FormItem>
+            )
+        }
+    }
+
     creatDefaultCondition = (defaultCondition,extraCondition) =>{
         let children = [];
         defaultCondition && defaultCondition.map((con)=>{
@@ -282,9 +319,13 @@ class AdSearch extends Component{
                     })}
                 </Select>
             </FormItem>)
-            children.push(<FormItem key="extraSearchValue">
-                <Input onChange={this.onExtraSearchValueChange} value={this.state.extraSearchValue} onPressEnter={this.onSearch}/>
-            </FormItem>)
+            const extraPropsId = this.state.extraCondition;
+            let extraProps = {};
+            if(extraPropsId){
+                extraProps = this.state.ocMap[extraPropsId];
+            }
+            console.log("extraProps",extraProps)
+            children.push(this.creatExtraSearchValueField(extraProps))
         }
         return children;
     };
@@ -296,64 +337,25 @@ class AdSearch extends Component{
     };
 
     onExtraSearchValueChange = (e) =>{
+        let value;
+        if(e.target){
+            value = e.target.value;
+        }else{
+            value = e;
+        }
         this.setState({
-            extraSearchValue:e.target.value
+            extraSearchValue:value
         })
-    }
+    };
 
-    // getOtherConditionContent = (oc) =>{
-    //     let children = [];
-    //     oc.map((con)=>{
-    //         let checked = false;
-    //         const propname = `${con.id}checked`;
-    //         children.push(<FormItem key={con.id}><Checkbox id={con.id} checked={this.state[propname]||false} onChange={this.onExtraConditionChecked}>{con.props.fieldCn}</Checkbox></FormItem>)
-    //     });
-    //
-    //
-    //     return (
-    //         <Wrap style={{width:500}}>
-    //             <Panel>
-    //                 <FormLayout key="ocContent" children={children} inline inputSize={themeType}/>
-    //             </Panel>
-    //         </Wrap>
-    //     )
-    // };
+    onExtraSearchValueSelect = (value) =>{
+        new Promise((resolve,reject)=>{
+            resolve(this.onExtraSearchValueChange(value))
+        }).then(()=>{
+            this.onSearch()
+        })
 
-    // onExtraConditionChecked = (e) =>{
-    //     let {extraConditionCheckedList,data} = this.state;
-    //     if(e.target.checked){
-    //         extraConditionCheckedList.push(e.target.id)
-    //     }else{
-    //         extraConditionCheckedList = extraConditionCheckedList.filter(item => item !== e.target.id)
-    //         data[e.target.id] = e.target.value;
-    //     }
-    //     const propname = `${e.target.id}checked`;
-    //     this.setState({
-    //         [propname]:e.target.checked,
-    //         extraConditionCheckedList,
-    //         data
-    //     })
-    // };
-
-    // onReset = () =>{
-    //     const extraConditionCheckedList = this.state.extraConditionCheckedList;
-    //     extraConditionCheckedList.map((con)=>{
-    //         const propname = `${con}checked`;
-    //         this.setState({
-    //             [propname]:false
-    //         })
-    //     })
-    //     const data = this.initData(this.props);
-    //     let selectedTemplateName;
-    //     this.setState({
-    //         selectedTemplateName,
-    //         arrSelectValue:"",
-    //         extraConditionCheckedList:[],
-    //         data
-    //     })
-    //     this.props.onReSet();
-    // };
-
+    };
 
     onTemplateNameChange = (e) =>{
         const templateName = e.target.value
@@ -418,20 +420,33 @@ class AdSearch extends Component{
         let children = [];
         const {data,dcList,ocMap} = this.state;
         let temp = [];
+        function pushValue(key,value){
+            const {fieldCn,reflectMap} = ocMap[key];
+            let v;
+            if(reflectMap){
+                v = reflectMap.get(value) || value
+            }else{
+                v = value
+            }
+            const str = fieldCn+"："+v;
+            temp.push({key,str,v})
+        }
         for(let key in data){
             if(data[key] && dcList.indexOf(key) === -1){
                 const value = data[key];
-                const fieldCn = ocMap[key]
+                const {fieldCn} = ocMap[key]
                 if(fieldCn){
                     if(Array.isArray(value)){
                         value.map((v)=>{
-                            const str = fieldCn+"："+v
-                            temp.push({key,str,v})
+                            // const str = fieldCn+"："+v
+                            // temp.push({key,str,v})
+                            pushValue(key,v)
 
                         })
                     }else if(typeof value === 'string'){
-                        const str = fieldCn+"："+value
-                        temp.push({key,str,value})
+                        // const str = fieldCn+"："+value
+                        // temp.push({key,str,value})
+                        pushValue(key,value)
                     }
 
                 }
@@ -442,6 +457,9 @@ class AdSearch extends Component{
                 <Tag closable onClose={(e)=>this.onTagClose(key,v)}>{str}</Tag>
             </FormItem>)
         })
+        if(this.props.onSaveMySearch && temp.length>0){
+            children.push(<FormItem key="onSaveMySearch"><Popover placement="bottom" trigger="click" content={this.getSaveMySearchContent(this.props.onSaveMySearch)}><Button children="保存条件" size={themeType}/></Popover></FormItem>);
+        }
         return children;
     };
 
@@ -574,9 +592,7 @@ class AdSearch extends Component{
         // if(onReSet){
         //     defaultConditionChildren.push(<FormItem key="onReSet"><Button children="重置" size={themeType} onClick={()=>this.onReset()}/></FormItem>);
         // }
-        if(onSaveMySearch){
-            defaultConditionChildren.push(<FormItem key="onSaveMySearch"><Popover placement="bottom" trigger="click" content={this.getSaveMySearchContent(onSaveMySearch)}><Button children="存入我的查询" size={themeType}/></Popover></FormItem>);
-        }
+
         if(templateSource && Array.isArray(templateSource) && templateSource.length>0){
             defaultConditionChildren.push(this.getTemplateChildren(templateSource))
         }

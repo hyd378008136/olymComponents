@@ -1,6 +1,6 @@
 import React,{Component} from "react";
 
-import {Input, Button, Row, Col, Modal, Message, Icon,Affix,Checkbox,Popover} from 'antd';
+import {Input, Button, Row, Col, Modal, Message, Icon,Affix,Checkbox,Popover,message} from 'antd';
 import {Table, FormLayout, Split, Wrap, Panel,Tag,DatePicker, Select} from 'olym'
 
 import CustomTopLine from './CustomTopLine';
@@ -371,7 +371,6 @@ class AdSearch extends Component{
         })
     }
 
-
     getSaveMySearchContent = (onSaveMySearch) =>{
         let templateName = this.state.templateName || "";
         let templateId = this.state.templateId;
@@ -453,7 +452,7 @@ class AdSearch extends Component{
             }
         }
         temp.map(({key,str,v},index)=>{
-            children.push(<FormItem key={key+index}>
+            children.push(<FormItem key={key+v}>
                 <Tag closable onClose={(e)=>this.onTagClose(key,v)}>{str}</Tag>
             </FormItem>)
         })
@@ -465,9 +464,17 @@ class AdSearch extends Component{
 
     onTagClose = (key,v) =>{
         // console.log(key,v)
-        let data = this.state.data;
+        let {data,ocMap} = this.state;
         let targetList = data[key];
-        const newList = targetList.filter(item => item !== v)
+        const newList = targetList.filter((item)=>{
+            const {reflectMap} = ocMap[key];
+            if(reflectMap){
+                const value = reflectMap.get(item) || item
+                return value !== v;
+            }else{
+                return item !== v;
+            }
+        })
         // console.log(newList);
         data[key] = newList;
         this.doSearch(data);
@@ -553,17 +560,25 @@ class AdSearch extends Component{
 
     onSearch = () =>{
         let {data,extraCondition,extraSearchValue} = this.state;
-
+        let needSearch = true;
         //组装查询条件，并且清空查询条件，如果只选了条件而没有输入则不清空
         if(extraCondition && extraSearchValue){
             if(data[extraCondition]){
                 let value = data[extraCondition];
                 if(Array.isArray(value)){
-                    value.push(extraSearchValue);
+                    if(value.indexOf(extraSearchValue) === -1){
+                        value.push(extraSearchValue);
+                    }else{
+                        needSearch = false;
+                    }
                     data[extraCondition] = value;
                 }else{
                     let list = [value];
-                    list.push(extraSearchValue);
+                    if(value !== extraSearchValue){
+                        list.push(extraSearchValue);
+                    }else{
+                        needSearch = false;
+                    }
                     data[extraCondition] = list;
                 }
             }else{
@@ -573,7 +588,10 @@ class AdSearch extends Component{
             extraSearchValue=''
         }
 
-        this.doSearch(data);
+        if(!needSearch){
+            message.warn("已存在相同的搜索条件",3)
+        }
+        needSearch && this.doSearch(data);
         console.log(data,extraCondition,extraSearchValue)
         this.setState({
             data,

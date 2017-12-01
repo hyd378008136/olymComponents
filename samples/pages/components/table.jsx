@@ -58,8 +58,8 @@ const columns = [{
 }];
 
 const customColumns = [
-    {orderNo: 1, dataIndex: "address", title: "地址"},
-    {orderNo: 2, dataIndex: "age", title: "age"},
+    {orderNo: -1, dataIndex: "address", title: "地址"},
+    {orderNo: 4, dataIndex: "age", title: "age"},
     {orderNo: 3, dataIndex: "name", title: "姓名"}
 ]
 

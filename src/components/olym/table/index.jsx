@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 
-import {Table as ATable, Button, Modal} from 'antd';
+import {Table as ATable, Button, Modal,Row,Col} from 'antd';
 
 import CustomColumnsModal from './CustomColumnsModal'
 
@@ -77,7 +77,7 @@ class Table extends Component {
     }
 
     render() {
-        const {columns, customColumns, onCustomChange, showSeq, dataSource, customCtns, ...otherProps} = this.props;
+        const {columns, customColumns, onCustomChange, showSeq, dataSource, customCtns,title, ...otherProps} = this.props;
         //多传参数会报错。原因不知道。先把不要用的参数去掉
         let _customColumns = [];
         customColumns && customColumns.map((col) => {
@@ -107,7 +107,7 @@ class Table extends Component {
             // console.log(userDefineColumns)
         }
 
-        let title = this.props.title;
+        // let title = this.props.title;
 
 
         // 弹出框参数
@@ -121,31 +121,77 @@ class Table extends Component {
             customColumns: _customColumns
         }
 
-        // if (_customColumns && Array.isArray(_customColumns) && _customColumns.length > 0) {
-            // if (customCtns) {
-            //     title = (data) => {
-            //         let ctns = [];
-            //         ctns.push(<Button onClick={this.handleShow} size="small" key="custom">自定义列</Button>);
-            //         customCtns.map((obj) => {
-            //             ctns.push(obj);
-            //         })
-            //         return ctns;
-            //     }
-            // } else {
-            //     title = (data) => <Button onClick={this.handleShow} size="small" key="custom">自定义列</Button>
-            // }
-            // title = (data) => <Button onClick={this.handleShow} size="small" key="custom">自定义列</Button>
+
+        // if(customCtns){
+        //     if(_customColumns && Array.isArray(_customColumns) && _customColumns.length > 0){
+        //         title = (data) =>{
+        //             let ctns = [];
+        //             ctns.push(<Button onClick={this.handleShow} size="small" key="custom">自定义列</Button>);
+        //             customCtns.map((obj) => {
+        //                 // obj.props.className = "custom_other_btn_right"
+        //                 const {props,...others} = obj;
+        //                 const _obj = {
+        //                     props:{
+        //                         ...props,
+        //                         className:"custom_other_btn_right",
+        //
+        //                     },
+        //                     ...others
+        //                 }
+        //                 console.log(_obj)
+        //                 ctns.push(_obj);
+        //             })
+        //             // ctns.push(<div className="tar">
+        //             //     {customCtns}
+        //             // </div>)
+        //             return ctns;
+        //         }
+        //     }else{
+        //         title = () =>
+        //         <div className="tar">
+        //             {customCtns}
+        //         </div>
+        //     }
+        // }else{
+        //     title = () =><Button onClick={this.handleShow} size="small" key="custom">自定义列</Button>;
         // }
 
-        if(customCtns){
-            if(_customColumns && Array.isArray(_customColumns) && _customColumns.length > 0){
-                title = (data) =>{
-                    let ctns = [];
-                    ctns.push(<Button onClick={this.handleShow} size="small" key="custom">自定义列</Button>);
-                    customCtns.map((obj) => {
-                        // obj.props.className = "custom_other_btn_right"
-                        const {props,...others} = obj;
-                        const _obj = {
+        //处理title
+        const _title = () =>{
+            const left = () =>{
+                let leftChildren = [];
+                if(title){
+                    if(typeof title === "string"){
+                        leftChildren.push(<b>{title}</b>)
+                    }else{
+                        leftChildren.push(title)
+                    }
+
+                }
+                if(_customColumns && Array.isArray(_customColumns) && _customColumns.length > 0){
+                    const buttonProps = {
+                        onClick:this.handleShow,
+                        size:"small",
+                        key:"custom"
+                    };
+                    if(title){
+                        buttonProps.className = "ml8"
+                    }
+                    leftChildren.push(<Button {...buttonProps}>自定义列</Button>)
+                }
+                if(leftChildren.length === 0){
+                    return;
+                }
+                return <div className="tal">
+                    {leftChildren}
+                </div>
+            };
+            const right = () =>{
+                let rigthChildren = [];
+                if(customCtns && Array.isArray(customCtns) && customCtns.length > 0){
+                    customCtns.map((btn)=>{
+                        const {props,...others} = btn;
+                        const _btn = {
                             props:{
                                 ...props,
                                 className:"custom_other_btn_right",
@@ -153,22 +199,21 @@ class Table extends Component {
                             },
                             ...others
                         }
-                        console.log(_obj)
-                        ctns.push(_obj);
+                        rigthChildren.unshift(_btn)
                     })
-                    // ctns.push(<div className="tar">
-                    //     {customCtns}
-                    // </div>)
-                    return ctns;
+                    return(<div className="tar">
+                        {rigthChildren}
+                    </div>)
                 }
-            }else{
-                title = () =>
-                <div className="tar">
-                    {customCtns}
-                </div>
             }
-        }else{
-            title = () =><Button onClick={this.handleShow} size="small" key="custom">自定义列</Button>;
+            return(<Row>
+                <Col span={12}>
+                    {left()}
+                </Col>
+                <Col span={12}>
+                    {right()}
+                </Col>
+            </Row>)
         }
 
 
@@ -178,10 +223,13 @@ class Table extends Component {
         //把处理完的数据组合成新的props
         const props = {
             ...otherProps,
-            title,
+            // title:_title,
             dataSource,
             columns: userDefineColumns,
 
+        };
+        if(title || customCtns || (_customColumns && _customColumns.length>0)){
+            props.title = _title
         }
         return (
             <div>

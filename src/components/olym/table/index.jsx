@@ -162,7 +162,7 @@ class Table extends Component {
                 let leftChildren = [];
                 if(title){
                     if(typeof title === "string"){
-                        leftChildren.push(<b>{title}</b>)
+                        leftChildren.push(<b key="table_title">{title}</b>)
                     }else{
                         leftChildren.push(title)
                     }
@@ -182,7 +182,7 @@ class Table extends Component {
                 if(leftChildren.length === 0){
                     return;
                 }
-                return <div className="tal">
+                return <div className="tal" key="leftarea">
                     {leftChildren}
                 </div>
             };
@@ -201,16 +201,20 @@ class Table extends Component {
                         }
                         rigthChildren.unshift(_btn)
                     })
-                    return(<div className="tar">
+                    return(<div className="tar" key="rightarea">
                         {rigthChildren}
+                    </div>)
+                }else if(customCtns && typeof customCtns === "function"){
+                    return(<div className="tar" key="rightarea">
+                        {customCtns()}
                     </div>)
                 }
             }
             return(<Row>
-                <Col span={12}>
+                <Col span={6}>
                     {left()}
                 </Col>
-                <Col span={12}>
+                <Col span={18}>
                     {right()}
                 </Col>
             </Row>)
@@ -228,7 +232,7 @@ class Table extends Component {
             columns: userDefineColumns,
 
         };
-        if(title || customCtns || (_customColumns && _customColumns.length>0)){
+        if(title || (customCtns && customCtns.length > 0) || (_customColumns && _customColumns.length>0)){
             props.title = _title
         }
         return (

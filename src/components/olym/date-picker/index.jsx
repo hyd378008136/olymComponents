@@ -2,6 +2,7 @@ import React,{Component} from "react";
 
 import {DatePicker as ADatePicker} from 'antd'
 import RangePicker from './RangePicker'
+import MonthPicker from './MonthPicker'
 import moment from 'moment'
 
 class DatePicker extends Component{
@@ -34,4 +35,5 @@ class DatePicker extends Component{
     }
 }
 DatePicker.RangePicker = RangePicker
+DatePicker.MonthPicker = MonthPicker
 export default DatePicker

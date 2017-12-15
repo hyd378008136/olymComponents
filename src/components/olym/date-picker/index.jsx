@@ -4,6 +4,9 @@ import {DatePicker as ADatePicker} from 'antd'
 import RangePicker from './RangePicker'
 import MonthPicker from './MonthPicker'
 import moment from 'moment'
+import common from './common'
+
+const {compatible} = common
 
 class DatePicker extends Component{
     constructor(props) {
@@ -12,19 +15,20 @@ class DatePicker extends Component{
     }
 
     render(){
-        const {id,onChange,value,...otherProps} = this.props;
+        const {id,onChange,value,defaultValue,...otherProps} = this.props;
         const format = this.props.format || "YYYY-MM-DD";
-        let _value;
-        if(typeof value === 'string'){
-            _value = moment(value,format)
-        }else{
-            _value = value
-        }
         const props = {
             id,
-            value:_value,
             ...otherProps,
             format
+        };
+        if(value){
+            const _value = compatible(value,format);
+            props.value = _value;
+        }
+        if(defaultValue){
+            const _defaultValue = compatible(defaultValue,format);
+            props.defaultValue = _defaultValue;
         }
         if(onChange){
             props.onChange = (dates,dateString)=>onChange(id,dates,dateString)

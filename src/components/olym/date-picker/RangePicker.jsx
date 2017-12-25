@@ -36,7 +36,7 @@ class RangePicker extends Component{
 
 
         if(onChange){
-            props.onChange = (dates,dateStrings)=>onChange(id,dates,dateStrings)
+            props.onChange = (dates,dateStrings)=>onChange(dates,dateStrings,id)
         }
         return(
             <AntdRangePicker {...props}/>

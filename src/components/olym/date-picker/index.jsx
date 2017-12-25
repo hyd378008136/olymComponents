@@ -31,7 +31,7 @@ class DatePicker extends Component{
             props.defaultValue = _defaultValue;
         }
         if(onChange){
-            props.onChange = (dates,dateString)=>onChange(id,dates,dateString)
+            props.onChange = (dates,dateString)=>onChange(dates,dateString,id)
         }
         return(
             <ADatePicker {...props}/>

@@ -10,7 +10,7 @@ class ToeSample extends Component{
 
     render(){
         return (
-            <Toe width="400px" value={value}/>
+            <Toe width="324px" value={value}/>
         )
     }
 }

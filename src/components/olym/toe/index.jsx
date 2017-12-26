@@ -9,6 +9,10 @@ class Toe extends Component {
     }
 
     calcStringPixelsCount = (str, strFontSize) => {
+        if(!str){
+            return 0;
+        }
+
         // 字符串字符个数
         const stringCharsCount = str.length;
 
@@ -44,7 +48,7 @@ class Toe extends Component {
     };
 
     render() {
-        let {value, width, style,...otherProps} = this.props;
+        let {value, width,...otherProps} = this.props;
         const px = this.calcStringPixelsCount(value);
         // const widthInt = width.split("px")[0];
         let widthInt;

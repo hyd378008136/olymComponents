@@ -90,12 +90,18 @@ class Table extends Component {
         //处理自定义列
         // console.log(columns, _customColumns)
         const userDefineColumns = this.getUserDefineCol(columns, _customColumns);
+        let _dataSource;
 
         if (showSeq && userDefineColumns[0] && userDefineColumns[0].key !== 'olymc_seq') {
             //显示序号
+            _dataSource = [];
             dataSource.map((data, index) => {
                 // console.log(index)
-                data["olymc_seq"] = index + 1;
+                // data["olymc_seq"] = index + 1;
+                _dataSource.push({
+                    olymc_seq:index+1,
+                    ...data
+                })
             })
             // console.log(dataSource)
             userDefineColumns.unshift({
@@ -228,7 +234,7 @@ class Table extends Component {
         const props = {
             ...otherProps,
             // title:_title,
-            dataSource,
+            dataSource:_dataSource || dataSource,
             columns: userDefineColumns,
 
         };

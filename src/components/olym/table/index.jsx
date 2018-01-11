@@ -127,41 +127,6 @@ class Table extends Component {
             customColumns: _customColumns
         }
 
-
-        // if(customCtns){
-        //     if(_customColumns && Array.isArray(_customColumns) && _customColumns.length > 0){
-        //         title = (data) =>{
-        //             let ctns = [];
-        //             ctns.push(<Button onClick={this.handleShow} size="small" key="custom">自定义列</Button>);
-        //             customCtns.map((obj) => {
-        //                 // obj.props.className = "custom_other_btn_right"
-        //                 const {props,...others} = obj;
-        //                 const _obj = {
-        //                     props:{
-        //                         ...props,
-        //                         className:"custom_other_btn_right",
-        //
-        //                     },
-        //                     ...others
-        //                 }
-        //                 console.log(_obj)
-        //                 ctns.push(_obj);
-        //             })
-        //             // ctns.push(<div className="tar">
-        //             //     {customCtns}
-        //             // </div>)
-        //             return ctns;
-        //         }
-        //     }else{
-        //         title = () =>
-        //         <div className="tar">
-        //             {customCtns}
-        //         </div>
-        //     }
-        // }else{
-        //     title = () =><Button onClick={this.handleShow} size="small" key="custom">自定义列</Button>;
-        // }
-
         //处理title
         const _title = () =>{
             const left = () =>{
@@ -224,7 +189,9 @@ class Table extends Component {
                     {right()}
                 </Col>
             </Row>)
-        }
+        };
+
+        console.log(_title())
 
 
         // 每次弹框都重新渲染
@@ -238,7 +205,7 @@ class Table extends Component {
             columns: userDefineColumns,
 
         };
-        if(title || (customCtns && customCtns.length > 0) || (_customColumns && _customColumns.length>0)){
+        if(title || customCtns || (_customColumns && _customColumns.length>0)){
             props.title = _title
         }
         return (

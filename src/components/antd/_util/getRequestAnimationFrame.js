@@ -31,6 +31,6 @@ export function cancelRequestAnimationFrame(id) {
     }
     const prefix = availablePrefixs.filter(key => `${key}CancelAnimationFrame` in window || `${key}CancelRequestAnimationFrame` in window)[0];
     return prefix ?
-        (window[`${prefix}CancelAnimationFrame`] || window[`${prefix}CancelRequestAnimationFrame`]).call(this, id)
-        : clearTimeout(id);
+        (window[`${prefix}CancelAnimationFrame`] ||
+            window[`${prefix}CancelRequestAnimationFrame`]).call(this, id) : clearTimeout(id);
 }

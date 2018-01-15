@@ -1,8 +1,10 @@
-import React from 'react';
+import * as React from 'react';
 import Dialog from 'rc-dialog';
 import PropTypes from 'prop-types';
 import addEventListener from 'rc-util/lib/Dom/addEventListener';
 import Button from '../button';
+import LocaleReceiver from '../locale-provider/LocaleReceiver';
+import { getConfirmLocale } from './locale';
 let mousePosition;
 let mousePositionEventBinded;
 export default class Modal extends React.Component {
@@ -19,6 +21,12 @@ export default class Modal extends React.Component {
             if (onOk) {
                 onOk(e);
             }
+        };
+        this.renderFooter = (locale) => {
+            const { okText, okType, cancelText, confirmLoading } = this.props;
+            return (React.createElement("div", null,
+                React.createElement(Button, { onClick: this.handleCancel }, cancelText || locale.cancelText),
+                React.createElement(Button, { type: okType, loading: confirmLoading, onClick: this.handleOk }, okText || locale.okText)));
         };
     }
     componentDidMount() {
@@ -39,13 +47,9 @@ export default class Modal extends React.Component {
         mousePositionEventBinded = true;
     }
     render() {
-        let { okText, okType, cancelText, confirmLoading, footer, visible } = this.props;
-        if (this.context.antLocale && this.context.antLocale.Modal) {
-            okText = okText || this.context.antLocale.Modal.okText;
-            cancelText = cancelText || this.context.antLocale.Modal.cancelText;
-        }
-        const defaultFooter = [(React.createElement(Button, { key: "cancel", size: "large", onClick: this.handleCancel }, cancelText || '取消')), (React.createElement(Button, { key: "confirm", type: okType, size: "large", loading: confirmLoading, onClick: this.handleOk }, okText || '确定'))];
-        return (React.createElement(Dialog, Object.assign({ onClose: this.handleCancel, footer: footer === undefined ? defaultFooter : footer }, this.props, { visible: visible, mousePosition: mousePosition })));
+        const { footer, visible } = this.props;
+        const defaultFooter = (React.createElement(LocaleReceiver, { componentName: "Modal", defaultLocale: getConfirmLocale() }, this.renderFooter));
+        return (React.createElement(Dialog, Object.assign({}, this.props, { footer: footer === undefined ? defaultFooter : footer, visible: visible, mousePosition: mousePosition, onClose: this.handleCancel })));
     }
 }
 Modal.defaultProps = {
@@ -70,7 +74,4 @@ Modal.propTypes = {
     footer: PropTypes.node,
     title: PropTypes.node,
     closable: PropTypes.bool,
-};
-Modal.contextTypes = {
-    antLocale: PropTypes.object,
 };

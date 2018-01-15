@@ -46,7 +46,7 @@ module.exports = {
             },
             {
                 test: /\.(js|jsx)$/,
-                loader: 'react-hot!babel',
+                loader: 'babel',
                 include: [resolve('samples'), resolve('src'), resolve('test')]
             },
 

@@ -1,60 +1,64 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import Icon from '../icon';
 import Dialog from './Modal';
 import ActionButton from './ActionButton';
 import { getConfirmLocale } from './locale';
-export default function confirm(config) {
-    const props = Object.assign({ iconType: 'question-circle', okType: 'primary' }, config);
+const IS_REACT_16 = !!ReactDOM.createPortal;
+const ConfirmDialog = (props) => {
+    const { onCancel, onOk, close, zIndex, afterClose, visible } = props;
+    const iconType = props.iconType || 'question-circle';
+    const okType = props.okType || 'primary';
     const prefixCls = props.prefixCls || 'ant-confirm';
-    let div = document.createElement('div');
-    document.body.appendChild(div);
-    let width = props.width || 416;
-    let style = props.style || {};
+    // 默认为 true，保持向下兼容
+    const okCancel = ('okCancel' in props) ? props.okCancel : true;
+    const width = props.width || 416;
+    const style = props.style || {};
     // 默认为 false，保持旧版默认行为
     const maskClosable = props.maskClosable === undefined ? false : props.maskClosable;
-    // 默认为 true，保持向下兼容
-    if (!('okCancel' in props)) {
-        props.okCancel = true;
-    }
     const runtimeLocale = getConfirmLocale();
-    props.okText = props.okText ||
-        (props.okCancel ? runtimeLocale.okText : runtimeLocale.justOkText);
-    props.cancelText = props.cancelText || runtimeLocale.cancelText;
+    const okText = props.okText ||
+        (okCancel ? runtimeLocale.okText : runtimeLocale.justOkText);
+    const cancelText = props.cancelText || runtimeLocale.cancelText;
+    const classString = classNames(prefixCls, `${prefixCls}-${props.type}`, props.className);
+    const cancelButton = okCancel && (React.createElement(ActionButton, { actionFn: onCancel, closeModal: close }, cancelText));
+    return (React.createElement(Dialog, { className: classString, onCancel: close.bind(this, { triggerCancel: true }), visible: visible, title: "", transitionName: "zoom", footer: "", maskTransitionName: "fade", maskClosable: maskClosable, style: style, width: width, zIndex: zIndex, afterClose: afterClose },
+        React.createElement("div", { className: `${prefixCls}-body-wrapper` },
+            React.createElement("div", { className: `${prefixCls}-body` },
+                React.createElement(Icon, { type: iconType }),
+                React.createElement("span", { className: `${prefixCls}-title` }, props.title),
+                React.createElement("div", { className: `${prefixCls}-content` }, props.content)),
+            React.createElement("div", { className: `${prefixCls}-btns` },
+                cancelButton,
+                React.createElement(ActionButton, { type: okType, actionFn: onOk, closeModal: close, autoFocus: true }, okText)))));
+};
+export default function confirm(config) {
+    let div = document.createElement('div');
+    document.body.appendChild(div);
     function close(...args) {
+        if (IS_REACT_16) {
+            render(Object.assign({}, config, { close, visible: false, afterClose: destroy.bind(this, ...args) }));
+        }
+        else {
+            destroy(...args);
+        }
+    }
+    function destroy(...args) {
         const unmountResult = ReactDOM.unmountComponentAtNode(div);
         if (unmountResult && div.parentNode) {
             div.parentNode.removeChild(div);
         }
         const triggerCancel = args && args.length &&
             args.some(param => param && param.triggerCancel);
-        if (props.onCancel && triggerCancel) {
-            props.onCancel(...args);
+        if (config.onCancel && triggerCancel) {
+            config.onCancel(...args);
         }
     }
-    let body = (React.createElement("div", { className: `${prefixCls}-body` },
-        React.createElement(Icon, { type: props.iconType }),
-        React.createElement("span", { className: `${prefixCls}-title` }, props.title),
-        React.createElement("div", { className: `${prefixCls}-content` }, props.content)));
-    let footer = null;
-    if (props.okCancel) {
-        footer = (React.createElement("div", { className: `${prefixCls}-btns` },
-            React.createElement(ActionButton, { actionFn: props.onCancel, closeModal: close }, props.cancelText),
-            React.createElement(ActionButton, { type: props.okType, actionFn: props.onOk, closeModal: close, autoFocus: true }, props.okText)));
+    function render(props) {
+        ReactDOM.render(React.createElement(ConfirmDialog, Object.assign({}, props)), div);
     }
-    else {
-        footer = (React.createElement("div", { className: `${prefixCls}-btns` },
-            React.createElement(ActionButton, { type: props.okType, actionFn: props.onOk, closeModal: close, autoFocus: true }, props.okText)));
-    }
-    const classString = classNames(prefixCls, {
-        [`${prefixCls}-${props.type}`]: true,
-    }, props.className);
-    ReactDOM.render(React.createElement(Dialog, { className: classString, onCancel: close.bind(this, { triggerCancel: true }), visible: true, title: "", transitionName: "zoom", footer: "", maskTransitionName: "fade", maskClosable: maskClosable, style: style, width: width, zIndex: props.zIndex },
-        React.createElement("div", { className: `${prefixCls}-body-wrapper` },
-            body,
-            " ",
-            footer)), div);
+    render(Object.assign({}, config, { visible: true, close }));
     return {
         destroy: close,
     };

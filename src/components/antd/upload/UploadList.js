@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import Animate from 'rc-animate';
 import Icon from '../icon';
 import Tooltip from '../tooltip';
@@ -79,7 +79,7 @@ export default class UploadList extends React.Component {
                 [`${prefixCls}-list-item`]: true,
                 [`${prefixCls}-list-item-${file.status}`]: true,
             });
-            const preview = file.url ? (React.createElement("a", { href: file.url, target: "_blank", rel: "noopener noreferrer", className: `${prefixCls}-list-item-name`, onClick: e => this.handlePreview(file, e), title: file.name }, file.name)) : (React.createElement("span", { className: `${prefixCls}-list-item-name`, onClick: e => this.handlePreview(file, e), title: file.name }, file.name));
+            const preview = file.url ? (React.createElement("a", Object.assign({}, file.linkProps, { href: file.url, target: "_blank", rel: "noopener noreferrer", className: `${prefixCls}-list-item-name`, onClick: e => this.handlePreview(file, e), title: file.name }), file.name)) : (React.createElement("span", { className: `${prefixCls}-list-item-name`, onClick: e => this.handlePreview(file, e), title: file.name }, file.name));
             const style = (file.url || file.thumbUrl) ? undefined : {
                 pointerEvents: 'none',
                 opacity: 0.5,

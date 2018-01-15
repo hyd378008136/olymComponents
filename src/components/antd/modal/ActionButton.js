@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import Button from '../button';
 export default class ActionButton extends React.Component {
     constructor(props) {
@@ -49,6 +49,6 @@ export default class ActionButton extends React.Component {
     render() {
         const { type, children } = this.props;
         const loading = this.state.loading;
-        return (React.createElement(Button, { type: type, size: "large", onClick: this.onClick, loading: loading }, children));
+        return (React.createElement(Button, { type: type, onClick: this.onClick, loading: loading }, children));
     }
 }

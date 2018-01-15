@@ -1,9 +1,15 @@
-import React from 'react';
+import * as React from 'react';
 import Tooltip from '../tooltip';
 import warning from '../_util/warning';
 export default class Popover extends React.Component {
+    constructor() {
+        super(...arguments);
+        this.saveTooltip = (node) => {
+            this.tooltip = node;
+        };
+    }
     getPopupDomNode() {
-        return this.refs.tooltip.getPopupDomNode();
+        return this.tooltip.getPopupDomNode();
     }
     getOverlay() {
         const { title, prefixCls, content } = this.props;
@@ -16,7 +22,7 @@ export default class Popover extends React.Component {
     render() {
         const props = Object.assign({}, this.props);
         delete props.title;
-        return (React.createElement(Tooltip, Object.assign({}, props, { ref: "tooltip", overlay: this.getOverlay() })));
+        return (React.createElement(Tooltip, Object.assign({}, props, { ref: this.saveTooltip, overlay: this.getOverlay() })));
     }
 }
 Popover.defaultProps = {

@@ -7,11 +7,12 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import RcSelect, { Option, OptGroup } from 'rc-select';
 import classNames from 'classnames';
-import warning from '../_util/warning';
+import LocaleReceiver from '../locale-provider/LocaleReceiver';
+import defaultLocale from '../locale-provider/default';
 const SelectPropTypes = {
     prefixCls: PropTypes.string,
     className: PropTypes.string,
@@ -26,54 +27,42 @@ const SelectPropTypes = {
 // => It is needless to export the declaration of below two inner components.
 // export { Option, OptGroup };
 export default class Select extends React.Component {
-    constructor(props) {
-        super(props);
-        // by FEN 为了解决第一次点击的时候不出数据
-        this.handlerfirstFocus = () => {
-            if (this.state.isFirstFocus) {
-                this.props.onFirstFocus && this.props.onFirstFocus();
-                this.setState({
-                    isFirstFocus: false
-                });
-            }
-            this.props.onFocus && this.props.onFocus();
+    constructor() {
+        super(...arguments);
+        this.saveSelect = (node) => {
+            this.rcSelect = node;
         };
-        this.state = {
-            isFirstFocus: true
+        this.renderSelect = (locale) => {
+            const _a = this.props, { prefixCls, className = '', size, mode } = _a, restProps = __rest(_a, ["prefixCls", "className", "size", "mode"]);
+            const cls = classNames({
+                [`${prefixCls}-lg`]: size === 'large',
+                [`${prefixCls}-sm`]: size === 'small',
+            }, className);
+            let { notFoundContent, optionLabelProp } = this.props;
+            const isCombobox = mode === 'combobox';
+            if (isCombobox) {
+                // children 带 dom 结构时，无法填入输入框
+                optionLabelProp = optionLabelProp || 'value';
+            }
+            const modeConfig = {
+                multiple: mode === 'multiple',
+                tags: mode === 'tags',
+                combobox: isCombobox,
+            };
+            // AutoComplete don't have notFoundContent defaultly
+            const notFoundContentLocale = isCombobox ?
+                (notFoundContent || '') : (notFoundContent || locale.notFoundContent);
+            return (React.createElement(RcSelect, Object.assign({}, restProps, modeConfig, { prefixCls: prefixCls, className: cls, optionLabelProp: optionLabelProp || 'children', notFoundContent: notFoundContentLocale, ref: this.saveSelect })));
         };
     }
-    getLocale() {
-        const { antLocale } = this.context;
-        if (antLocale && antLocale.Select) {
-            return antLocale.Select;
-        }
-        return {
-            notFoundContent: '无匹配结果',
-        };
+    focus() {
+        this.rcSelect.focus();
+    }
+    blur() {
+        this.rcSelect.blur();
     }
     render() {
-        const _a = this.props, { prefixCls, className = '', size, mode, 
-        // @deprecated
-        multiple, tags, combobox } = _a, restProps = __rest(_a, ["prefixCls", "className", "size", "mode", "multiple", "tags", "combobox"]);
-        warning(!multiple && !tags && !combobox, '`Select[multiple|tags|combobox]` is deprecated, please use `Select[mode]` instead.');
-        const cls = classNames({
-            [`${prefixCls}-lg`]: size === 'large',
-            [`${prefixCls}-sm`]: size === 'small',
-        }, className);
-        const locale = this.getLocale();
-        let { notFoundContent = locale.notFoundContent, optionLabelProp } = this.props;
-        const isCombobox = mode === 'combobox' || combobox;
-        if (isCombobox) {
-            notFoundContent = null;
-            // children 带 dom 结构时，无法填入输入框
-            optionLabelProp = optionLabelProp || 'value';
-        }
-        const modeConfig = {
-            multiple: mode === 'multiple' || multiple,
-            tags: mode === 'tags' || tags,
-            combobox: isCombobox,
-        };
-        return (React.createElement(RcSelect, Object.assign({}, restProps, modeConfig, { prefixCls: prefixCls, className: cls, optionLabelProp: optionLabelProp || 'children', notFoundContent: notFoundContent, onFocus: this.handlerfirstFocus })));
+        return (React.createElement(LocaleReceiver, { componentName: "Select", defaultLocale: defaultLocale.Select }, this.renderSelect));
     }
 }
 Select.Option = Option;
@@ -85,6 +74,3 @@ Select.defaultProps = {
     choiceTransitionName: 'zoom',
 };
 Select.propTypes = SelectPropTypes;
-Select.contextTypes = {
-    antLocale: PropTypes.object,
-};

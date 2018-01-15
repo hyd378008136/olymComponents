@@ -7,7 +7,7 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import omit from 'omit.js';
@@ -44,7 +44,7 @@ export default class Button extends React.Component {
             // Add click effect
             this.setState({ clicked: true });
             clearTimeout(this.timeout);
-            this.timeout = setTimeout(() => this.setState({ clicked: false }), 500);
+            this.timeout = window.setTimeout(() => this.setState({ clicked: false }), 500);
             const onClick = this.props.onClick;
             if (onClick) {
                 onClick(e);
@@ -62,7 +62,7 @@ export default class Button extends React.Component {
             clearTimeout(this.delayTimeout);
         }
         if (typeof loading !== 'boolean' && loading && loading.delay) {
-            this.delayTimeout = setTimeout(() => this.setState({ loading }), loading.delay);
+            this.delayTimeout = window.setTimeout(() => this.setState({ loading }), loading.delay);
         }
         else {
             this.setState({ loading });
@@ -91,6 +91,7 @@ export default class Button extends React.Component {
             default:
                 break;
         }
+        const ComponentProp = others.href ? 'a' : 'button';
         const classes = classNames(prefixCls, className, {
             [`${prefixCls}-${type}`]: type,
             [`${prefixCls}-${shape}`]: shape,
@@ -103,8 +104,8 @@ export default class Button extends React.Component {
         const iconType = loading ? 'loading' : icon;
         const iconNode = iconType ? React.createElement(Icon, { type: iconType }) : null;
         const needInserted = React.Children.count(children) === 1 && (!iconType || iconType === 'loading');
-        const kids = React.Children.map(children, child => insertSpace(child, needInserted));
-        return (React.createElement("button", Object.assign({}, omit(others, ['loading']), { type: htmlType || 'button', className: classes, onClick: this.handleClick }),
+        const kids = children ? React.Children.map(children, child => insertSpace(child, needInserted)) : null;
+        return (React.createElement(ComponentProp, Object.assign({}, omit(others, ['loading']), { type: others.href ? undefined : (htmlType || 'button'), className: classes, onClick: this.handleClick }),
             iconNode,
             kids));
     }

@@ -7,8 +7,8 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
-import React from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import Animate from 'rc-animate';
 import classNames from 'classnames';
 import omit from 'omit.js';
@@ -54,7 +54,8 @@ export default class Tag extends React.Component {
         if (!color) {
             return false;
         }
-        return /^(pink|red|yellow|orange|cyan|green|blue|purple)(-inverse)?$/.test(color);
+        return (/^(pink|red|yellow|orange|cyan|green|blue|purple|geekblue|magenta|volcano|gold|lime)(-inverse)?$/
+            .test(color));
     }
     render() {
         const _a = this.props, { prefixCls, closable, color, className, children, style } = _a, otherProps = __rest(_a, ["prefixCls", "closable", "color", "className", "children", "style"]);

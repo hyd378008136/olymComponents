@@ -7,7 +7,7 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
-import React, { Children } from 'react';
+import * as React from 'react';
 import classNames from 'classnames';
 import TimelineItem from './TimelineItem';
 export default class Timeline extends React.Component {
@@ -18,9 +18,9 @@ export default class Timeline extends React.Component {
             [`${prefixCls}-pending`]: !!pending,
         }, className);
         // Remove falsy items
-        const falsylessItems = Children.toArray(children).filter(item => !!item);
-        const items = Children.map(falsylessItems, (ele, idx) => React.cloneElement(ele, {
-            last: idx === (Children.count(falsylessItems) - 1),
+        const falsylessItems = React.Children.toArray(children).filter(item => !!item);
+        const items = React.Children.map(falsylessItems, (ele, idx) => React.cloneElement(ele, {
+            last: idx === (React.Children.count(falsylessItems) - 1),
         }));
         const pendingItem = (!!pending) ? (React.createElement(TimelineItem, { pending: !!pending }, pendingNode)) : null;
         return (React.createElement("ul", Object.assign({}, restProps, { className: classString }),

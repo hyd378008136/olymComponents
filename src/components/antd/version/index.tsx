@@ -1,2 +1,3 @@
 // import { version } from '../../package.json';
-export default "2.13.9";
+
+export default "3.0.2";

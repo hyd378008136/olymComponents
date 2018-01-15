@@ -1,11 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 import RcTree, { TreeNode } from 'rc-tree';
 import animation from '../_util/openAnimation';
-export class AntTreeNode extends React.Component {
-    render() {
-        return React.createElement(AntTreeNode, Object.assign({}, this.props));
-    }
-}
 export default class Tree extends React.Component {
     render() {
         const props = this.props;

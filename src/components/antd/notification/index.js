@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import Notification from 'rc-notification';
 import Icon from '../icon';
 const notificationInstance = {};
@@ -59,17 +59,21 @@ function getPlacementStyle(placement) {
     }
     return style;
 }
-function getNotificationInstance(prefixCls, placement) {
+function getNotificationInstance(prefixCls, placement, callback) {
     const cacheKey = `${prefixCls}-${placement}`;
-    if (!notificationInstance[cacheKey]) {
-        notificationInstance[cacheKey] = Notification.newInstance({
-            prefixCls,
-            className: `${prefixCls}-${placement}`,
-            style: getPlacementStyle(placement),
-            getContainer: defaultGetContainer,
-        });
+    if (notificationInstance[cacheKey]) {
+        callback(notificationInstance[cacheKey]);
+        return;
     }
-    return notificationInstance[cacheKey];
+    Notification.newInstance({
+        prefixCls,
+        className: `${prefixCls}-${placement}`,
+        style: getPlacementStyle(placement),
+        getContainer: defaultGetContainer,
+    }, (notification) => {
+        notificationInstance[cacheKey] = notification;
+        callback(notification);
+    });
 }
 const typeToIcon = {
     success: 'check-circle-o',
@@ -92,20 +96,22 @@ function notice(args) {
     const autoMarginTag = (!args.description && iconNode)
         ? React.createElement("span", { className: `${prefixCls}-message-single-line-auto-margin` })
         : null;
-    getNotificationInstance(outerPrefixCls, args.placement || defaultPlacement).notice({
-        content: (React.createElement("div", { className: iconNode ? `${prefixCls}-with-icon` : '' },
-            iconNode,
-            React.createElement("div", { className: `${prefixCls}-message` },
-                autoMarginTag,
-                args.message),
-            React.createElement("div", { className: `${prefixCls}-description` }, args.description),
-            args.btn ? React.createElement("span", { className: `${prefixCls}-btn` }, args.btn) : null)),
-        duration,
-        closable: true,
-        onClose: args.onClose,
-        key: args.key,
-        style: args.style || {},
-        className: args.className,
+    getNotificationInstance(outerPrefixCls, args.placement || defaultPlacement, (notification) => {
+        notification.notice({
+            content: (React.createElement("div", { className: iconNode ? `${prefixCls}-with-icon` : '' },
+                iconNode,
+                React.createElement("div", { className: `${prefixCls}-message` },
+                    autoMarginTag,
+                    args.message),
+                React.createElement("div", { className: `${prefixCls}-description` }, args.description),
+                args.btn ? React.createElement("span", { className: `${prefixCls}-btn` }, args.btn) : null)),
+            duration,
+            closable: true,
+            onClose: args.onClose,
+            key: args.key,
+            style: args.style || {},
+            className: args.className,
+        });
     });
 }
 const api = {

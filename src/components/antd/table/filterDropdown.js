@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import Menu, { SubMenu, Item as MenuItem } from 'rc-menu';
 import closest from 'dom-closest';
 import classNames from 'classnames';
@@ -141,7 +141,7 @@ export default class FilterMenu extends React.Component {
             React.createElement("div", { className: `${prefixCls}-dropdown-btns` },
                 React.createElement("a", { className: `${prefixCls}-dropdown-link confirm`, onClick: this.handleConfirm }, locale.filterConfirm),
                 React.createElement("a", { className: `${prefixCls}-dropdown-link clear`, onClick: this.handleClearFilters }, locale.filterReset))));
-        return (React.createElement(Dropdown, { trigger: ['click'], overlay: menus, visible: this.neverShown ? false : this.state.visible, onVisibleChange: this.onVisibleChange, getPopupContainer: getPopupContainer }, this.renderFilterIcon()));
+        return (React.createElement(Dropdown, { trigger: ['click'], overlay: menus, visible: this.neverShown ? false : this.state.visible, onVisibleChange: this.onVisibleChange, getPopupContainer: getPopupContainer, forceRender: true }, this.renderFilterIcon()));
     }
 }
 FilterMenu.defaultProps = {

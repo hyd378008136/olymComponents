@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import omit from 'omit.js';
 import classNames from 'classnames';
 import calculateNodeHeight from './calculateNodeHeight';
@@ -20,7 +20,7 @@ export default class TextArea extends React.Component {
     constructor() {
         super(...arguments);
         this.state = {
-            textareaStyles: null,
+            textareaStyles: {},
         };
         this.resizeTextarea = () => {
             const { autosize } = this.props;

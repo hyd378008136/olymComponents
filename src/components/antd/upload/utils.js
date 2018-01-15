@@ -15,7 +15,6 @@ export function fileToObject(file) {
         error: file.error,
         percent: 0,
         originFileObj: file,
-        status: null,
     };
 }
 /**

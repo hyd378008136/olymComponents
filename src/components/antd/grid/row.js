@@ -7,13 +7,85 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
-import React from 'react';
+// matchMedia polyfill for
+// https://github.com/WickyNilliams/enquire.js/issues/82
+let enquire;
+if (typeof window !== 'undefined') {
+    const matchMediaPolyfill = (mediaQuery) => {
+        return {
+            media: mediaQuery,
+            matches: false,
+            addListener() {
+            },
+            removeListener() {
+            },
+        };
+    };
+    window.matchMedia = window.matchMedia || matchMediaPolyfill;
+    enquire = require('enquire.js');
+}
+import * as React from 'react';
 import { Children, cloneElement } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+const responsiveArray = ['xxl', 'xl', 'lg', 'md', 'sm', 'xs'];
+const responsiveMap = {
+    xs: '(max-width: 575px)',
+    sm: '(min-width: 576px)',
+    md: '(min-width: 768px)',
+    lg: '(min-width: 992px)',
+    xl: '(min-width: 1200px)',
+    xxl: '(min-width: 1600px)',
+};
 export default class Row extends React.Component {
+    constructor() {
+        super(...arguments);
+        this.state = {
+            screens: {},
+        };
+    }
+    componentDidMount() {
+        Object.keys(responsiveMap)
+            .map((screen) => enquire.register(responsiveMap[screen], {
+            match: () => {
+                if (typeof this.props.gutter !== 'object') {
+                    return;
+                }
+                this.setState((prevState) => ({
+                    screens: Object.assign({}, prevState.screens, { [screen]: true }),
+                }));
+            },
+            unmatch: () => {
+                if (typeof this.props.gutter !== 'object') {
+                    return;
+                }
+                this.setState((prevState) => ({
+                    screens: Object.assign({}, prevState.screens, { [screen]: false }),
+                }));
+            },
+            // Keep a empty destory to avoid triggering unmatch when unregister
+            destroy() { },
+        }));
+    }
+    componentWillUnmount() {
+        Object.keys(responsiveMap)
+            .map((screen) => enquire.unregister(responsiveMap[screen]));
+    }
+    getGutter() {
+        const { gutter } = this.props;
+        if (typeof gutter === 'object') {
+            for (let i = 0; i <= responsiveArray.length; i++) {
+                const breakpoint = responsiveArray[i];
+                if (this.state.screens[breakpoint] && gutter[breakpoint] !== undefined) {
+                    return gutter[breakpoint];
+                }
+            }
+        }
+        return gutter;
+    }
     render() {
-        const _a = this.props, { type, justify, align, className, gutter, style, children, prefixCls = 'ant-row' } = _a, others = __rest(_a, ["type", "justify", "align", "className", "gutter", "style", "children", "prefixCls"]);
+        const _a = this.props, { type, justify, align, className, style, children, prefixCls = 'ant-row' } = _a, others = __rest(_a, ["type", "justify", "align", "className", "style", "children", "prefixCls"]);
+        const gutter = this.getGutter();
         const classes = classNames({
             [prefixCls]: !type,
             [`${prefixCls}-${type}`]: type,
@@ -32,7 +104,9 @@ export default class Row extends React.Component {
             }
             return col;
         });
-        return React.createElement("div", Object.assign({}, others, { className: classes, style: rowStyle }), cols);
+        const otherProps = Object.assign({}, others);
+        delete otherProps.gutter;
+        return React.createElement("div", Object.assign({}, otherProps, { className: classes, style: rowStyle }), cols);
     }
 }
 Row.defaultProps = {
@@ -44,6 +118,6 @@ Row.propTypes = {
     justify: PropTypes.string,
     className: PropTypes.string,
     children: PropTypes.node,
-    gutter: PropTypes.number,
+    gutter: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
     prefixCls: PropTypes.string,
 };

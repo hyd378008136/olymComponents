@@ -22,18 +22,26 @@ if (typeof window !== 'undefined') {
     };
     window.matchMedia = window.matchMedia || matchMediaPolyfill;
 }
-import React from 'react';
+import * as React from 'react';
 import classNames from 'classnames';
 import omit from 'omit.js';
 import PropTypes from 'prop-types';
 import Icon from '../icon';
 const dimensionMap = {
     xs: '480px',
-    sm: '768px',
-    md: '992px',
-    lg: '1200px',
-    xl: '1600px',
+    sm: '576px',
+    md: '768px',
+    lg: '992px',
+    xl: '1200px',
+    xxl: '1600px',
 };
+const generateId = (() => {
+    let i = 0;
+    return (prefix = '') => {
+        i += 1;
+        return `${prefix}${i}`;
+    };
+})();
 export default class Sider extends React.Component {
     constructor(props) {
         super(props);
@@ -61,6 +69,7 @@ export default class Sider extends React.Component {
         this.belowShowChange = () => {
             this.setState({ belowShow: !this.state.belowShow });
         };
+        this.uniqueId = generateId('ant-sider-');
         let matchMedia;
         if (typeof window !== 'undefined') {
             matchMedia = window.matchMedia;
@@ -83,6 +92,7 @@ export default class Sider extends React.Component {
     getChildContext() {
         return {
             siderCollapsed: this.state.collapsed,
+            collapsedWidth: this.props.collapsedWidth,
         };
     }
     componentWillReceiveProps(nextProps) {
@@ -97,10 +107,16 @@ export default class Sider extends React.Component {
             this.mql.addListener(this.responsiveHandler);
             this.responsiveHandler(this.mql);
         }
+        if (this.context.siderHook) {
+            this.context.siderHook.addSider(this.uniqueId);
+        }
     }
     componentWillUnmount() {
         if (this.mql) {
             this.mql.removeListener(this.responsiveHandler);
+        }
+        if (this.context.siderHook) {
+            this.context.siderHook.removeSider(this.uniqueId);
         }
     }
     render() {
@@ -109,7 +125,7 @@ export default class Sider extends React.Component {
             'defaultCollapsed', 'onCollapse', 'breakpoint']);
         const siderWidth = this.state.collapsed ? collapsedWidth : width;
         // special trigger when collapsedWidth == 0
-        const zeroWidthTrigger = collapsedWidth === 0 || collapsedWidth === '0' ? (React.createElement("span", { onClick: this.toggle, className: `${prefixCls}-zero-width-trigger` },
+        const zeroWidthTrigger = collapsedWidth === 0 || collapsedWidth === '0' || collapsedWidth === '0px' ? (React.createElement("span", { onClick: this.toggle, className: `${prefixCls}-zero-width-trigger` },
             React.createElement(Icon, { type: "bars" }))) : null;
         const iconObj = {
             'expanded': reverseArrow ? React.createElement(Icon, { type: "right" }) : React.createElement(Icon, { type: "left" }),
@@ -124,7 +140,7 @@ export default class Sider extends React.Component {
             [`${prefixCls}-collapsed`]: !!this.state.collapsed,
             [`${prefixCls}-has-trigger`]: !!trigger,
             [`${prefixCls}-below`]: !!this.state.below,
-            [`${prefixCls}-zero-width`]: siderWidth === 0 || siderWidth === '0',
+            [`${prefixCls}-zero-width`]: siderWidth === 0 || siderWidth === '0' || siderWidth === '0px',
         });
         return (React.createElement("div", Object.assign({ className: siderCls }, divProps, { style: divStyle }),
             React.createElement("div", { className: `${prefixCls}-children` }, this.props.children),
@@ -138,9 +154,13 @@ Sider.defaultProps = {
     defaultCollapsed: false,
     reverseArrow: false,
     width: 200,
-    collapsedWidth: 64,
+    collapsedWidth: 80,
     style: {},
 };
 Sider.childContextTypes = {
     siderCollapsed: PropTypes.bool,
+    collapsedWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+};
+Sider.contextTypes = {
+    siderHook: PropTypes.object,
 };

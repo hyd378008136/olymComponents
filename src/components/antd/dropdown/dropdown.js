@@ -1,4 +1,4 @@
-import React, { cloneElement } from 'react';
+import * as React from 'react';
 import RcDropdown from 'rc-dropdown';
 import classNames from 'classnames';
 import warning from '../_util/warning';
@@ -17,7 +17,7 @@ export default class Dropdown extends React.Component {
     }
     render() {
         const { children, prefixCls, overlay, trigger, disabled } = this.props;
-        const dropdownTrigger = cloneElement(children, {
+        const dropdownTrigger = React.cloneElement(children, {
             className: classNames(children.props.className, `${prefixCls}-trigger`),
             disabled,
         });
@@ -25,7 +25,7 @@ export default class Dropdown extends React.Component {
         const overlayProps = overlay && overlay.props;
         const selectable = (overlayProps && 'selectable' in overlayProps)
             ? overlayProps.selectable : false;
-        const fixedModeOverlay = cloneElement(overlay, {
+        const fixedModeOverlay = React.cloneElement(overlay, {
             mode: 'vertical',
             selectable,
         });

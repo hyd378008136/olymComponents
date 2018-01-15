@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import classnames from 'classnames';
 import {Form,Tag,Checkbox,Radio} from 'antd';
+import PropTypes from 'prop-types'
 const AntFormItem = Form.Item;
 
 // import {checkSecurity, hasOwnProp} from'../share'
@@ -16,9 +17,8 @@ class FormItem extends Component {
     }
 
     static propTypes = {
-        labelVertical: React.PropTypes.bool,
-        isEasyEdit : React.PropTypes.bool,
-
+        labelVertical: PropTypes.bool,
+        isEasyEdit : PropTypes.bool
     }
 
     static defaultProps = {

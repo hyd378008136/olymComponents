@@ -1,9 +1,8 @@
-import React from 'react';
+import * as React from 'react';
 import Animate from 'rc-animate';
 import addEventListener from 'rc-util/lib/Dom/addEventListener';
 import classNames from 'classnames';
 import omit from 'omit.js';
-import Icon from '../icon';
 import getScroll from '../_util/getScroll';
 import getRequestAnimationFrame from '../_util/getRequestAnimationFrame';
 const reqAnimFrame = getRequestAnimationFrame();
@@ -82,7 +81,7 @@ export default class BackTop extends React.Component {
         const { prefixCls = 'ant-back-top', className = '', children } = this.props;
         const classString = classNames(prefixCls, className);
         const defaultElement = (React.createElement("div", { className: `${prefixCls}-content` },
-            React.createElement(Icon, { className: `${prefixCls}-icon`, type: "to-top" })));
+            React.createElement("div", { className: `${prefixCls}-icon` })));
         // fix https://fb.me/react-unknown-prop
         const divProps = omit(this.props, [
             'prefixCls',

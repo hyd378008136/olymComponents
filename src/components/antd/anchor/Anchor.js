@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import addEventListener from 'rc-util/lib/Dom/addEventListener';
@@ -83,8 +83,11 @@ export default class Anchor extends React.Component {
             const { prefixCls } = this.props;
             const linkNode = ReactDOM.findDOMNode(this).getElementsByClassName(`${prefixCls}-link-title-active`)[0];
             if (linkNode) {
-                this.refs.ink.style.top = `${linkNode.offsetTop + linkNode.clientHeight / 2 - 4.5}px`;
+                this.inkNode.style.top = `${linkNode.offsetTop + linkNode.clientHeight / 2 - 4.5}px`;
             }
+        };
+        this.saveInkNode = (node) => {
+            this.inkNode = node;
         };
         this.state = {
             activeLink: null,
@@ -158,7 +161,7 @@ export default class Anchor extends React.Component {
         const anchorContent = (React.createElement("div", { className: wrapperClass, style: style },
             React.createElement("div", { className: anchorClass },
                 React.createElement("div", { className: `${prefixCls}-ink` },
-                    React.createElement("span", { className: inkClass, ref: "ink" })),
+                    React.createElement("span", { className: inkClass, ref: this.saveInkNode })),
                 children)));
         return !affix ? anchorContent : (React.createElement(Affix, { offsetTop: offsetTop }, anchorContent));
     }

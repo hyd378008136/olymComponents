@@ -13,16 +13,25 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
-import React, { Component, Children } from 'react';
+import * as React from 'react';
 import classNames from 'classnames';
 import addEventListener from 'rc-util/lib/Dom/addEventListener';
+import omit from 'omit.js';
 import Grid from './Grid';
+import Meta from './Meta';
+import Tabs from '../tabs';
 import { throttleByAnimationFrameDecorator } from '../_util/throttleByAnimationFrame';
-export default class Card extends Component {
+import warning from '../_util/warning';
+export default class Card extends React.Component {
     constructor() {
         super(...arguments);
         this.state = {
             widerPadding: false,
+        };
+        this.onTabChange = (key) => {
+            if (this.props.onTabChange) {
+                this.props.onTabChange(key);
+            }
         };
         this.saveRef = (node) => {
             this.container = node;
@@ -31,6 +40,10 @@ export default class Card extends Component {
     componentDidMount() {
         this.updateWiderPadding();
         this.resizeEvent = addEventListener(window, 'resize', this.updateWiderPadding);
+        if ('noHovering' in this.props) {
+            warning(!this.props.noHovering, '`noHovering` of Card is deperated, you can remove it safely or use `hoverable` instead.');
+            warning(!!this.props.noHovering, '`noHovering={false}` of Card is deperated, use `hoverable` instead.');
+        }
     }
     componentWillUnmount() {
         if (this.resizeEvent) {
@@ -57,53 +70,81 @@ export default class Card extends Component {
     }
     isContainGrid() {
         let containGrid;
-        Children.forEach(this.props.children, (element) => {
+        React.Children.forEach(this.props.children, (element) => {
             if (element && element.type && element.type === Grid) {
                 containGrid = true;
             }
         });
         return containGrid;
     }
+    getAction(actions) {
+        if (!actions || !actions.length) {
+            return null;
+        }
+        const actionList = actions.map((action, index) => (React.createElement("li", { style: { width: `${100 / actions.length}%` }, key: `action-${index}` },
+            React.createElement("span", null, action))));
+        return actionList;
+    }
+    // For 2.x compatible
+    getCompatibleHoverable() {
+        const { noHovering, hoverable } = this.props;
+        if ('noHovering' in this.props) {
+            return !noHovering || hoverable;
+        }
+        return !!hoverable;
+    }
     render() {
-        const _a = this.props, { prefixCls = 'ant-card', className, extra, bodyStyle, noHovering, title, loading, bordered = true } = _a, others = __rest(_a, ["prefixCls", "className", "extra", "bodyStyle", "noHovering", "title", "loading", "bordered"]);
-        let children = this.props.children;
+        const _a = this.props, { prefixCls = 'ant-card', className, extra, bodyStyle, noHovering, hoverable, title, loading, bordered = true, type, cover, actions, tabList, children } = _a, others = __rest(_a, ["prefixCls", "className", "extra", "bodyStyle", "noHovering", "hoverable", "title", "loading", "bordered", "type", "cover", "actions", "tabList", "children"]);
         const classString = classNames(prefixCls, className, {
             [`${prefixCls}-loading`]: loading,
             [`${prefixCls}-bordered`]: bordered,
-            [`${prefixCls}-no-hovering`]: noHovering,
+            [`${prefixCls}-hoverable`]: this.getCompatibleHoverable(),
             [`${prefixCls}-wider-padding`]: this.state.widerPadding,
             [`${prefixCls}-padding-transition`]: this.updateWiderPaddingCalled,
             [`${prefixCls}-contain-grid`]: this.isContainGrid(),
+            [`${prefixCls}-contain-tabs`]: tabList && tabList.length,
+            [`${prefixCls}-type-${type}`]: !!type,
         });
-        if (loading) {
-            children = (React.createElement("div", { className: `${prefixCls}-loading-content` },
-                React.createElement("p", { className: `${prefixCls}-loading-block`, style: { width: '94%' } }),
-                React.createElement("p", null,
-                    React.createElement("span", { className: `${prefixCls}-loading-block`, style: { width: '28%' } }),
-                    React.createElement("span", { className: `${prefixCls}-loading-block`, style: { width: '62%' } })),
-                React.createElement("p", null,
-                    React.createElement("span", { className: `${prefixCls}-loading-block`, style: { width: '22%' } }),
-                    React.createElement("span", { className: `${prefixCls}-loading-block`, style: { width: '66%' } })),
-                React.createElement("p", null,
-                    React.createElement("span", { className: `${prefixCls}-loading-block`, style: { width: '56%' } }),
-                    React.createElement("span", { className: `${prefixCls}-loading-block`, style: { width: '39%' } })),
-                React.createElement("p", null,
-                    React.createElement("span", { className: `${prefixCls}-loading-block`, style: { width: '21%' } }),
-                    React.createElement("span", { className: `${prefixCls}-loading-block`, style: { width: '15%' } }),
-                    React.createElement("span", { className: `${prefixCls}-loading-block`, style: { width: '40%' } }))));
-        }
+        const loadingBlock = (React.createElement("div", { className: `${prefixCls}-loading-content` },
+            React.createElement("p", { className: `${prefixCls}-loading-block`, style: { width: '94%' } }),
+            React.createElement("p", null,
+                React.createElement("span", { className: `${prefixCls}-loading-block`, style: { width: '28%' } }),
+                React.createElement("span", { className: `${prefixCls}-loading-block`, style: { width: '62%' } })),
+            React.createElement("p", null,
+                React.createElement("span", { className: `${prefixCls}-loading-block`, style: { width: '22%' } }),
+                React.createElement("span", { className: `${prefixCls}-loading-block`, style: { width: '66%' } })),
+            React.createElement("p", null,
+                React.createElement("span", { className: `${prefixCls}-loading-block`, style: { width: '56%' } }),
+                React.createElement("span", { className: `${prefixCls}-loading-block`, style: { width: '39%' } })),
+            React.createElement("p", null,
+                React.createElement("span", { className: `${prefixCls}-loading-block`, style: { width: '21%' } }),
+                React.createElement("span", { className: `${prefixCls}-loading-block`, style: { width: '15%' } }),
+                React.createElement("span", { className: `${prefixCls}-loading-block`, style: { width: '40%' } }))));
         let head;
-        if (title || extra) {
+        const tabs = tabList && tabList.length ? (React.createElement(Tabs, { className: `${prefixCls}-head-tabs`, size: "large", onChange: this.onTabChange }, tabList.map(item => React.createElement(Tabs.TabPane, { tab: item.tab, key: item.key })))) : null;
+        if (title || extra || tabs) {
             head = (React.createElement("div", { className: `${prefixCls}-head` },
-                title ? React.createElement("div", { className: `${prefixCls}-head-title` }, title) : null,
-                extra ? React.createElement("div", { className: `${prefixCls}-extra` }, extra) : null));
+                React.createElement("div", { className: `${prefixCls}-head-wrapper` },
+                    title && React.createElement("div", { className: `${prefixCls}-head-title` }, title),
+                    extra && React.createElement("div", { className: `${prefixCls}-extra` }, extra)),
+                tabs));
         }
-        return (React.createElement("div", Object.assign({}, others, { className: classString, ref: this.saveRef }),
+        const coverDom = cover ? React.createElement("div", { className: `${prefixCls}-cover` }, cover) : null;
+        const body = (React.createElement("div", { className: `${prefixCls}-body`, style: bodyStyle }, loading ? loadingBlock : React.createElement("div", null, children)));
+        const actionDom = actions && actions.length ?
+            React.createElement("ul", { className: `${prefixCls}-actions` }, this.getAction(actions)) : null;
+        const divProps = omit(others, [
+            'onTabChange',
+        ]);
+        return (React.createElement("div", Object.assign({}, divProps, { className: classString, ref: this.saveRef }),
             head,
-            React.createElement("div", { className: `${prefixCls}-body`, style: bodyStyle }, children)));
+            coverDom,
+            children ? body : null,
+            actionDom));
     }
 }
 Card.Grid = Grid;
+Card.Meta = Meta;
 __decorate([
     throttleByAnimationFrameDecorator()
 ], Card.prototype, "updateWiderPadding", null);

@@ -82,8 +82,8 @@ export default function calculateNodeHeight(uiTextNode, useCache = false, minRow
     // narrower for content
     hiddenTextarea.setAttribute('style', `${sizingStyle};${HIDDEN_TEXTAREA_STYLE}`);
     hiddenTextarea.value = uiTextNode.value || uiTextNode.placeholder || '';
-    let minHeight = -Infinity;
-    let maxHeight = Infinity;
+    let minHeight = Number.MIN_SAFE_INTEGER;
+    let maxHeight = Number.MAX_SAFE_INTEGER;
     let height = hiddenTextarea.scrollHeight;
     let overflowY;
     if (boxSizing === 'border-box') {

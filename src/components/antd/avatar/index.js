@@ -7,8 +7,8 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
-import React from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import Icon from '../icon';
 import classNames from 'classnames';
 export default class Avatar extends React.Component {

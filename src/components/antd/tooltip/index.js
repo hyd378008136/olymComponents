@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { cloneElement } from 'react';
 import RcTooltip from 'rc-tooltip';
 import classNames from 'classnames';
@@ -55,8 +55,11 @@ export default class Tooltip extends React.Component {
             }
             domNode.style.transformOrigin = `${transformOrigin.left} ${transformOrigin.top}`;
         };
+        this.saveTooltip = (node) => {
+            this.tooltip = node;
+        };
         this.state = {
-            visible: !!props.visible,
+            visible: !!props.visible || !!props.defaultVisible,
         };
     }
     componentWillReceiveProps(nextProps) {
@@ -65,7 +68,7 @@ export default class Tooltip extends React.Component {
         }
     }
     getPopupDomNode() {
-        return this.refs.tooltip.getPopupDomNode();
+        return this.tooltip.getPopupDomNode();
     }
     getPlacements() {
         const { builtinPlacements, arrowPointAtCenter, autoAdjustOverflow } = this.props;
@@ -122,7 +125,7 @@ export default class Tooltip extends React.Component {
         const childCls = classNames(childProps.className, {
             [openClassName || `${prefixCls}-open`]: true,
         });
-        return (React.createElement(RcTooltip, Object.assign({}, this.props, { getTooltipContainer: getPopupContainer || getTooltipContainer, ref: "tooltip", builtinPlacements: this.getPlacements(), overlay: overlay || title || '', visible: visible, onVisibleChange: this.onVisibleChange, onPopupAlign: this.onPopupAlign }), visible ? cloneElement(child, { className: childCls }) : child));
+        return (React.createElement(RcTooltip, Object.assign({}, this.props, { getTooltipContainer: getPopupContainer || getTooltipContainer, ref: this.saveTooltip, builtinPlacements: this.getPlacements(), overlay: overlay || title || '', visible: visible, onVisibleChange: this.onVisibleChange, onPopupAlign: this.onPopupAlign }), visible ? cloneElement(child, { className: childCls }) : child));
     }
 }
 Tooltip.defaultProps = {

@@ -7,7 +7,7 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
-import React from 'react';
+import * as React from 'react';
 import RcCascader from 'rc-cascader';
 import arrayTreeFilter from 'array-tree-filter';
 import classNames from 'classnames';
@@ -27,7 +27,8 @@ function defaultFilterOption(inputValue, path) {
 }
 function defaultRenderFilteredOption(inputValue, path, prefixCls) {
     return path.map(({ label }, index) => {
-        const node = label.indexOf(inputValue) > -1 ? highlightKeyword(label, inputValue, prefixCls) : label;
+        const node = label.indexOf(inputValue) > -1 ?
+            highlightKeyword(label, inputValue, prefixCls) : label;
         return index === 0 ? node : [' / ', node];
     });
 }
@@ -37,7 +38,7 @@ function defaultSortFilteredOption(a, b, inputValue) {
     }
     return a.findIndex(callback) - b.findIndex(callback);
 }
-const defaultDisplayRender = label => label.join(' / ');
+const defaultDisplayRender = (label) => label.join(' / ');
 export default class Cascader extends React.Component {
     constructor(props) {
         super(props);
@@ -106,6 +107,9 @@ export default class Cascader extends React.Component {
                 this.setState({ inputValue: '' });
             }
         };
+        this.saveInput = (node) => {
+            this.input = node;
+        };
         this.state = {
             value: props.value || props.defaultValue || [],
             inputValue: '',
@@ -137,7 +141,7 @@ export default class Cascader extends React.Component {
         let flattenOptions = [];
         options.forEach((option) => {
             const path = ancestor.concat(option);
-            if (changeOnSelect || !option.children) {
+            if (changeOnSelect || !option.children || !option.children.length) {
                 flattenOptions.push(path);
             }
             if (option.children) {
@@ -158,12 +162,18 @@ export default class Cascader extends React.Component {
                     __IS_FILTERED_OPTION: true,
                     path,
                     label: render(inputValue, path, prefixCls),
-                    value: path.map(o => o.value),
-                    disabled: path.some(o => o.disabled),
+                    value: path.map((o) => o.value),
+                    disabled: path.some((o) => o.disabled),
                 };
             });
         }
         return [{ label: notFoundContent, value: 'ANT_CASCADER_NOT_FOUND', disabled: true }];
+    }
+    focus() {
+        this.input.focus();
+    }
+    blur() {
+        this.input.blur();
     }
     render() {
         const { props, state } = this;
@@ -178,10 +188,10 @@ export default class Cascader extends React.Component {
             [`${prefixCls}-picker-arrow`]: true,
             [`${prefixCls}-picker-arrow-expand`]: state.popupVisible,
         });
-        const pickerCls = classNames(className, {
-            [`${prefixCls}-picker`]: true,
+        const pickerCls = classNames(className, `${prefixCls}-picker`, {
             [`${prefixCls}-picker-with-value`]: state.inputValue,
             [`${prefixCls}-picker-disabled`]: disabled,
+            [`${prefixCls}-picker-${size}`]: !!size,
         });
         // Fix bug of https://github.com/facebook/react/pull/5004
         // and https://fb.me/react-unknown-prop
@@ -221,12 +231,12 @@ export default class Cascader extends React.Component {
         }
         // The default value of `matchInputWidth` is `true`
         const resultListMatchInputWidth = showSearch.matchInputWidth === false ? false : true;
-        if (resultListMatchInputWidth && state.inputValue && this.refs.input) {
-            dropdownMenuColumnStyle.width = this.refs.input.refs.input.offsetWidth;
+        if (resultListMatchInputWidth && state.inputValue && this.input) {
+            dropdownMenuColumnStyle.width = this.input.input.offsetWidth;
         }
         const input = children || (React.createElement("span", { style: style, className: pickerCls },
             React.createElement("span", { className: `${prefixCls}-picker-label` }, this.getLabel()),
-            React.createElement(Input, Object.assign({}, inputProps, { ref: "input", prefixCls: inputPrefixCls, placeholder: value && value.length > 0 ? undefined : placeholder, className: `${prefixCls}-input ${sizeCls}`, value: state.inputValue, disabled: disabled, readOnly: !showSearch, autoComplete: "off", onClick: showSearch ? this.handleInputClick : undefined, onBlur: showSearch ? this.handleInputBlur : undefined, onKeyDown: this.handleKeyDown, onChange: showSearch ? this.handleInputChange : undefined })),
+            React.createElement(Input, Object.assign({}, inputProps, { ref: this.saveInput, prefixCls: inputPrefixCls, placeholder: value && value.length > 0 ? undefined : placeholder, className: `${prefixCls}-input ${sizeCls}`, value: state.inputValue, disabled: disabled, readOnly: !showSearch, autoComplete: "off", onClick: showSearch ? this.handleInputClick : undefined, onBlur: showSearch ? this.handleInputBlur : undefined, onKeyDown: this.handleKeyDown, onChange: showSearch ? this.handleInputChange : undefined })),
             clearIcon,
             React.createElement(Icon, { type: "down", className: arrowCls })));
         return (React.createElement(RcCascader, Object.assign({}, props, { options: options, value: value, popupVisible: state.popupVisible, onPopupVisibleChange: this.handlePopupVisibleChange, onChange: this.handleChange, dropdownMenuColumnStyle: dropdownMenuColumnStyle }), input));

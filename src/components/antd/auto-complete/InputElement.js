@@ -1,17 +1,17 @@
-import React from 'react';
-import { findDOMNode } from 'react-dom';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 export default class InputElement extends React.Component {
     constructor() {
         super(...arguments);
         this.focus = () => {
-            this.ele.focus ? this.ele.focus() : findDOMNode(this.ele).focus();
+            this.ele.focus ? this.ele.focus() : ReactDOM.findDOMNode(this.ele).focus();
         };
         this.blur = () => {
-            this.ele.blur ? this.ele.blur() : findDOMNode(this.ele).blur();
+            this.ele.blur ? this.ele.blur() : ReactDOM.findDOMNode(this.ele).blur();
         };
         this.saveRef = (ele) => {
             this.ele = ele;
-            const childRef = this.props.children.ref;
+            const { ref: childRef } = this.props.children;
             if (typeof childRef === 'function') {
                 childRef(ele);
             }

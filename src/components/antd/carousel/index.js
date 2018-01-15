@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import debounce from 'lodash.debounce';
 // matchMedia polyfill for
 // https://github.com/WickyNilliams/enquire.js/issues/82
@@ -21,15 +21,17 @@ if (typeof window !== 'undefined') {
 // Fix https://github.com/ant-design/ant-design/issues/3308
 const SlickCarousel = require('react-slick').default;
 export default class Carousel extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.onWindowResized = () => {
             // Fix https://github.com/ant-design/ant-design/issues/2550
-            const { slick } = this.refs;
             const { autoplay } = this.props;
-            if (autoplay && slick && slick.innerSlider && slick.innerSlider.autoPlay) {
-                slick.innerSlider.autoPlay();
+            if (autoplay && this.slick && this.slick.innerSlider && this.slick.innerSlider.autoPlay) {
+                this.slick.innerSlider.autoPlay();
             }
+        };
+        this.saveSlick = (node) => {
+            this.slick = node;
         };
         this.onWindowResized = debounce(this.onWindowResized, 500, {
             leading: false,
@@ -40,9 +42,8 @@ export default class Carousel extends React.Component {
         if (autoplay) {
             window.addEventListener('resize', this.onWindowResized);
         }
-        const { slick } = this.refs;
         // https://github.com/ant-design/ant-design/issues/7191
-        this.innerSlider = slick && slick.innerSlider;
+        this.innerSlider = this.slick && this.slick.innerSlider;
     }
     componentWillUnmount() {
         const { autoplay } = this.props;
@@ -50,6 +51,15 @@ export default class Carousel extends React.Component {
             window.removeEventListener('resize', this.onWindowResized);
             this.onWindowResized.cancel();
         }
+    }
+    next() {
+        this.slick.slickNext();
+    }
+    prev() {
+        this.slick.slickPrev();
+    }
+    goTo(slide) {
+        this.slick.slickGoTo(slide);
     }
     render() {
         let props = Object.assign({}, this.props);
@@ -61,7 +71,7 @@ export default class Carousel extends React.Component {
             className = `${className} ${className}-vertical`;
         }
         return (React.createElement("div", { className: className },
-            React.createElement(SlickCarousel, Object.assign({ ref: "slick" }, props))));
+            React.createElement(SlickCarousel, Object.assign({ ref: this.saveSlick }, props))));
     }
 }
 Carousel.defaultProps = {

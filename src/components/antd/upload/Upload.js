@@ -1,34 +1,19 @@
-import React from 'react';
+import * as React from 'react';
 import RcUpload from 'rc-upload';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import LocaleReceiver from '../locale-provider/LocaleReceiver';
+import defaultLocale from '../locale-provider/default';
 import UploadList from './UploadList';
 import { T, fileToObject, genPercentAdd, getFileItem, removeFileItem } from './utils';
-const defaultLocale = {
-    uploading: '文件上传中',
-    removeFile: '删除文件',
-    uploadError: '上传错误',
-    previewFile: '预览文件',
-};
 export default class Upload extends React.Component {
     constructor(props) {
         super(props);
         this.onStart = (file) => {
             let targetItem;
             let nextFileList = this.state.fileList.concat();
-            if (file.length > 0) {
-                targetItem = file.map(f => {
-                    const fileObject = fileToObject(f);
-                    fileObject.status = 'uploading';
-                    return fileObject;
-                });
-                nextFileList = nextFileList.concat(targetItem);
-            }
-            else {
-                targetItem = fileToObject(file);
-                targetItem.status = 'uploading';
-                nextFileList.push(targetItem);
-            }
+            targetItem = fileToObject(file);
+            targetItem.status = 'uploading';
+            nextFileList.push(targetItem);
             this.onChange({
                 file: targetItem,
                 fileList: nextFileList,
@@ -91,12 +76,12 @@ export default class Upload extends React.Component {
             });
         };
         this.handleManualRemove = (file) => {
-            this.refs.upload.abort(file);
+            this.upload.abort(file);
             file.status = 'removed'; // eslint-disable-line
             this.handleRemove(file);
         };
-        this.onChange = (info) => {
-            if (!('fileList' in this.props)) {
+        this.onChange = (info, updateState = true) => {
+            if (!('fileList' in this.props) && updateState) {
                 this.setState({ fileList: info.fileList });
             }
             const { onChange } = this.props;
@@ -118,7 +103,7 @@ export default class Upload extends React.Component {
                 this.onChange({
                     file,
                     fileList,
-                });
+                }, false);
                 return false;
             }
             else if (result && result.then) {
@@ -126,20 +111,21 @@ export default class Upload extends React.Component {
             }
             return true;
         };
+        this.saveUpload = (node) => {
+            this.upload = node;
+        };
+        this.renderUploadList = (locale) => {
+            const { showUploadList, listType, onPreview } = this.props;
+            const { showRemoveIcon, showPreviewIcon } = showUploadList;
+            return (React.createElement(UploadList, { listType: listType, items: this.state.fileList, onPreview: onPreview, onRemove: this.handleManualRemove, showRemoveIcon: showRemoveIcon, showPreviewIcon: showPreviewIcon, locale: Object.assign({}, locale, this.props.locale) }));
+        };
         this.state = {
-            fileList: this.props.fileList || this.props.defaultFileList || [],
+            fileList: props.fileList || props.defaultFileList || [],
             dragState: 'drop',
         };
     }
     componentWillUnmount() {
         this.clearProgressTimer();
-    }
-    getLocale() {
-        let locale = {};
-        if (this.context.antLocale && this.context.antLocale.Upload) {
-            locale = this.context.antLocale.Upload;
-        }
-        return Object.assign({}, defaultLocale, locale, this.props.locale);
     }
     autoUpdateProgress(_, file) {
         const getPercent = genPercentAdd();
@@ -179,11 +165,10 @@ export default class Upload extends React.Component {
         clearInterval(this.progressTimer);
     }
     render() {
-        const { prefixCls = '', showUploadList, listType, onPreview, type, disabled, children, className, } = this.props;
+        const { prefixCls = '', className, showUploadList, listType, type, disabled, children, } = this.props;
         const rcUploadProps = Object.assign({ onStart: this.onStart, onError: this.onError, onProgress: this.onProgress, onSuccess: this.onSuccess }, this.props, { beforeUpload: this.beforeUpload });
         delete rcUploadProps.className;
-        const { showRemoveIcon, showPreviewIcon } = showUploadList;
-        const uploadList = showUploadList ? (React.createElement(UploadList, { listType: listType, items: this.state.fileList, onPreview: onPreview, onRemove: this.handleManualRemove, showRemoveIcon: showRemoveIcon, showPreviewIcon: showPreviewIcon, locale: this.getLocale() })) : null;
+        const uploadList = showUploadList ? (React.createElement(LocaleReceiver, { componentName: "Upload", defaultLocale: defaultLocale.Upload }, this.renderUploadList)) : null;
         if (type === 'drag') {
             const dragCls = classNames(prefixCls, {
                 [`${prefixCls}-drag`]: true,
@@ -193,7 +178,7 @@ export default class Upload extends React.Component {
             });
             return (React.createElement("span", { className: className },
                 React.createElement("div", { className: dragCls, onDrop: this.onFileDrop, onDragOver: this.onFileDrop, onDragLeave: this.onFileDrop },
-                    React.createElement(RcUpload, Object.assign({}, rcUploadProps, { ref: "upload", className: `${prefixCls}-btn` }),
+                    React.createElement(RcUpload, Object.assign({}, rcUploadProps, { ref: this.saveUpload, className: `${prefixCls}-btn` }),
                         React.createElement("div", { className: `${prefixCls}-drag-container` }, children))),
                 uploadList));
         }
@@ -203,7 +188,7 @@ export default class Upload extends React.Component {
             [`${prefixCls}-disabled`]: disabled,
         });
         const uploadButton = (React.createElement("div", { className: uploadButtonCls, style: { display: children ? '' : 'none' } },
-            React.createElement(RcUpload, Object.assign({}, rcUploadProps, { ref: "upload" }))));
+            React.createElement(RcUpload, Object.assign({}, rcUploadProps, { ref: this.saveUpload }))));
         if (listType === 'picture-card') {
             return (React.createElement("span", { className: className },
                 uploadList,
@@ -227,7 +212,4 @@ Upload.defaultProps = {
     className: '',
     disabled: false,
     supportServerRender: true,
-};
-Upload.contextTypes = {
-    antLocale: PropTypes.object,
 };

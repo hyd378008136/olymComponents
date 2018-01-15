@@ -4,8 +4,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import React from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import addEventListener from 'rc-util/lib/Dom/addEventListener';
 import classNames from 'classnames';
@@ -41,8 +41,8 @@ function getDefaultTarget() {
         window : null;
 }
 export default class Affix extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super(...arguments);
         this.events = [
             'resize',
             'scroll',
@@ -54,8 +54,11 @@ export default class Affix extends React.Component {
         ];
         this.eventHandlers = {};
         this.state = {
-            affixStyle: null,
-            placeholderStyle: null,
+            affixStyle: undefined,
+            placeholderStyle: undefined,
+        };
+        this.saveFixedNode = (node) => {
+            this.fixedNode = node;
         };
     }
     setAffixStyle(e, affixStyle) {
@@ -68,7 +71,7 @@ export default class Affix extends React.Component {
         if (shallowequal(affixStyle, originalAffixStyle)) {
             return;
         }
-        this.setState({ affixStyle }, () => {
+        this.setState({ affixStyle: affixStyle }, () => {
             const affixed = !!this.state.affixStyle;
             if ((affixStyle && !originalAffixStyle) ||
                 (!affixStyle && originalAffixStyle)) {
@@ -81,7 +84,7 @@ export default class Affix extends React.Component {
         if (shallowequal(placeholderStyle, originalPlaceholderStyle)) {
             return;
         }
-        this.setState({ placeholderStyle });
+        this.setState({ placeholderStyle: placeholderStyle });
     }
     updatePosition(e) {
         let { offsetTop, offsetBottom, offset, target = getDefaultTarget } = this.props;
@@ -92,8 +95,8 @@ export default class Affix extends React.Component {
         const affixNode = ReactDOM.findDOMNode(this);
         const elemOffset = getOffset(affixNode, targetNode);
         const elemSize = {
-            width: this.refs.fixedNode.offsetWidth,
-            height: this.refs.fixedNode.offsetHeight,
+            width: this.fixedNode.offsetWidth,
+            height: this.fixedNode.offsetHeight,
         };
         const offsetMode = {
             top: false,
@@ -113,10 +116,12 @@ export default class Affix extends React.Component {
         if (scrollTop > elemOffset.top - offsetTop && offsetMode.top) {
             // Fixed Top
             const width = elemOffset.width;
+            const top = targetRect.top + offsetTop;
             this.setAffixStyle(e, {
                 position: 'fixed',
-                top: targetRect.top + offsetTop,
+                top,
                 left: targetRect.left + elemOffset.left,
+                maxHeight: `calc(100vh - ${top}px)`,
                 width,
             });
             this.setPlaceholderStyle({
@@ -196,7 +201,7 @@ export default class Affix extends React.Component {
         const props = omit(this.props, ['prefixCls', 'offsetTop', 'offsetBottom', 'target', 'onChange']);
         const placeholderStyle = Object.assign({}, this.state.placeholderStyle, this.props.style);
         return (React.createElement("div", Object.assign({}, props, { style: placeholderStyle }),
-            React.createElement("div", { className: className, ref: "fixedNode", style: this.state.affixStyle }, this.props.children)));
+            React.createElement("div", { className: className, ref: this.saveFixedNode, style: this.state.affixStyle }, this.props.children)));
     }
 }
 Affix.propTypes = {

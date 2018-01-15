@@ -87,7 +87,7 @@ title: Layout
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| breakpoint | 触发响应式布局的断点 | Enum { 'xs', 'sm', 'md', 'lg', 'xl' } | - |
+| breakpoint | 触发响应式布局的[断点](/components/grid#api) | Enum { 'xs', 'sm', 'md', 'lg', 'xl', 'xxl' } | - |
 | className | 容器 className | string | - |
 | collapsed | 当前收起状态 | boolean | - |
 | collapsedWidth | 收缩宽度，设置为 0 会出现特殊 trigger | number | 64 |
@@ -109,13 +109,4 @@ title: Layout
   lg: '1200px',
   xl: '1600px',
 }
-```
-
-> 注意：如果你想在 `Sider` 基础上进行包装，需要给自定义组件加上 `__ANT_LAYOUT_SIDER = true` 设置，例如：
-
-```jsx
-const CustomizedSider = (props) => <Sider {...props} />
-CustomizedSider.__ANT_LAYOUT_SIDER = true;
-...
-<CustomizedSider>Sider Content</CustomizedSider>
 ```

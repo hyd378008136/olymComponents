@@ -7,16 +7,28 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import RcCheckbox from 'rc-checkbox';
 import shallowEqual from 'shallowequal';
 export default class Checkbox extends React.Component {
+    constructor() {
+        super(...arguments);
+        this.saveCheckbox = (node) => {
+            this.rcCheckbox = node;
+        };
+    }
     shouldComponentUpdate(nextProps, nextState, nextContext) {
         return !shallowEqual(this.props, nextProps) ||
             !shallowEqual(this.state, nextState) ||
             !shallowEqual(this.context.checkboxGroup, nextContext.checkboxGroup);
+    }
+    focus() {
+        this.rcCheckbox.focus();
+    }
+    blur() {
+        this.rcCheckbox.blur();
     }
     render() {
         const { props, context } = this;
@@ -35,7 +47,7 @@ export default class Checkbox extends React.Component {
             [`${prefixCls}-indeterminate`]: indeterminate,
         });
         return (React.createElement("label", { className: classString, style: style, onMouseEnter: onMouseEnter, onMouseLeave: onMouseLeave },
-            React.createElement(RcCheckbox, Object.assign({}, checkboxProps, { prefixCls: prefixCls, className: checkboxClass })),
+            React.createElement(RcCheckbox, Object.assign({}, checkboxProps, { prefixCls: prefixCls, className: checkboxClass, ref: this.saveCheckbox })),
             children !== undefined ? React.createElement("span", null, children) : null));
     }
 }

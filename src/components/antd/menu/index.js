@@ -1,9 +1,10 @@
-import React from 'react';
-import RcMenu, { Divider, SubMenu, ItemGroup } from 'rc-menu';
+import * as React from 'react';
+import RcMenu, { Divider, ItemGroup } from 'rc-menu';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import animation from '../_util/openAnimation';
 import warning from '../_util/warning';
+import SubMenu from './SubMenu';
 import Item from './MenuItem';
 export default class Menu extends React.Component {
     constructor(props) {
@@ -40,6 +41,7 @@ export default class Menu extends React.Component {
     getChildContext() {
         return {
             inlineCollapsed: this.getInlineCollapsed(),
+            antdMenuTheme: this.props.theme,
         };
     }
     componentWillReceiveProps(nextProps, nextContext) {
@@ -70,7 +72,8 @@ export default class Menu extends React.Component {
     }
     getRealMenuMode() {
         const inlineCollapsed = this.getInlineCollapsed();
-        if (this.switchModeFromInline && inlineCollapsed) {
+        if (this.switchModeFromInline && inlineCollapsed && this.leaveAnimationExecutedWhenInlineCollapsed) {
+            this.leaveAnimationExecutedWhenInlineCollapsed = false;
             return 'inline';
         }
         const { mode } = this.props;
@@ -92,6 +95,8 @@ export default class Menu extends React.Component {
                     menuOpenAnimation = 'slide-up';
                     break;
                 case 'vertical':
+                case 'vertical-left':
+                case 'vertical-right':
                     // When mode switch from inline
                     // submenu should hide without animation
                     if (this.switchModeFromInline) {
@@ -106,7 +111,14 @@ export default class Menu extends React.Component {
                     menuOpenAnimation = Object.assign({}, animation, { leave: (node, done) => animation.leave(node, () => {
                             // Make sure inline menu leave animation finished before mode is switched
                             this.switchModeFromInline = false;
+                            // Fix https://github.com/ant-design/ant-design/issues/8475
+                            this.leaveAnimationExecutedWhenInlineCollapsed = true;
                             this.setState({});
+                            // when inlineCollapsed change false to true, all submenu will be unmounted,
+                            // so that we don't need handle animation leaving.
+                            if (this.getRealMenuMode() === 'vertical') {
+                                return;
+                            }
                             done();
                         }) });
                     break;
@@ -136,6 +148,12 @@ export default class Menu extends React.Component {
         else {
             menuProps.openAnimation = menuOpenAnimation;
         }
+        // https://github.com/ant-design/ant-design/issues/8587
+        const { collapsedWidth } = this.context;
+        if (this.getInlineCollapsed() &&
+            (collapsedWidth === 0 || collapsedWidth === '0' || collapsedWidth === '0px')) {
+            return null;
+        }
         return React.createElement(RcMenu, Object.assign({}, this.props, menuProps));
     }
 }
@@ -150,7 +168,9 @@ Menu.defaultProps = {
 };
 Menu.childContextTypes = {
     inlineCollapsed: PropTypes.bool,
+    antdMenuTheme: PropTypes.string,
 };
 Menu.contextTypes = {
     siderCollapsed: PropTypes.bool,
+    collapsedWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };

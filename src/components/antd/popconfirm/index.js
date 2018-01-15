@@ -7,12 +7,13 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
-import React from 'react';
+import * as React from 'react';
 import Tooltip from '../tooltip';
 import Icon from '../icon';
 import Button from '../button';
-import injectLocale from '../locale-provider/injectLocale';
-class Popconfirm extends React.Component {
+import LocaleReceiver from '../locale-provider/LocaleReceiver';
+import defaultLocale from '../locale-provider/default';
+export default class Popconfirm extends React.Component {
     constructor(props) {
         super(props);
         this.onConfirm = (e) => {
@@ -32,6 +33,20 @@ class Popconfirm extends React.Component {
         this.onVisibleChange = (visible) => {
             this.setVisible(visible);
         };
+        this.saveTooltip = (node) => {
+            this.tooltip = node;
+        };
+        this.renderOverlay = (popconfirmLocale) => {
+            const { prefixCls, title, cancelText, okText, okType } = this.props;
+            return (React.createElement("div", null,
+                React.createElement("div", { className: `${prefixCls}-inner-content` },
+                    React.createElement("div", { className: `${prefixCls}-message` },
+                        React.createElement(Icon, { type: "exclamation-circle" }),
+                        React.createElement("div", { className: `${prefixCls}-message-title` }, title)),
+                    React.createElement("div", { className: `${prefixCls}-buttons` },
+                        React.createElement(Button, { onClick: this.onCancel, size: "small" }, cancelText || popconfirmLocale.cancelText),
+                        React.createElement(Button, { onClick: this.onConfirm, type: okType, size: "small" }, okText || popconfirmLocale.okText)))));
+        };
         this.state = {
             visible: props.visible,
         };
@@ -42,7 +57,7 @@ class Popconfirm extends React.Component {
         }
     }
     getPopupDomNode() {
-        return this.refs.tooltip.getPopupDomNode();
+        return this.tooltip.getPopupDomNode();
     }
     setVisible(visible) {
         const props = this.props;
@@ -55,17 +70,9 @@ class Popconfirm extends React.Component {
         }
     }
     render() {
-        const _a = this.props, { prefixCls, title, placement, okText, okType, cancelText } = _a, restProps = __rest(_a, ["prefixCls", "title", "placement", "okText", "okType", "cancelText"]);
-        const popconfirmLocale = this.getLocale();
-        const overlay = (React.createElement("div", null,
-            React.createElement("div", { className: `${prefixCls}-inner-content` },
-                React.createElement("div", { className: `${prefixCls}-message` },
-                    React.createElement(Icon, { type: "exclamation-circle" }),
-                    React.createElement("div", { className: `${prefixCls}-message-title` }, title)),
-                React.createElement("div", { className: `${prefixCls}-buttons` },
-                    React.createElement(Button, { onClick: this.onCancel, size: "small" }, cancelText || popconfirmLocale.cancelText),
-                    React.createElement(Button, { onClick: this.onConfirm, type: okType, size: "small" }, okText || popconfirmLocale.okText)))));
-        return (React.createElement(Tooltip, Object.assign({}, restProps, { prefixCls: prefixCls, placement: placement, onVisibleChange: this.onVisibleChange, visible: this.state.visible, overlay: overlay, ref: "tooltip" })));
+        const _a = this.props, { prefixCls, placement } = _a, restProps = __rest(_a, ["prefixCls", "placement"]);
+        const overlay = (React.createElement(LocaleReceiver, { componentName: "Popconfirm", defaultLocale: defaultLocale.Popconfirm }, this.renderOverlay));
+        return (React.createElement(Tooltip, Object.assign({}, restProps, { prefixCls: prefixCls, placement: placement, onVisibleChange: this.onVisibleChange, visible: this.state.visible, overlay: overlay, ref: this.saveTooltip })));
     }
 }
 Popconfirm.defaultProps = {
@@ -75,8 +82,3 @@ Popconfirm.defaultProps = {
     trigger: 'click',
     okType: 'primary',
 };
-const injectPopconfirmLocale = injectLocale('Popconfirm', {
-    cancelText: '取消',
-    okText: '确定',
-});
-export default injectPopconfirmLocale(Popconfirm);

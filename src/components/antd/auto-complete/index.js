@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Option, OptGroup } from 'rc-select';
 import classNames from 'classnames';
 import Select from '../select';
@@ -19,6 +19,15 @@ export default class AutoComplete extends React.Component {
             delete elementProps.children;
             return (React.createElement(InputElement, Object.assign({}, elementProps), element));
         };
+        this.saveSelect = (node) => {
+            this.select = node;
+        };
+    }
+    focus() {
+        this.select.focus();
+    }
+    blur() {
+        this.select.blur();
     }
     render() {
         let { size, className = '', notFoundContent, prefixCls, optionLabelProp, dataSource, children, } = this.props;
@@ -50,7 +59,7 @@ export default class AutoComplete extends React.Component {
                 }
             }) : [];
         }
-        return (React.createElement(Select, Object.assign({}, this.props, { className: cls, mode: "combobox", optionLabelProp: optionLabelProp, getInputElement: this.getInputElement, notFoundContent: notFoundContent }), options));
+        return (React.createElement(Select, Object.assign({}, this.props, { className: cls, mode: "combobox", optionLabelProp: optionLabelProp, getInputElement: this.getInputElement, notFoundContent: notFoundContent, ref: this.saveSelect }), options));
     }
 }
 AutoComplete.Option = Option;

@@ -1,15 +1,14 @@
-import React, { Component, cloneElement } from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import omit from 'omit.js';
-import TextArea from './TextArea';
 function fixControlledValue(value) {
     if (typeof value === 'undefined' || value === null) {
         return '';
     }
     return value;
 }
-export default class Input extends Component {
+export default class Input extends React.Component {
     constructor() {
         super(...arguments);
         this.handleKeyDown = (e) => {
@@ -21,12 +20,15 @@ export default class Input extends Component {
                 onKeyDown(e);
             }
         };
+        this.saveInput = (node) => {
+            this.input = node;
+        };
     }
     focus() {
-        this.refs.input.focus();
+        this.input.focus();
     }
     blur() {
-        this.refs.input.blur();
+        this.input.blur();
     }
     getInputClassName() {
         const { prefixCls, size, disabled } = this.props;
@@ -49,13 +51,17 @@ export default class Input extends Component {
         const className = classNames(`${props.prefixCls}-wrapper`, {
             [wrapperClassName]: (addonBefore || addonAfter),
         });
+        const groupClassName = classNames(`${props.prefixCls}-group-wrapper`, {
+            [`${props.prefixCls}-group-wrapper-sm`]: props.size === 'small',
+            [`${props.prefixCls}-group-wrapper-lg`]: props.size === 'large',
+        });
         // Need another wrapper for changing display:table to display:inline-block
         // and put style prop in wrapper
         if (addonBefore || addonAfter) {
-            return (React.createElement("span", { className: `${props.prefixCls}-group-wrapper`, style: props.style },
+            return (React.createElement("span", { className: groupClassName, style: props.style },
                 React.createElement("span", { className: className },
                     addonBefore,
-                    cloneElement(children, { style: null }),
+                    React.cloneElement(children, { style: null }),
                     addonAfter)));
         }
         return (React.createElement("span", { className: className },
@@ -70,9 +76,13 @@ export default class Input extends Component {
         }
         const prefix = props.prefix ? (React.createElement("span", { className: `${props.prefixCls}-prefix` }, props.prefix)) : null;
         const suffix = props.suffix ? (React.createElement("span", { className: `${props.prefixCls}-suffix` }, props.suffix)) : null;
-        return (React.createElement("span", { className: classNames(props.className, `${props.prefixCls}-affix-wrapper`), style: props.style },
+        const affixWrapperCls = classNames(props.className, `${props.prefixCls}-affix-wrapper`, {
+            [`${props.prefixCls}-affix-wrapper-sm`]: props.size === 'small',
+            [`${props.prefixCls}-affix-wrapper-lg`]: props.size === 'large',
+        });
+        return (React.createElement("span", { className: affixWrapperCls, style: props.style },
             prefix,
-            cloneElement(children, { style: null, className: this.getInputClassName() }),
+            React.cloneElement(children, { style: null, className: this.getInputClassName() }),
             suffix));
     }
     renderInput() {
@@ -92,12 +102,9 @@ export default class Input extends Component {
             // specify either the value prop, or the defaultValue prop, but not both.
             delete otherProps.defaultValue;
         }
-        return this.renderLabeledIcon(React.createElement("input", Object.assign({}, otherProps, { className: classNames(this.getInputClassName(), className), onKeyDown: this.handleKeyDown, ref: "input" })));
+        return this.renderLabeledIcon(React.createElement("input", Object.assign({}, otherProps, { className: classNames(this.getInputClassName(), className), onKeyDown: this.handleKeyDown, ref: this.saveInput })));
     }
     render() {
-        if (this.props.type === 'textarea') {
-            return React.createElement(TextArea, Object.assign({}, this.props, { ref: "input" }));
-        }
         return this.renderLabeledInput(this.renderInput());
     }
 }

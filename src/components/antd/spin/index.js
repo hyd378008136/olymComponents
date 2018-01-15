@@ -7,7 +7,7 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Animate from 'rc-animate';
@@ -26,7 +26,7 @@ export default class Spin extends React.Component {
     }
     componentDidMount() {
         if (!isCssAnimationSupported()) {
-            // Show text in IE8/9
+            // Show text in IE9
             this.setState({
                 notCssAnimationSupported: true,
             });
@@ -48,7 +48,7 @@ export default class Spin extends React.Component {
             clearTimeout(this.debounceTimeout);
         }
         if (currentSpinning && !spinning) {
-            this.debounceTimeout = setTimeout(() => this.setState({ spinning }), 200);
+            this.debounceTimeout = window.setTimeout(() => this.setState({ spinning }), 200);
             if (this.delayTimeout) {
                 clearTimeout(this.delayTimeout);
             }
@@ -58,7 +58,7 @@ export default class Spin extends React.Component {
                 if (this.delayTimeout) {
                     clearTimeout(this.delayTimeout);
                 }
-                this.delayTimeout = setTimeout(() => this.setState({ spinning }), delay);
+                this.delayTimeout = window.setTimeout(() => this.setState({ spinning }), delay);
             }
             else {
                 this.setState({ spinning });
@@ -66,7 +66,7 @@ export default class Spin extends React.Component {
         }
     }
     render() {
-        const _a = this.props, { className, size, prefixCls, tip, wrapperClassName } = _a, restProps = __rest(_a, ["className", "size", "prefixCls", "tip", "wrapperClassName"]);
+        const _a = this.props, { className, size, prefixCls, tip, wrapperClassName, indicator } = _a, restProps = __rest(_a, ["className", "size", "prefixCls", "tip", "wrapperClassName", "indicator"]);
         const { spinning, notCssAnimationSupported } = this.state;
         const spinClassName = classNames(prefixCls, {
             [`${prefixCls}-sm`]: size === 'small',
@@ -79,12 +79,13 @@ export default class Spin extends React.Component {
             'spinning',
             'delay',
         ]);
+        const spinIndicator = indicator ? indicator : (React.createElement("span", { className: `${prefixCls}-dot` },
+            React.createElement("i", null),
+            React.createElement("i", null),
+            React.createElement("i", null),
+            React.createElement("i", null)));
         const spinElement = (React.createElement("div", Object.assign({}, divProps, { className: spinClassName }),
-            React.createElement("span", { className: `${prefixCls}-dot` },
-                React.createElement("i", null),
-                React.createElement("i", null),
-                React.createElement("i", null),
-                React.createElement("i", null)),
+            spinIndicator,
             tip ? React.createElement("div", { className: `${prefixCls}-text` }, tip) : null));
         if (this.isNestedPattern()) {
             let animateClassName = prefixCls + '-nested-loading';
@@ -114,4 +115,5 @@ Spin.propTypes = {
     spinning: PropTypes.bool,
     size: PropTypes.oneOf(['small', 'default', 'large']),
     wrapperClassName: PropTypes.string,
+    indicator: PropTypes.node,
 };

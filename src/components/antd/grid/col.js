@@ -7,7 +7,7 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 const stringOrNumber = PropTypes.oneOfType([PropTypes.string, PropTypes.number]);
@@ -17,7 +17,7 @@ export default class Col extends React.Component {
         const props = this.props;
         const { span, order, offset, push, pull, className, children, prefixCls = 'ant-col' } = props, others = __rest(props, ["span", "order", "offset", "push", "pull", "className", "children", "prefixCls"]);
         let sizeClassObj = {};
-        ['xs', 'sm', 'md', 'lg', 'xl'].forEach(size => {
+        ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'].forEach(size => {
             let sizeProps = {};
             if (typeof props[size] === 'number') {
                 sizeProps.span = props[size];

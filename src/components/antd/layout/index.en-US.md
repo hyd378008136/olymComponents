@@ -86,7 +86,7 @@ The sidebar.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| breakpoint | breakpoint of the responsive layout | Enum { 'xs', 'sm', 'md', 'lg', 'xl' } | - |
+| breakpoint | [breakpoints](/components/grid#api) of the responsive layout | Enum { 'xs', 'sm', 'md', 'lg', 'xl', 'xxl' } | - |
 | className | container className | string | - |
 | collapsed | to set the current status | boolean | - |
 | collapsedWidth | width of the collapsed sidebar, by setting to `0` a special trigger will appear | number | 64 |
@@ -108,13 +108,4 @@ The sidebar.
   lg: '1200px',
   xl: '1600px',
 }
-```
-
-> Note: If you want to wrap the `Sider`, do not forget to add this setting to the customized component: `__ANT_LAYOUT_SIDER = true`. e.g.
-
-```jsx
-const CustomizedSider = (props) => <Sider {...props} />
-CustomizedSider.__ANT_LAYOUT_SIDER = true;
-...
-<CustomizedSider>Sider Content</CustomizedSider>
 ```

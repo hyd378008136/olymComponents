@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { PREFIX_CLS } from './Constants';
 import Select from '../select';
 import { Group, Button } from '../radio';

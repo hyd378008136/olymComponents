@@ -1,10 +1,8 @@
 import React, {Component} from 'react'
-import {render}  from 'react-dom';
-import classnames  from 'classnames';
-import { Link} from '../../reactRouter';
+import classnames from 'classnames';
+import {Link, NavLink, Route, Switch} from '../../reactRouter';
 
-
-import {Icon,Badge} from 'antd';
+import {Badge, Icon} from 'antd';
 //style
 import './nav.less';
 
@@ -24,19 +22,25 @@ class Nav extends Component{
                     {
                         this.props.navArr.map(item =>
                             item.isCat ?
-                            <li className="nav__cat" key={item.label.toString()}>{item.label}</li> :
-                            <li className="nav__item" key={item.label.toString()}>
-                                <Link to={item.href} activeClassName="nav__link--active" className={classnames('nav__link',{'has-subnav':item.children})} onClick={this.slideToggle}><Icon type={item.icon} />{item.label}</Link>
-                                {item.children &&
+                                <li className="nav__cat" key={item.label.toString()}>{item.label}</li> :
+                                <li className="nav__item" key={item.label.toString()}>
+                                    <NavLink to={`${item.href}`} activeClassName="nav__link--active"
+                                             className={classnames('nav__link', {'has-subnav': item.children})}
+                                             onClick={this.slideToggle} replace={true}><Icon
+                                        type={item.icon}/>{item.label}
+                                    </NavLink>
+                                    {item.children &&
                                     <ol className="subnav">
-                                    {item.children.map(item =>
-                                        <li className="subnav__item" key={item.label.toString()}>
-                                            <Link to={item.href} className="subnav__link" activeClassName="nav__link--active">{item.label}</Link>
-                                        </li>
-                                )}
+                                        {item.children.map(item =>
+                                            <li className="subnav__item" key={item.label.toString()}>
+                                                <NavLink to={item.href} className="subnav__link"
+                                                         activeClassName="nav__link--active"
+                                                         replace={true}>{item.label}</NavLink>
+                                            </li>
+                                        )}
                                     </ol>
-                                }
-                            </li>
+                                    }
+                                </li>
                         )
                     }
                 </ul>
@@ -50,7 +54,7 @@ Nav.defaultProps = {
             label: '首页',
             icon: 'inbox',
             href:'/'
-        },        
+        },
         // {
 			// label: 'Badge 徽标数',
         //     icon: 'laptop',

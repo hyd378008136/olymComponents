@@ -1,9 +1,9 @@
-import {Router, HashRouter, Route, Link, IndexRoute, hashHistory, BrowserRouter} from 'react-router-dom'
+import {Router, HashRouter, Route, Link, IndexRoute, hashHistory,BrowserRouter,NavLink} from 'react-router-dom'
 // import hashHistory from 'COMPONENTS/has'
 // import {routerReducer} from 'react-router-redux/lib/reducer'
 
 
-export default {Router, Route, Link, IndexRoute, hashHistory, BrowserRouter}
+export default {Router, Route, Link, IndexRoute, hashHistory,BrowserRouter,NavLink}
 
 // export default {
 //     Router: require('react-router/lib/Router'),

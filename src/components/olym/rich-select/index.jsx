@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Select} from 'antd';
 import './styles/index'
 
@@ -12,9 +13,9 @@ class RichSelect extends Component {
     }
 
     static propTypes = {
-        dataBody: React.PropTypes.array,
-        dataHead: React.PropTypes.object,
-        dropdwonMaxRows: React.PropTypes.number
+        dataBody: PropTypes.array,
+        dataHead: PropTypes.object,
+        dropdwonMaxRows: PropTypes.number
     }
 
     static defaultProps = {

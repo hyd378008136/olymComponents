@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM, {render}  from 'react-dom';
 
 import {Dropdown,Input} from 'antd';
@@ -23,9 +24,9 @@ class MultiColSelect extends Component {
     }
 
     static propTypes = {
-        dataBody: React.PropTypes.array,
-        dataHead: React.PropTypes.object,
-        dropdwonMaxRows: React.PropTypes.number
+        dataBody: PropTypes.array,
+        dataHead: PropTypes.object,
+        dropdwonMaxRows: PropTypes.number
 
     }
 

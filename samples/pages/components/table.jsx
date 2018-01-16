@@ -91,28 +91,35 @@ class TableSample extends Component {
     }
 
     customCtn = () => {
-        // let customCtn = [];
-        // customCtn.push(<Button key="1" onClick={this.ctn1}
-        //                        size="small">自定义按钮1</Button>);
-        // customCtn.push(<Button key="2" onClick={this.ctn1}
-        //                        size="small">自定义按钮2</Button>);
-        // return customCtn;
+        let customCtn = [];
+        customCtn.push(<Button key="1" onClick={this.ctn1}
+                               size="small">自定义按钮1</Button>);
+        customCtn.push(<Button key="2" onClick={this.ctn1}
+                               size="small">自定义按钮2</Button>);
+        return customCtn;
 
-        return(<div>
-            <Button key="1" onClick={this.ctn1}
-                size="small">自定义按钮1</Button>
-            <Button key="2" onClick={this.ctn1}
-                size="small">自定义按钮3</Button>
-        </div>)
+        // return(<div>
+        //     <Button key="1" onClick={this.ctn1}
+        //         size="small">自定义按钮1</Button>
+        //     <Button key="2" onClick={this.ctn1}
+        //         size="small">自定义按钮3</Button>
+        // </div>)
     };
 
     render() {
 
         return (
             <div>
-                <Table showSeq columns={columns} dataSource={data} onChange={this.onChange}
-                       customColumns={customColumns} onCustomChange={this.onCustomChange}
-                       title="这是一个测试自定义列的表格" bordered={true} customCtns={this.customCtn}/>
+                <Table showSeq
+                       columns={columns}
+                       dataSource={data}
+                       onChange={this.onChange}
+                       // customColumns={customColumns}
+                       onCustomChange={this.onCustomChange}
+                       // title="这是一个测试自定义列的表格"
+                       bordered={true}
+                       customCtns={this.customCtn}
+                />
                 <Modal title={"123"} visible={this.state.visible}
                        onOk={this.handleModelOk} onCancel={this.handleModelCancel}>
                 </Modal>

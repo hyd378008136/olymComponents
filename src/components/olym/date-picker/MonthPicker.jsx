@@ -33,7 +33,7 @@ class MonthPicker extends Component{
         }
 
         if(onChange){
-            props.onChange = (dates,dateString)=>onChange(id,dates,dateString)
+            props.onChange = (dates,dateString)=>onChange(dates,dateString,id)
         }
         return(
             <AntdMonthPicker {...props}/>

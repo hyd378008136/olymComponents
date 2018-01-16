@@ -79,6 +79,11 @@ Nav.defaultProps = {
             icon: 'laptop',
             href:"/components/datePicker"
         },
+        {
+            label: 'Toe 缩进',
+            icon: 'laptop',
+            href:"/components/toe"
+        },
         // {
 			// label: 'Dropdown 下拉菜单',
         //     icon: 'laptop',

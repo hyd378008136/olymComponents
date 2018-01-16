@@ -90,12 +90,18 @@ class Table extends Component {
         //处理自定义列
         // console.log(columns, _customColumns)
         const userDefineColumns = this.getUserDefineCol(columns, _customColumns);
+        let _dataSource;
 
         if (showSeq && userDefineColumns[0] && userDefineColumns[0].key !== 'olymc_seq') {
             //显示序号
+            _dataSource = [];
             dataSource.map((data, index) => {
                 // console.log(index)
-                data["olymc_seq"] = index + 1;
+                // data["olymc_seq"] = index + 1;
+                _dataSource.push({
+                    olymc_seq:index+1,
+                    ...data
+                })
             })
             // console.log(dataSource)
             userDefineColumns.unshift({
@@ -120,41 +126,6 @@ class Table extends Component {
             // dataSource: []
             customColumns: _customColumns
         }
-
-
-        // if(customCtns){
-        //     if(_customColumns && Array.isArray(_customColumns) && _customColumns.length > 0){
-        //         title = (data) =>{
-        //             let ctns = [];
-        //             ctns.push(<Button onClick={this.handleShow} size="small" key="custom">自定义列</Button>);
-        //             customCtns.map((obj) => {
-        //                 // obj.props.className = "custom_other_btn_right"
-        //                 const {props,...others} = obj;
-        //                 const _obj = {
-        //                     props:{
-        //                         ...props,
-        //                         className:"custom_other_btn_right",
-        //
-        //                     },
-        //                     ...others
-        //                 }
-        //                 console.log(_obj)
-        //                 ctns.push(_obj);
-        //             })
-        //             // ctns.push(<div className="tar">
-        //             //     {customCtns}
-        //             // </div>)
-        //             return ctns;
-        //         }
-        //     }else{
-        //         title = () =>
-        //         <div className="tar">
-        //             {customCtns}
-        //         </div>
-        //     }
-        // }else{
-        //     title = () =><Button onClick={this.handleShow} size="small" key="custom">自定义列</Button>;
-        // }
 
         //处理title
         const _title = () =>{
@@ -218,7 +189,9 @@ class Table extends Component {
                     {right()}
                 </Col>
             </Row>)
-        }
+        };
+
+        console.log(_title())
 
 
         // 每次弹框都重新渲染
@@ -228,11 +201,11 @@ class Table extends Component {
         const props = {
             ...otherProps,
             // title:_title,
-            dataSource,
+            dataSource:_dataSource || dataSource,
             columns: userDefineColumns,
 
         };
-        if(title || (customCtns && customCtns.length > 0) || (_customColumns && _customColumns.length>0)){
+        if(title || customCtns || (_customColumns && _customColumns.length>0)){
             props.title = _title
         }
         return (

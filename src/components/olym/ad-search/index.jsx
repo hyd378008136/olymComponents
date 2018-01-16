@@ -133,7 +133,7 @@ class AdSearch extends Component{
         this.setState({data})
     };
 
-    onElementDateChange = (id,dates,dateStrings) =>{
+    onElementDateChange = (dates,dateStrings,id) =>{
         console.log(id,dates,dateStrings)
         let data = this.state.data;
         data[id] = dates;

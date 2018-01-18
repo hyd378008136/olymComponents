@@ -23,7 +23,7 @@ function compatible(value,format) {
         })
         return _value
     }else{
-        if(typeof value === 'string'){
+        if(typeof value === 'string' && value){
             _value = moment(value,format)
         }else{
             _value = value

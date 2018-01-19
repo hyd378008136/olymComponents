@@ -52,6 +52,28 @@ class RichSelect extends Component {
                 throw  new TypeError('RichSelect 组件的 dataBody 只接受 "Array" 格式的数据');
             }
 
+            var convertDuplicateToUnique = (array, key) => {
+                let temp = {}
+                array.forEach(item => {
+                    temp[item[key]] = pushToList(temp[item[key]], item)
+                    let length = temp[item[key]].length
+                    if (length > 1) {
+                        item[key] = temp[item[key]][length - 2][key] + ' '
+                    }
+                })
+                return array
+            }
+        
+            var pushToList = (item, value) => {
+                if (item === undefined) {
+                    item = []
+                }
+                item.push(value)
+                return item
+            }
+
+            dropdownBodyData = convertDuplicateToUnique(dropdownBodyData, selectKey)
+
             return dropdownBodyData.map(function (val, index) {
                 // TODO unique key问题
                 const parentVal = val;

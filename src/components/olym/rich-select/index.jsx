@@ -35,7 +35,7 @@ class RichSelect extends Component {
     render() {
         const {dataHeader, dataBody, selectKey, notFoundContent = "not found", dropdownMatchSelectWidth = false, ...props} = this.props;
         const hasDataBody = dataBody && dataBody.length > 0;
-        const dropdownHeadData = dataHeader,
+        let dropdownHeadData = dataHeader,
             dropdownBodyData = hasDataBody ? dataBody : notFoundContent;
         //console.log(dataHeader)
         // 拼接下拉框header部分结构

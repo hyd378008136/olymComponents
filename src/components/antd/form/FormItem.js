@@ -83,7 +83,8 @@ export default class FormItem extends React.Component {
     renderHelp() {
         const prefixCls = this.props.prefixCls;
         const help = this.getHelpMsg();
-        return help ? (React.createElement("div", { className: `${prefixCls}-explain`, key: "help" }, help)) : null;
+        var position = this.props.helpPosition ? '-' + this.props.helpPosition : ''
+        return help ? (React.createElement("div", { className: `${prefixCls}-explain${position}`, key: "help" }, help)) : null;
     }
     renderExtra() {
         const { prefixCls, extra } = this.props;
@@ -212,6 +213,7 @@ FormItem.propTypes = {
     id: PropTypes.string,
     children: PropTypes.node,
     colon: PropTypes.bool,
+    helpPosition: PropTypes.string
 };
 FormItem.contextTypes = {
     form: PropTypes.object,

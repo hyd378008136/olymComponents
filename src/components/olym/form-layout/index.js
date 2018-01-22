@@ -6,9 +6,11 @@ import './styles/'
 
 function FormLayout({children,labelWidth,inline,inputType, ...props}) {
     const inputSize = props.inputSize || "normal";
+    const helpPosition = props.helpPosition || 'bottom'
     const prifix = 'o-form-item-';
     const _class = classnames(
         'o-form',
+        `o-form-explain-${helpPosition}`,
         {[prifix+'label--4em']:!labelWidth},
         {[prifix+'label--'+labelWidth]:labelWidth},
         {[prifix+'-inline ant-form-inline']:inline},

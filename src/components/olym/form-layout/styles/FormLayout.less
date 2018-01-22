@@ -79,10 +79,111 @@
   }
 }
 
+.explain-bottom {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 35px;
+  padding: 6px 12px;
+  background: #FF5150;
+  //TODO 和 antd .ant-form-explain 冲突加了important
+  color: #fff ;
+  border-radius: 3px;
+  z-index: 5;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
+  transition: all .4s ease;
+
+  &:after {
+    position: absolute;
+    content: '';
+    top: -10px;
+    left: 16px;
+    width: 0;
+    height: 0;
+    border: 5px solid transparent;
+    border-bottom-color: #FF5150;
+  }
+}
+
+.explain-left {
+  white-space: nowrap;
+  display: none;
+  position: absolute;
+  right: calc(~"100% + 10px");
+  top: -5px;
+  padding: 6px 12px;
+  background: #FF5150;
+  //TODO 和 antd .ant-form-explain 冲突加了important
+  color: #fff ;
+  border-radius: 3px;
+  z-index: 5;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
+  transition: all .4s ease;
+  &:after {
+    position: absolute;
+    content: ' ';
+    top: 50%;
+    left: 100%; /* To the right of the tooltip */
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent transparent #FF5150;
+  }
+}
+
+.explain-right {
+  white-space: nowrap;
+  display: none;
+  position: absolute;
+  left: calc(~"100% + 10px");
+  top: -5px;
+  padding: 6px 12px;
+  background: #FF5150;
+  //TODO 和 antd .ant-form-explain 冲突加了important
+  color: #fff ;
+  border-radius: 3px;
+  z-index: 5;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
+  transition: all .4s ease;
+
+  &:after {
+    position: absolute;
+    content: ' ';
+    top: 50%;
+    right: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent #FF5150 transparent transparent;
+  }
+}
+
 .o-form {
 
   .w60{width: 60px !important;}
   .w80{width: 80px !important;}
+
+  &-explain-right {
+    .ant-form {
+      &-explain {
+        .explain-right;
+      }
+    }
+  }
+  &-explain-left {
+    .ant-form {
+      &-explain {
+        .explain-left;
+      }
+    }
+  }
+  &-explain-bottom {
+    .ant-form {
+      &-explain {
+        .explain-bottom;
+      }
+    }
+  }
 
   .ant-form {
     &-item {
@@ -111,86 +212,18 @@
         }
       }
     }
-
-    &-explain {
-      display: none;
-      position: absolute;
-      left: 0;
-      top: 35px;
-      padding: 6px 12px;
-      background: #FF5150;
-      //TODO 和 antd .ant-form-explain 冲突加了important
-      color: #fff ;
-      border-radius: 3px;
-      z-index: 5;
-      box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
-      transition: all .4s ease;
-
-      &:after {
-        position: absolute;
-        content: '';
-        top: -10px;
-        left: 16px;
-        width: 0;
-        height: 0;
-        border: 5px solid transparent;
-        border-bottom-color: #FF5150;
-      }
+    &-explain-bottom {
+      .explain-bottom;
     }
 
     &-explain-right {
-      white-space: nowrap;
-      display: none;
-      position: absolute;
-      left: calc(~"100% + 10px");
-      top: -5px;
-      padding: 6px 12px;
-      background: #FF5150;
-      //TODO 和 antd .ant-form-explain 冲突加了important
-      color: #fff ;
-      border-radius: 3px;
-      z-index: 5;
-      box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
-      transition: all .4s ease;
-
-      &:after {
-        position: absolute;
-        content: ' ';
-        top: 50%;
-        right: 100%;
-        margin-top: -5px;
-        border-width: 5px;
-        border-style: solid;
-        border-color: transparent #FF5150 transparent transparent;
-      }
+      .explain-right;
     }
 
     &-explain-left {
-      white-space: nowrap;
-      display: none;
-      position: absolute;
-      right: calc(~"100% + 10px");
-      top: -5px;
-      padding: 6px 12px;
-      background: #FF5150;
-      //TODO 和 antd .ant-form-explain 冲突加了important
-      color: #fff ;
-      border-radius: 3px;
-      z-index: 5;
-      box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
-      transition: all .4s ease;
-
-        &:after {
-          position: absolute;
-          content: ' ';
-          top: 50%;
-          left: 100%; /* To the right of the tooltip */
-          margin-top: -5px;
-          border-width: 5px;
-          border-style: solid;
-          border-color: transparent transparent transparent #FF5150;
-        }
+      .explain-left;
     }
+
   }
   .ant-calendar-picker, .ant-select {
     width: 100%;

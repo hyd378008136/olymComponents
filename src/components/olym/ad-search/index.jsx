@@ -513,7 +513,7 @@ class AdSearch extends Component{
 
     onTemplateSelect = (value) =>{
         console.log(value)
-        let {templateNames,template,data,arrSelectValue} = this.state;
+        let {templateNames,template,arrSelectValue} = this.state;
         const id = templateNames[value]
         const templateData = template[id];
         let {advancedcondition} = templateData;
@@ -532,7 +532,7 @@ class AdSearch extends Component{
                 })
             }
         });
-
+        let data = {}
         advancedcondition.map((adc)=>{
             if(list.indexOf(adc.fieldEn)>-1){
                 arrSelectValue = adc.fieldEn

@@ -5,6 +5,7 @@ import {Table, FormLayout, Split, Wrap, Panel,Tag,DatePicker, Select} from 'olym
 
 import CustomTopLine from './CustomTopLine';
 import CustomFootLine from './CustomFootLine';
+import isEqual from 'lodash.isequal';
 
 const FormItem = FormLayout.FormItem;
 const RangePicker = DatePicker.RangePicker;
@@ -50,7 +51,7 @@ class AdSearch extends Component{
                 template,templateNames
             })
         }
-        if(this.props.extraCondition && nextProps.extraCondition && this.props.extraCondition !== nextProps.extraCondition){
+        if(this.props.extraCondition && nextProps.extraCondition && !isEqual(this.props.extraCondition, nextProps.extraCondition)){
             const {data,dcList,ocMap} = this.initData(nextProps);
             this.setState({
                 // data,
@@ -71,6 +72,7 @@ class AdSearch extends Component{
         let data = {};
         let dcList = [];
         let ocMap = {};
+        let _this = this
         defaultCondition.map(({id,props})=>{
             if(Array.isArray(props)){
                 props.map((p)=>{
@@ -87,14 +89,28 @@ class AdSearch extends Component{
                 props.map((p)=>{
                     data[p.fieldEn] = p.fieldValue;
                     ocMap[p.fieldEn] = p;
+                    _this.addDefaultReflectMap(p, ocMap[p.fieldEn])
                 })
             }else{
                 data[props.fieldEn] = props.fieldValue;
                 ocMap[props.fieldEn] = props;
+                _this.addDefaultReflectMap(props, ocMap[props.fieldEn])
             }
         });
         console.log("ocMap",ocMap)
         return {data,dcList,ocMap}
+    }
+
+    addDefaultReflectMap = (props, field) => {
+        let { fieldType, children } = props
+        if (fieldType === "select" || fieldType === "multi_select") {
+            let map = new Map()
+            children.map(child => {
+                map.set(child.props.value, child.props.children)
+            })
+            if (field && field.reflectMap === undefined)
+                field.reflectMap = map
+        }
     }
 
     initTemplate = (props) =>{

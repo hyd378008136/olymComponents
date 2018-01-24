@@ -577,6 +577,7 @@ class AdSearch extends Component{
     onSearch = () =>{
         let {data,extraCondition,extraSearchValue} = this.state;
         let needSearch = true;
+        extraSearchValue = extraSearchValue.trim()
         //组装查询条件，并且清空查询条件，如果只选了条件而没有输入则不清空
         if(extraCondition && extraSearchValue){
             if(data[extraCondition]){
@@ -602,6 +603,8 @@ class AdSearch extends Component{
             }
             extraCondition=undefined
             extraSearchValue=''
+        } else {
+            return
         }
 
         if(!needSearch){

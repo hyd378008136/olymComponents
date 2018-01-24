@@ -603,8 +603,6 @@ class AdSearch extends Component{
             }
             extraCondition=undefined
             extraSearchValue=''
-        } else {
-            return
         }
 
         if(!needSearch){

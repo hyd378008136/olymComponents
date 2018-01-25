@@ -27,6 +27,7 @@ function FormLayout({children,labelWidth,inline,inputType, ...props}) {
     // const _children = React.Children.map(children,(child)=>React.cloneElement(child,_childrenPros))
 
     delete props.inputSize;
+    delete props.helpPosition
     return <div {...props} className={_class} >{children}</div>
 }
 

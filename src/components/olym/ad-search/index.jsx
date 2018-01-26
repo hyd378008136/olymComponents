@@ -522,7 +522,8 @@ class AdSearch extends Component{
             size:themeType,
             placeholder:"我的查询",
             dropdownMatchSelectWidth:false,
-            value:this.state.selectedTemplateName
+            value:this.state.selectedTemplateName,
+            dropdownMenuStyle: {'max-width': '120px'}
         }
         return (<FormItem key="templateChildren"><Select {...props} style={{width:selectWidth}}>{children}</Select></FormItem>)
     };

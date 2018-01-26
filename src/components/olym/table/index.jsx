@@ -3,6 +3,7 @@ import React, {Component} from "react";
 import {Table as ATable, Button, Modal,Row,Col} from 'antd';
 
 import CustomColumnsModal from './CustomColumnsModal'
+import isEqual from 'lodash.isequal'
 
 import './style.css'
 import '../styles/common.less'
@@ -13,6 +14,14 @@ class Table extends Component {
         this.state = {
             visible: false,
         };
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if (isEqual(nextProps, this.props) && isEqual(nextState, this.state)) {
+            return false
+        } else {
+            return true
+        }
     }
 
     getUserDefineCol = (columns, customColumns) => {

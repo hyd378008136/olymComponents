@@ -387,6 +387,18 @@ class AdSearch extends Component{
         })
     }
 
+    onTemplateSave = (templateName, templateId, data, conditions, onSaveMySearch) => {
+        let name = templateName.trim()
+        if (name === '') {
+            Message.error('请输入模版名');
+            return
+        } else if (name.length > 50) {
+            Message.error('模版名长度不要超过50');
+            return
+        }
+        onSaveMySearch(name, templateId, data, conditions)
+    }
+
     getSaveMySearchContent = (onSaveMySearch) =>{
         let templateName = this.state.templateName || "";
         let templateId = this.state.templateId;
@@ -423,7 +435,16 @@ class AdSearch extends Component{
                             <Input {...inputProps}/>
                         </FormItem>
                         <FormItem>
-                            <Button children="保存" size={themeType} onClick={()=>{onSaveMySearch(templateName,templateId,this.state.data,conditions)}}/>
+                            < Button children = "保存"
+                            size = {
+                                themeType
+                            }
+                            onClick = {
+                                () => {
+                                    this.onTemplateSave(templateName, templateId, this.state.data, conditions, onSaveMySearch)
+                                }
+                            }
+                            />
                         </FormItem>
                     </FormLayout>
                 </Panel>

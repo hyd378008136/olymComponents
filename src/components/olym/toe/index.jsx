@@ -48,7 +48,7 @@ class Toe extends Component {
     // };
 
     render() {
-        let {value, width,...otherProps} = this.props;
+        let {value, width, showFirst, ...otherProps} = this.props;
         // const px = this.calcStringPixelsCount(value);
         // const widthInt = width.split("px")[0];
         let widthInt;
@@ -93,6 +93,16 @@ class Toe extends Component {
         if (width) {
             const className = "dpib toe";
             const {...styles} = {width:widthStr};
+            console.log(value)
+            if(showFirst){
+                return (
+                  <div>
+                      <Tooltip title={value} placement="top" key={value.join()} overlayClassName="autoline">
+                          <span className={className} style={{...styles}}>{value[0]}</span>
+                      </Tooltip>
+                  </div>
+                )
+            }
             return (<div>
                 {value && value.map((v) => {
                     if (typeof v === "string") {

@@ -7,6 +7,7 @@ import Row from '../grid/row';
 import Col from '../grid/col';
 import { FIELD_META_PROP } from './constants';
 import warning from '../_util/warning';
+import _ from 'lodash'
 export default class FormItem extends React.Component {
     constructor() {
         super(...arguments);
@@ -31,9 +32,22 @@ export default class FormItem extends React.Component {
         warning(this.getControls(this.props.children, true).length <= 1, '`Form.Item` cannot generate `validateStatus` and `help` automatically, ' +
             'while there are more than one `getFieldDecorator` in it.');
     }
-    shouldComponentUpdate(...args) {
-        return PureRenderMixin.shouldComponentUpdate.apply(this, args);
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.getHelpMsg()) {
+            return true
+        }
+        if (_.isEqual(_.omit(nextProps, ['children']), _.omit(this.props, ['children']))
+            && _.isEqual(nextState, this.state) && nextProps.children && nextProps.children.props && _.isEqual(_.omit(nextProps.children.props, ['data-__meta']), _.omit(this.props.children.props, ['data-__meta']))) {
+			return false
+		} else {
+			return true
+		}
     }
+
+    // shouldComponentUpdate(...args) {
+    //     return PureRenderMixin.shouldComponentUpdate.apply(this, args);
+    // }
     getHelpMsg() {
         const context = this.context;
         const props = this.props;

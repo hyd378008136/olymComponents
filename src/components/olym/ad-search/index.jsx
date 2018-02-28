@@ -599,7 +599,7 @@ class AdSearch extends Component{
     onSearch = () =>{
         let {data,extraCondition,extraSearchValue} = this.state;
         let needSearch = true;
-        extraSearchValue = extraSearchValue ? extraSearchValue.trim() : extraSearchValue
+        extraSearchValue = typeof extraSearchValue === 'string' ? extraSearchValue.trim() : extraSearchValue
         //组装查询条件，并且清空查询条件，如果只选了条件而没有输入则不清空
         if(extraCondition && extraSearchValue){
             if(data[extraCondition]){

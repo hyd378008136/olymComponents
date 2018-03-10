@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-function compatible(value,format) {
+function compatible(value,format,momentLocale) {
     let _value
     if(Array.isArray(value)){
         //只取前两位,并且在前两位都有值的情况下才显示日期
@@ -19,14 +19,16 @@ function compatible(value,format) {
         // }
         let _value = [];
         value.map((v)=>{
-            _value.push(compatible(v,format))
+            _value.push(compatible(v,format,momentLocale))
         })
         return _value
     }else{
         if(typeof value === 'string' && value){
             _value = moment(value,format)
+            momentLocale ? _value.locale(momentLocale) : _value.locale('zh-cn')
         } else if (moment.isMoment(value)) {
             if (value.isValid()) {
+                momentLocale ? value.locale(momentLocale) : value.locale('zh-cn')
                 _value = value
             } else {
                 _value = ''

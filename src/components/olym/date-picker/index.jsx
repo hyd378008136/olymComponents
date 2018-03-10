@@ -15,7 +15,7 @@ class DatePicker extends Component{
     }
 
     render(){
-        const {id,onChange,value,defaultValue,...otherProps} = this.props;
+        const {id,onChange,value,defaultValue,momentLocale,...otherProps} = this.props;
         const format = this.props.format || "YYYY-MM-DD";
         const props = {
             id,
@@ -23,11 +23,11 @@ class DatePicker extends Component{
             format
         };
         if(value){
-            const _value = compatible(value,format);
+            const _value = compatible(value,format,momentLocale);
             props.value = _value;
         }
         if(defaultValue){
-            const _defaultValue = compatible(defaultValue,format);
+            const _defaultValue = compatible(defaultValue,format,momentLocale);
             props.defaultValue = _defaultValue;
         }
         if(onChange){

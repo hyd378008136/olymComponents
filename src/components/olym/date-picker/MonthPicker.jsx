@@ -23,7 +23,7 @@ class MonthPicker extends Component{
             ...otherProps,
             format
         };
-        if(value){
+        if(value !== undefined){
             const _value = compatible(value,format,momentLocale);
             props.value = _value;
         }

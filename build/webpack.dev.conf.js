@@ -14,7 +14,7 @@ var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 
 module.exports = merge(baseWebpackConfig, {
     module: {
-        loaders: [utils.styleLoaders({sourceMap: config.dev.cssSourceMap})],
+      rules: [utils.styleLoaders({sourceMap: config.dev.cssSourceMap})]
     },
 
 

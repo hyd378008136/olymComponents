@@ -3,7 +3,8 @@ var utils = require('./utils')
 var config = require('../config')
 const autoprefixer = require('autoprefixer');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
-var CopyWebpackPlugin = require('copy-webpack-plugin')
+var CopyWebpackPlugin = require('copy-webpack-plugin');
+const webpack = require('webpack')
 
 // const remote-assets-loader = require('./remote-assets-loader')
 
@@ -24,20 +25,18 @@ module.exports = {
             : config.dev.assetsPublicPath
     },
     resolve: {
-        extensions: ['', '.js', '.jsx', '.json','.ts', '.tsx']
+        extensions: ['*', '.js', '.jsx', '.json','.ts', '.tsx']
     },
     resolveLoader: {
-        modulesDirectories: [resolve("node_modules"),resolve('build')],
         alias: {
             "remote-loader":  path.join(__dirname,"remote-loader")
         },
-        moduleTemplates: ['*-loader'],
     },
     module: {
-        loaders: [
+        rules: [
             {
               test: /\.(ts|tsx)$/,
-              loader: 'ts',
+              use: ['ts'],
               // enforce: "pre",
               include: [resolve('src/components/antd')],
               // options: {
@@ -46,17 +45,21 @@ module.exports = {
             },
             {
                 test: /\.(js|jsx)$/,
-                loader: 'react-hot!babel',
+                use: ['react-hot-loader', 'babel-loader'],
                 include: [resolve('samples'), resolve('src'), resolve('test')]
             },
 
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-                loader: 'url',
-                query: {
-                    limit: 10000,
-                    name: utils.assetsPath('images/[name].[hash:7].[ext]')
-                }
+                use: [
+                  {
+                    loader: 'url-loader',
+                    query: {
+                      limit: 10000,
+                      name: utils.assetsPath('images/[name].[hash:7].[ext]')
+                    }
+                  }
+                ],
             },
             // {
             //     test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
@@ -68,18 +71,22 @@ module.exports = {
             // },
             {
                 test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-                loader: 'remote-loader'
+                use: ['remote-loader-loader']
             },
         ],
 
     },
-    postcss: [
-        autoprefixer({
-            browsers: ['last 2 versions', 'Firefox ESR', '> 1%', 'ie >= 9', 'iOS >= 8', 'Android >= 4'],
-        }),
-    ],
     plugins: [
         new WatchMissingNodeModulesPlugin(path.resolve(__dirname, '../node_modules')),
+      new webpack.LoaderOptionsPlugin({
+        options: {
+          postcss: [
+            autoprefixer({
+              browsers: ['last 2 versions', 'Firefox ESR', '> 1%', 'ie >= 9', 'iOS >= 8', 'Android >= 4']
+            })
+          ]
+        }
+      }),
         // 复制无需编译的静态资源到dist/static/目录中
         new CopyWebpackPlugin([
             {

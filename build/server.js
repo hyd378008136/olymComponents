@@ -17,25 +17,11 @@ let compiler;
 
 const isInteractive = process.stdout.isTTY;
 
-const hotUpdate =  process.argv.indexOf('--ie8') === -1
-
 function setupCompiler(host, port, protocol) {
-
-  if (hotUpdate) {
-    const entry = webpackConfig.entry
-    Object.keys(entry).forEach(function(key){
-      entry[key].unshift(require.resolve('react-dev-utils/webpackHotDevClient'));
-    })
-  } else {
-    // ie8 不使用热加载, 但需配置es3ify
-      webpackConfig.module.postLoaders = [
-      {
-        test: /\.(js|jsx|ts|tsx)$/,
-        include: [/node_modules/,/src/,/samples/],
-        loaders: ['es3ify'],
-      },
-    ]
-  }
+  const entry = webpackConfig.entry
+  Object.keys(entry).forEach(function(key){
+    entry[key].unshift(require.resolve('react-dev-utils/webpackHotDevClient'));
+  })
 
   compiler = webpack(webpackConfig);
 

@@ -15,7 +15,7 @@ class RangePicker extends Component{
     }
 
     render(){
-        const {id,onChange,value,...otherProps} = this.props;
+        const {id,onChange,value,momentLocale,...otherProps} = this.props;
         const format = this.props.format || "YYYY-MM-DD";
         const props = {
             id,
@@ -30,7 +30,7 @@ class RangePicker extends Component{
                 throw new TypeError('RangePicker 组件的 value 只接受 "Array" 格式的数据');
             }
 
-            _value = compatible(value,format)
+            _value = compatible(value,format,momentLocale)
             props.value = _value
         }
 

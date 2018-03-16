@@ -16,19 +16,19 @@ class MonthPicker extends Component{
     }
 
     render(){
-        const {id,onChange,value,defaultValue,...otherProps} = this.props;
+        const {id,onChange,value,momentLocale,defaultValue,...otherProps} = this.props;
         const format = this.props.format || "YYYY-MM";
         const props = {
             id,
             ...otherProps,
             format
         };
-        if(value){
-            const _value = compatible(value,format);
+        if(value !== undefined){
+            const _value = compatible(value,format,momentLocale);
             props.value = _value;
         }
         if(defaultValue){
-            const _defaultValue = compatible(defaultValue,format);
+            const _defaultValue = compatible(defaultValue,format,momentLocale);
             props.defaultValue = _defaultValue;
         }
 

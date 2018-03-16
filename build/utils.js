@@ -15,20 +15,26 @@ exports.assetsPath = function (_path) {
 exports.cssLoaders = function (options) {
     options = options || {}
 
-    var cssLoader = {
-        loader: 'css',
-        options: {
-            minimize: process.env.NODE_ENV === 'production',
-            sourceMap: options.sourceMap
-        }
-    }
-
-    let loaders = 'css!postcss!less';
+    let loaders = [
+      {
+        loader: 'css-loader',
+        options: {importLoaders: 1}
+      },
+      'postcss-loader',
+      {
+        loader: 'less-loader',
+        options: {inlineJavaScript: true}
+      }
+    ];
 
     if (options.extract) {
-        return ExtractTextPlugin.extract('style', loaders)
+        return ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: loaders
+        });
     }else{
-        return 'style!'+loaders
+        loaders.unshift('style-loader')
+        return loaders
     }
 }
 
@@ -36,10 +42,10 @@ exports.cssLoaders = function (options) {
 exports.styleLoaders = function (options) {
     var loaders = exports.cssLoaders(options)
 
-    var output = [{
+    var output = {
         test: config.common.cssExtension,
-        loader: loaders
-    }]
+        use: loaders
+    }
 
     return output
 }

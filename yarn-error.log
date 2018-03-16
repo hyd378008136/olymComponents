@@ -1,8 +1,8 @@
 Arguments: 
-  F:\nodejs\node.exe C:\Users\hyd\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js
+  F:\nodejs\node.exe C:\Users\hyd\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add semver --save-dev
 
 PATH: 
-  C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Java\jdk1.6.0_45\bin;F:\nodejs\;E:\Program Files (x86)\SVN\bin;F:\apache-maven-3.2.3\bin;C:\Users\hyd\AppData\Local\Microsoft\WindowsApps;C:\Users\hyd\AppData\Roaming\npm;F:\SSH Secure Shell Client
+  C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Java\jdk1.6.0_45\bin;E:\Program Files (x86)\SVN\bin;F:\apache-maven-3.2.3\bin;F:\nodejs\;C:\Users\hyd\AppData\Local\Microsoft\WindowsApps;F:\SSH Secure Shell Client;C:\Users\hyd\AppData\Roaming\npm
 
 Yarn version: 
   1.5.1
@@ -6960,4 +6960,26 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/zrender/-/zrender-3.4.2.tgz#7286ef00e640d9686b63892eb2087bcffd1b7ea1"
 
 Trace: 
-  Error: EPERM: operation not permitted, unlink 'D:\Projects\olymComponents\node_modules\fsevents\node_modules\json-stringify-safe\test\stringify_test.js'
+  Error: D:\Projects\olymComponents\node_modules\chromedriver: Command failed.
+  Exit code: 1
+  Command: C:\Windows\system32\cmd.exe
+  Arguments: /d /s /c node install.js
+  Directory: D:\Projects\olymComponents\node_modules\chromedriver
+  Output:
+  Downloading https://chromedriver.storage.googleapis.com/2.29/chromedriver_win32.zip
+  Saving to C:\Users\hyd\AppData\Local\Temp\chromedriver\chromedriver_win32.zip
+  events.js:183
+        throw er; // Unhandled 'error' event
+        ^
+  
+  Error: connect ETIMEDOUT 172.217.160.112:443
+      at Object._errnoException (util.js:1024:11)
+      at _exceptionWithHostPort (util.js:1046:20)
+      at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1182:14)
+      at ProcessTermError.MessageError (C:\Users\hyd\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:186:110)
+      at new ProcessTermError (C:\Users\hyd\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:226:113)
+      at ChildProcess.<anonymous> (C:\Users\hyd\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:30281:17)
+      at emitTwo (events.js:126:13)
+      at ChildProcess.emit (events.js:214:7)
+      at maybeClose (internal/child_process.js:925:16)
+      at Process.ChildProcess._handle.onexit (internal/child_process.js:209:5)

@@ -279,7 +279,7 @@ class AdSearch extends Component{
                 onSelect : this.onExtraSearchValueSelect,
             };
             if (selectProps.mode && selectProps.mode === 'combobox'){
-                selectProps.onChange = this.onExtraSearchValueChange
+                selectProps.onChange = this.onExtraSearchValueChange 
             }
             return(
                 <FormItem key="extraSearchValue">

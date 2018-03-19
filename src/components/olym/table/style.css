@@ -50,3 +50,6 @@
 .ant-transfer-list-header{
     padding: 7px 2px;
 }
+.ant-table-body table{
+    min-width:100%;
+}

@@ -20,6 +20,7 @@
     "echarts": "^3.3.2",
     "gregorian-calendar": "~4.1.0",
     "gregorian-calendar-format": "~4.1.0",
+    "jquery": "1.11.3",
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.5",
     "omit.js": "^1.0.0",

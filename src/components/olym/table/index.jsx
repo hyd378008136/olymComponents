@@ -26,10 +26,14 @@ class Table extends Component {
     setDragula = () => {
         let { timeId } = this.state;
         $('#' + timeId + ' th,td').css({ position: 'relative' });
-        for (let i = 0; i < $('#'+timeId+' th').length; i++) {
-            $('#' + timeId + ' th').eq(i).append('<div dataIndex=' + i + ' class="druagle-border" style="width:0;height:100%;border-right:2px solid transparent;cursor:e-resize;position:absolute;right:0;top:0"></div>');
-            for(let j=0;j<$('#'+timeId+' tr').length;j++){
-                $('#' + timeId + ' tr').eq(j).find('td').eq(i).append('<div dataIndex=' + i + ' class="druagle-border" style="width:0;height:100%;border-right:2px solid transparent;cursor:e-resize;position:absolute;right:0;top:0"></div>');
+        for (let k = 0; k < $('#' + timeId + ' table').length; k++) {
+            for (let i = 0; i < $('#' + timeId + ' table').eq(k).find('th').length; i++) {
+                $('#' + timeId + ' table').eq(k).find('th').eq(i).append('<div dataIndex=' + i + ' tableIndex=' + k + ' class="druagle-border" style="width:0;height:100%;border-right:2px solid transparent;cursor:e-resize;position:absolute;right:0;top:0"></div>');   
+            }
+            for (let j = 0; j < $('#' + timeId + ' table').eq(k).find('tbody').find('tr').length; j++) {
+                for(let x = 0; x < $('#' + timeId + ' table').eq(k).find('tbody').find('tr').eq(j).find('td').length; x++){
+                    $('#' + timeId + ' table').eq(k).find('tbody').find('tr').eq(j).find('td').eq(x).append('<div dataIndex=' + x + ' tableIndex=' + k + ' class="druagle-border" style="width:0;height:100%;border-right:2px solid transparent;cursor:e-resize;position:absolute;right:0;top:0"></div>');
+                }
             }
         }
         let isMoveStart = false;
@@ -37,27 +41,30 @@ class Table extends Component {
         let oldWidth = 0;
         let oldTableWidth = 0;
         let selectIndex = 0;
+        let tableIndex = 0;
         $('#' + timeId + ' th .druagle-border').on('mousedown', function () {
             isMoveStart = true;
             oldX = event.screenX;
-            oldWidth = $('#' + timeId + ' th').eq($(this).attr('dataIndex')).width();
+            oldWidth = $('#' + timeId + ' table').eq($(this).attr('tableIndex')).find('th').eq($(this).attr('dataIndex')).width();
             selectIndex = $(this).attr('dataIndex');
-            oldTableWidth = $('#' + timeId + ' table').width();
+            tableIndex = $(this).attr('tableIndex');
+            oldTableWidth = $('#' + timeId + ' table').eq($(this).attr('tableIndex')).width();
             $('#' + timeId + ' col').css({ minWidth: 0 })
         })
         $('#' + timeId + ' td .druagle-border').on('mousedown', function () {
             isMoveStart = true;
             oldX = event.screenX;
-            oldWidth = $('#' + timeId + ' th').eq($(this).attr('dataIndex')).width();
+            oldWidth = $('#' + timeId + ' table').eq($(this).attr('tableIndex')).find('th').eq($(this).attr('dataIndex')).width();
             selectIndex = $(this).attr('dataIndex');
-            oldTableWidth = $('#' + timeId + ' table').width();
+            tableIndex = $(this).attr('tableIndex');
+            oldTableWidth = $('#' + timeId + ' table').eq($(this).attr('tableIndex')).width();
             $('#' + timeId + ' col').css({ minWidth: 0 })
         })
         $('#' + timeId + ' table').on('mousemove', function () {
-            console.info(selectIndex)
             if (isMoveStart) {
-                $('#' + timeId + ' col').eq(selectIndex).width(event.screenX - oldX + oldWidth);
-                $('#' + timeId + ' table').width(oldTableWidth + event.screenX - oldX + oldWidth - oldWidth);
+                console.info(selectIndex, tableIndex)
+                $('#' + timeId + ' table').eq(tableIndex).find('col').eq(selectIndex).width(event.screenX - oldX + oldWidth);
+                $('#' + timeId + ' table').eq(tableIndex).width(oldTableWidth + event.screenX - oldX + oldWidth - oldWidth);
             }
         })
         $('#' + timeId + ' table').on('mouseup', function () {

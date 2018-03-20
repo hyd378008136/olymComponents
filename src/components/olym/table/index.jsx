@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { Table as ATable, Button, Modal, Row, Col } from 'antd';
+import {Button, Modal,Row,Col, OlymTable as ATable} from 'antd';
 
 import CustomColumnsModal from './CustomColumnsModal'
 import isEqual from 'lodash.isequal'

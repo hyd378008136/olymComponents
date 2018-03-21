@@ -142,7 +142,7 @@
     "react-addons-test-utils": "^0.14.8",
     "react-color": "^2.11.7",
     "react-copy-to-clipboard": "^5.0.0",
-    "react-dev-utils": "^5.0.0",
+    "react-dev-utils": "^0.4.2",
     "react-document-title": "^2.0.1",
     "react-dom": "^15.0.0",
     "react-github-button": "^0.1.1",

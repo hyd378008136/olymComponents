@@ -20,7 +20,7 @@ const isInteractive = process.stdout.isTTY;
 function setupCompiler(host, port, protocol) {
   const entry = webpackConfig.entry
   Object.keys(entry).forEach(function(key){
-    entry[key].unshift(require.resolve('react-dev-utils/webpackHotDevClient'));
+    entry[key].unshift('react-dev-utils/webpackHotDevClient');
   })
 
   compiler = webpack(webpackConfig);

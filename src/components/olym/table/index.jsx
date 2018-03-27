@@ -30,11 +30,11 @@ class Table extends Component {
             for (let i = 0; i < $('#' + timeId + ' table').eq(k).find('th').length; i++) {
                 $('#' + timeId + ' table').eq(k).find('th').eq(i).append('<div dataIndex=' + i + ' tableIndex=' + k + ' class="druagle-border" style="width:0;height:100%;border-right:2px solid transparent;cursor:e-resize;position:absolute;right:0;top:0"></div>');   
             }
-            for (let j = 0; j < $('#' + timeId + ' table').eq(k).find('tbody').find('tr').length; j++) {
-                for(let x = 0; x < $('#' + timeId + ' table').eq(k).find('tbody').find('tr').eq(j).find('td').length; x++){
-                    $('#' + timeId + ' table').eq(k).find('tbody').find('tr').eq(j).find('td').eq(x).append('<div dataIndex=' + x + ' tableIndex=' + k + ' class="druagle-border" style="width:0;height:100%;border-right:2px solid transparent;cursor:e-resize;position:absolute;right:0;top:0"></div>');
-                }
-            }
+            // for (let j = 0; j < $('#' + timeId + ' table').eq(k).find('tbody').find('tr').length; j++) {
+            //     for(let x = 0; x < $('#' + timeId + ' table').eq(k).find('tbody').find('tr').eq(j).find('td').length; x++){
+            //         $('#' + timeId + ' table').eq(k).find('tbody').find('tr').eq(j).find('td').eq(x).append('<div dataIndex=' + x + ' tableIndex=' + k + ' class="druagle-border" style="width:0;height:100%;border-right:2px solid transparent;cursor:e-resize;position:absolute;right:0;top:0"></div>');
+            //     }
+            // }
         }
         let isMoveStart = false;
         let oldX = 0;
@@ -51,15 +51,15 @@ class Table extends Component {
             oldTableWidth = $('#' + timeId + ' table').eq($(this).attr('tableIndex')).width();
             $('#' + timeId + ' col').css({ minWidth: 0 })
         })
-        $('#' + timeId + ' td .druagle-border').on('mousedown', function () {
-            isMoveStart = true;
-            oldX = event.screenX;
-            oldWidth = $('#' + timeId + ' table').eq($(this).attr('tableIndex')).find('th').eq($(this).attr('dataIndex')).width();
-            selectIndex = $(this).attr('dataIndex');
-            tableIndex = $(this).attr('tableIndex');
-            oldTableWidth = $('#' + timeId + ' table').eq($(this).attr('tableIndex')).width();
-            $('#' + timeId + ' col').css({ minWidth: 0 })
-        })
+        // $('#' + timeId + ' td .druagle-border').on('mousedown', function () {
+        //     isMoveStart = true;
+        //     oldX = event.screenX;
+        //     oldWidth = $('#' + timeId + ' table').eq($(this).attr('tableIndex')).find('th').eq($(this).attr('dataIndex')).width();
+        //     selectIndex = $(this).attr('dataIndex');
+        //     tableIndex = $(this).attr('tableIndex');
+        //     oldTableWidth = $('#' + timeId + ' table').eq($(this).attr('tableIndex')).width();
+        //     $('#' + timeId + ' col').css({ minWidth: 0 })
+        // })
         $('#' + timeId + ' table').on('mousemove', function () {
             if (isMoveStart) {
                 console.info(selectIndex, tableIndex)

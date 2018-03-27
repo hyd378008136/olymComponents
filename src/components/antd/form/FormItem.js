@@ -38,7 +38,9 @@ export default class FormItem extends React.Component {
             return true
         }
         if (_.isEqual(_.omit(nextProps, ['children']), _.omit(this.props, ['children']))
-            && _.isEqual(nextState, this.state) && nextProps.children && nextProps.children.props && _.isEqual(_.omit(nextProps.children.props, ['data-__meta']), _.omit(this.props.children.props, ['data-__meta']))) {
+            && _.isEqual(nextState, this.state)
+            && _.isEqual(_.omit(_.result(nextProps, 'children.props'), ['data-__meta']),
+            _.omit(_.result(this.props, 'children.props'), ['data-__meta']))) {
 			return false
 		} else {
 			return true

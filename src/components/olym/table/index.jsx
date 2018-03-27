@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import {Button, Modal,Row,Col, OlymTable as ATable} from 'antd';
 
 import CustomColumnsModal from './CustomColumnsModal'
-import isEqual from 'lodash.isequal'
+import _ from 'lodash'
 import $ from 'jquery'
 
 import './style.css'
@@ -81,7 +81,7 @@ class Table extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        if (isEqual(nextProps, this.props) && isEqual(nextState, this.state)) {
+        if (_.isEqual(nextProps, this.props) && _.isEqual(nextState, this.state)) {
             return false
         } else {
             return true

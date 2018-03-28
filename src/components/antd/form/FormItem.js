@@ -33,14 +33,31 @@ export default class FormItem extends React.Component {
             'while there are more than one `getFieldDecorator` in it.');
     }
 
+    compareChildrenProps = (props, nextProps) => {
+        if (!props.children && !nextProps) {
+            return true
+        } else if (props.children && nextProps.children) {
+            if (_.isEqual(_.omit(props.children, 'props'), _.omit(nextProps.children, 'props'))){
+                if (!props.children.props && !nextProps.children.props) {
+                    return true
+                } else if (props.children.props && nextProps.children.props) {
+                    return _.isEqual(_.omit(props.children.props, 'data-__meta'),
+                        _.omit(nextProps.children.props, 'data-__meta'))
+                } else {
+                    return false
+                }
+            }
+        } else {
+            return false
+        }
+    }
+
     shouldComponentUpdate(nextProps, nextState) {
         if (this.getHelpMsg()) {
             return true
         }
         if (_.isEqual(_.omit(nextProps, ['children']), _.omit(this.props, ['children']))
-            && _.isEqual(nextState, this.state)
-            && _.isEqual(_.omit(_.result(nextProps, 'children.props'), ['data-__meta']),
-            _.omit(_.result(this.props, 'children.props'), ['data-__meta']))) {
+            && _.isEqual(nextState, this.state) && this.compareChildrenProps(this.props, nextProps)) {
 			return false
 		} else {
 			return true

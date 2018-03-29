@@ -53,3 +53,10 @@
 .ant-table-body table{
     min-width:100%;
 }
+
+.ant-table-scroll-y .ant-table table {
+    table-layout: fixed
+}
+.ant-table-scroll-y .ant-table-small .ant-table-thead > tr > th.ant-table-selection-column .ant-table-selection {
+    width : 100% !important;min-width: 100% !important;
+}

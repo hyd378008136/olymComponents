@@ -275,9 +275,6 @@ class Table extends Component {
             </Row>)
         };
 
-        console.log(_title())
-
-
         // 每次弹框都重新渲染
         const CustomColumnsModalGen = () => <CustomColumnsModal {...modalOpts} />
 
@@ -291,6 +288,11 @@ class Table extends Component {
         };
         if (title || customCtns || (_customColumns && _customColumns.length > 0)) {
             props.title = _title
+        }
+        if (props.scroll && props.scroll.y) {
+          let className = props.className || '';
+          className += ' ant-table-scroll-y';
+          props.className = className;
         }
         return (
             <div id={timeId}>

@@ -36,7 +36,7 @@ module.exports = {
         rules: [
             {
               test: /\.(ts|tsx)$/,
-              use: ['ts'],
+              use: ['ts-loader'],
               // enforce: "pre",
               include: [resolve('src/components/antd')],
               // options: {

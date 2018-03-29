@@ -24,6 +24,8 @@ class Table extends Component {
 
     //设置拖拽
     setDragula = () => {
+        let {scroll} = this.props;
+        // console.info(scroll)
         let { timeId } = this.state;
         $('#' + timeId + ' th,td').css({ position: 'relative' });
         for (let k = 0; k < $('#' + timeId + ' table').length; k++) {
@@ -62,9 +64,16 @@ class Table extends Component {
         // })
         $('#' + timeId + ' table').on('mousemove', function () {
             if (isMoveStart) {
-                console.info(selectIndex, tableIndex)
-                $('#' + timeId + ' table').eq(tableIndex).find('col').eq(selectIndex).width(event.screenX - oldX + oldWidth);
-                $('#' + timeId + ' table').eq(tableIndex).width(oldTableWidth + event.screenX - oldX + oldWidth - oldWidth);
+                // console.info(selectIndex, tableIndex)
+                if(scroll&&scroll.y){
+                    for(let i =0;i< $('#' + timeId + ' table').length;i++){
+                        $('#' + timeId + ' table').eq(i).find('col').eq(selectIndex).width(event.screenX - oldX + oldWidth);
+                        $('#' + timeId + ' table').eq(i).width(oldTableWidth + event.screenX - oldX + oldWidth - oldWidth);
+                    }
+                }else{
+                    $('#' + timeId + ' table').eq(tableIndex).find('col').eq(selectIndex).width(event.screenX - oldX + oldWidth);
+                    $('#' + timeId + ' table').eq(tableIndex).width(oldTableWidth + event.screenX - oldX + oldWidth - oldWidth);
+                }
             }
         })
         $('#' + timeId + ' table').on('mouseup', function () {

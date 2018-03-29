@@ -90,7 +90,7 @@ class Table extends Component {
 
     getUserDefineCol = (columns, customColumns) => {
         if (!customColumns || customColumns.length === 0) {
-            return columns.concat();
+            return _.cloneDeep(columns)
         }
         let userDefineColumns = [];
         // let columnsMap = {};
@@ -183,7 +183,7 @@ class Table extends Component {
                 dataIndex: "olymc_seq",
                 key: "olymc_seq",
                 title: "序号",
-                width: '50px'
+                width: 50
             })
             // console.log(userDefineColumns)
         }

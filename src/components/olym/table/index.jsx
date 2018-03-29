@@ -24,19 +24,21 @@ class Table extends Component {
 
     //设置拖拽
     setDragula = () => {
-        let {scroll} = this.props;
-        // console.info(scroll)
+        // console.info(this.props);
+        let {scroll,columns} = this.props;
         let { timeId } = this.state;
+        let haveColumnFixed = false;
+        for(let i of columns){
+            if(i.fixed){
+                haveColumnFixed = true;
+                break;
+            }
+        }
         $('#' + timeId + ' th,td').css({ position: 'relative' });
         for (let k = 0; k < $('#' + timeId + ' table').length; k++) {
             for (let i = 0; i < $('#' + timeId + ' table').eq(k).find('th').length; i++) {
                 $('#' + timeId + ' table').eq(k).find('th').eq(i).append('<div dataIndex=' + i + ' tableIndex=' + k + ' class="druagle-border" style="width:0;height:100%;border-right:2px solid transparent;cursor:e-resize;position:absolute;right:0;top:0"></div>');   
             }
-            // for (let j = 0; j < $('#' + timeId + ' table').eq(k).find('tbody').find('tr').length; j++) {
-            //     for(let x = 0; x < $('#' + timeId + ' table').eq(k).find('tbody').find('tr').eq(j).find('td').length; x++){
-            //         $('#' + timeId + ' table').eq(k).find('tbody').find('tr').eq(j).find('td').eq(x).append('<div dataIndex=' + x + ' tableIndex=' + k + ' class="druagle-border" style="width:0;height:100%;border-right:2px solid transparent;cursor:e-resize;position:absolute;right:0;top:0"></div>');
-            //     }
-            // }
         }
         let isMoveStart = false;
         let oldX = 0;
@@ -44,6 +46,7 @@ class Table extends Component {
         let oldTableWidth = 0;
         let selectIndex = 0;
         let tableIndex = 0;
+        let tableThis;
         $('#' + timeId + ' th .druagle-border').on('mousedown', function () {
             isMoveStart = true;
             oldX = event.screenX;
@@ -51,7 +54,8 @@ class Table extends Component {
             selectIndex = $(this).attr('dataIndex');
             tableIndex = $(this).attr('tableIndex');
             oldTableWidth = $('#' + timeId + ' table').eq($(this).attr('tableIndex')).width();
-            $('#' + timeId + ' col').css({ minWidth: 0 })
+            tableThis = $('#' + timeId + ' table').eq($(this).attr('tableIndex'));
+            $('#' + timeId + ' col').css({ minWidth: 50 })
         })
         // $('#' + timeId + ' td .druagle-border').on('mousedown', function () {
         //     isMoveStart = true;
@@ -63,13 +67,21 @@ class Table extends Component {
         //     $('#' + timeId + ' col').css({ minWidth: 0 })
         // })
         $('#' + timeId + ' table').on('mousemove', function () {
-            if (isMoveStart) {
-                // console.info(selectIndex, tableIndex)
-                if(scroll&&scroll.y){
+            if (isMoveStart&&event.screenX - oldX + oldWidth>50) {
+                console.info(selectIndex, tableIndex)
+                if(scroll&&scroll.y&&!haveColumnFixed){
                     for(let i =0;i< $('#' + timeId + ' table').length;i++){
                         $('#' + timeId + ' table').eq(i).find('col').eq(selectIndex).width(event.screenX - oldX + oldWidth);
                         $('#' + timeId + ' table').eq(i).width(oldTableWidth + event.screenX - oldX + oldWidth - oldWidth);
                     }
+                }else if(scroll&&scroll.y&&haveColumnFixed){
+                    // console.info(tableThis)
+                    for(let i =0;i< tableThis.parent().parent().find('table').length;i++){
+                        tableThis.parent().parent().find('table').eq(i).find('col').eq(selectIndex).width(event.screenX - oldX + oldWidth);
+                        tableThis.parent().parent().find('table').eq(i).width(oldTableWidth + event.screenX - oldX + oldWidth - oldWidth);
+                    }
+                    // tableThis.find('col').eq(selectIndex).width(event.screenX - oldX + oldWidth);
+                    // tableThis.width(oldTableWidth + event.screenX - oldX + oldWidth - oldWidth);
                 }else{
                     $('#' + timeId + ' table').eq(tableIndex).find('col').eq(selectIndex).width(event.screenX - oldX + oldWidth);
                     $('#' + timeId + ' table').eq(tableIndex).width(oldTableWidth + event.screenX - oldX + oldWidth - oldWidth);

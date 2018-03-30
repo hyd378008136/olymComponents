@@ -57,18 +57,11 @@ class Table extends Component {
             tableThis = $('#' + timeId + ' table').eq($(this).attr('tableIndex'));
             $('#' + timeId + ' col').css({ minWidth: 50 })
         })
-        // $('#' + timeId + ' td .druagle-border').on('mousedown', function () {
-        //     isMoveStart = true;
-        //     oldX = event.screenX;
-        //     oldWidth = $('#' + timeId + ' table').eq($(this).attr('tableIndex')).find('th').eq($(this).attr('dataIndex')).width();
-        //     selectIndex = $(this).attr('dataIndex');
-        //     tableIndex = $(this).attr('tableIndex');
-        //     oldTableWidth = $('#' + timeId + ' table').eq($(this).attr('tableIndex')).width();
-        //     $('#' + timeId + ' col').css({ minWidth: 0 })
-        // })
+     
         $('#' + timeId + ' table').on('mousemove', function () {
             if (isMoveStart&&event.screenX - oldX + oldWidth>50) {
-                console.info(selectIndex, tableIndex)
+                // console.info(selectIndex, tableIndex)
+                // console.info(tableThis.attr('class'))
                 if(scroll&&scroll.y&&!haveColumnFixed){
                     for(let i =0;i< $('#' + timeId + ' table').length;i++){
                         $('#' + timeId + ' table').eq(i).find('col').eq(selectIndex).width(event.screenX - oldX + oldWidth);
@@ -76,12 +69,13 @@ class Table extends Component {
                     }
                 }else if(scroll&&scroll.y&&haveColumnFixed){
                     // console.info(tableThis)
-                    for(let i =0;i< tableThis.parent().parent().find('table').length;i++){
-                        tableThis.parent().parent().find('table').eq(i).find('col').eq(selectIndex).width(event.screenX - oldX + oldWidth);
-                        tableThis.parent().parent().find('table').eq(i).width(oldTableWidth + event.screenX - oldX + oldWidth - oldWidth);
+                    //暂设置为fixed的table不允许拖动。
+                    if(tableThis.attr('class') != 'ant-table-fixed'){
+                        for(let i =0;i< tableThis.parent().parent().find('table').length;i++){
+                            tableThis.parent().parent().find('table').eq(i).find('col').eq(selectIndex).width(event.screenX - oldX + oldWidth);
+                            tableThis.parent().parent().find('table').eq(i).width(oldTableWidth + event.screenX - oldX + oldWidth - oldWidth);
+                        }
                     }
-                    // tableThis.find('col').eq(selectIndex).width(event.screenX - oldX + oldWidth);
-                    // tableThis.width(oldTableWidth + event.screenX - oldX + oldWidth - oldWidth);
                 }else{
                     $('#' + timeId + ' table').eq(tableIndex).find('col').eq(selectIndex).width(event.screenX - oldX + oldWidth);
                     $('#' + timeId + ' table').eq(tableIndex).width(oldTableWidth + event.screenX - oldX + oldWidth - oldWidth);

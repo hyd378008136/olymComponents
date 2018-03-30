@@ -69,8 +69,8 @@ class Table extends Component {
                     }
                 }else if(scroll&&scroll.y&&haveColumnFixed){
                     // console.info(tableThis)
-                    //暂设置为fixed的table不允许拖动。
-                    if(tableThis.attr('class') != 'ant-table-fixed'){
+                    //暂设置为横竖都有fixed的时候 fixed部分table不允许拖动。
+                    if(tableThis.parent().parent().attr('class') == 'ant-table-scroll'){
                         for(let i =0;i< tableThis.parent().parent().find('table').length;i++){
                             tableThis.parent().parent().find('table').eq(i).find('col').eq(selectIndex).width(event.screenX - oldX + oldWidth);
                             tableThis.parent().parent().find('table').eq(i).width(oldTableWidth + event.screenX - oldX + oldWidth - oldWidth);

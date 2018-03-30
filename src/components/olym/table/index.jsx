@@ -64,6 +64,10 @@ class Table extends Component {
                 // console.info(tableThis.attr('class'))
                 $('#' + timeId + ' .ant-table-fixed-left th').height(tableThis.find('th').height());
                 $('#' + timeId + ' .ant-table-fixed-right th').height(tableThis.find('th').height());
+                for(let i =0;i< tableThis.find('tr').length;i++){
+                    $('#' + timeId + ' .ant-table-fixed-left tr').eq(i).height(tableThis.find('tr').eq(i).height());
+                    $('#' + timeId + ' .ant-table-fixed-right tr').eq(i).height(tableThis.find('tr').eq(i).height());
+                }
                 if (scroll && scroll.y && !haveColumnFixed) {
                     for (let i = 0; i < $('#' + timeId + ' table').length; i++) {
                         $('#' + timeId + ' table').eq(i).find('col').eq(selectIndex).width(event.screenX - oldX + oldWidth);

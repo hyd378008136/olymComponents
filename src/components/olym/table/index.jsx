@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import {Button, Modal,Row,Col, OlymTable as ATable} from 'antd';
+import { Button, Modal, Row, Col, OlymTable as ATable } from 'antd';
 
 import CustomColumnsModal from './CustomColumnsModal'
 import _ from 'lodash'
@@ -25,11 +25,11 @@ class Table extends Component {
     //设置拖拽
     setDragula = () => {
         // console.info(this.props);
-        let {scroll,columns} = this.props;
+        let { scroll, columns } = this.props;
         let { timeId } = this.state;
         let haveColumnFixed = false;
-        for(let i of columns){
-            if(i.fixed){
+        for (let i of columns) {
+            if (i.fixed) {
                 haveColumnFixed = true;
                 break;
             }
@@ -37,7 +37,7 @@ class Table extends Component {
         $('#' + timeId + ' th,td').css({ position: 'relative' });
         for (let k = 0; k < $('#' + timeId + ' table').length; k++) {
             for (let i = 0; i < $('#' + timeId + ' table').eq(k).find('th').length; i++) {
-                $('#' + timeId + ' table').eq(k).find('th').eq(i).append('<div dataIndex=' + i + ' tableIndex=' + k + ' class="druagle-border" style="width:0;height:100%;border-right:2px solid transparent;cursor:e-resize;position:absolute;right:0;top:0"></div>');   
+                $('#' + timeId + ' table').eq(k).find('th').eq(i).append('<div dataIndex=' + i + ' tableIndex=' + k + ' class="druagle-border" style="width:0;height:100%;border-right:2px solid transparent;cursor:e-resize;position:absolute;right:0;top:0"></div>');
             }
         }
         let isMoveStart = false;
@@ -57,28 +57,32 @@ class Table extends Component {
             tableThis = $('#' + timeId + ' table').eq($(this).attr('tableIndex'));
             $('#' + timeId + ' col').css({ minWidth: 50 })
         })
-     
+
         $('#' + timeId + ' table').on('mousemove', function () {
-            if (isMoveStart&&event.screenX - oldX + oldWidth>50) {
+            if (isMoveStart && event.screenX - oldX + oldWidth > 50) {
                 // console.info(selectIndex, tableIndex)
                 // console.info(tableThis.attr('class'))
-                if(scroll&&scroll.y&&!haveColumnFixed){
-                    for(let i =0;i< $('#' + timeId + ' table').length;i++){
+                $('#' + timeId + ' .ant-table-fixed-left th').height(tableThis.find('th').height());
+                $('#' + timeId + ' .ant-table-fixed-right th').height(tableThis.find('th').height());
+                if (scroll && scroll.y && !haveColumnFixed) {
+                    for (let i = 0; i < $('#' + timeId + ' table').length; i++) {
                         $('#' + timeId + ' table').eq(i).find('col').eq(selectIndex).width(event.screenX - oldX + oldWidth);
                         $('#' + timeId + ' table').eq(i).width(oldTableWidth + event.screenX - oldX + oldWidth - oldWidth);
                     }
-                }else if(scroll&&scroll.y&&haveColumnFixed){
+                } else if (scroll && scroll.y && haveColumnFixed) {
                     // console.info(tableThis)
-                    //暂设置为横竖都有fixed的时候 fixed部分table不允许拖动。
-                    if(tableThis.parent().parent().attr('class') == 'ant-table-scroll'){
-                        for(let i =0;i< tableThis.parent().parent().find('table').length;i++){
+                    //暂设置为 fixed部分table不允许拖动。
+                    if (tableThis.parent().parent().attr('class') == 'ant-table-scroll') {
+                        for (let i = 0; i < tableThis.parent().parent().find('table').length; i++) {
                             tableThis.parent().parent().find('table').eq(i).find('col').eq(selectIndex).width(event.screenX - oldX + oldWidth);
                             tableThis.parent().parent().find('table').eq(i).width(oldTableWidth + event.screenX - oldX + oldWidth - oldWidth);
                         }
                     }
-                }else{
-                    $('#' + timeId + ' table').eq(tableIndex).find('col').eq(selectIndex).width(event.screenX - oldX + oldWidth);
-                    $('#' + timeId + ' table').eq(tableIndex).width(oldTableWidth + event.screenX - oldX + oldWidth - oldWidth);
+                } else {
+                    if (tableThis.parent().parent().attr('class') == 'ant-table-scroll') {
+                        $('#' + timeId + ' table').eq(tableIndex).find('col').eq(selectIndex).width(event.screenX - oldX + oldWidth);
+                        $('#' + timeId + ' table').eq(tableIndex).width(oldTableWidth + event.screenX - oldX + oldWidth - oldWidth);
+                    }
                 }
             }
         })
@@ -296,9 +300,9 @@ class Table extends Component {
             props.title = _title
         }
         if (props.scroll && props.scroll.y) {
-          let className = props.className || '';
-          className += ' ant-table-scroll-y';
-          props.className = className;
+            let className = props.className || '';
+            className += ' ant-table-scroll-y';
+            props.className = className;
         }
         return (
             <div id={timeId}>

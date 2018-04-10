@@ -13,6 +13,25 @@
   }
 }
 
+//容器设置里面 label 宽度
+.loopingClass (@index) when (@index <= 10) {
+  @index2: (@index - floor(@index)) * 10;
+  @index3: floor(@index);
+  .o-form-item-label--@{index3}\.@{index2}em {
+    background-color: red;
+    .ant-form-item {
+      padding-left: (@index + 2)*1em;
+      &-label {
+        width: (@index + 2)*1em;
+        margin-left: -(@index + 2)*1em;
+      }
+    }
+  }
+  .loopingClass(@index + 0.1)
+}
+
+.loopingClass(0);
+
 .o-form-item-label--3em {
   .ant-form-item {
     padding-left: 5em;

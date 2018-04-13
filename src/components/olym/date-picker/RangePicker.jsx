@@ -15,7 +15,7 @@ class RangePicker extends Component{
     }
 
     render(){
-        const {id,onChange,value,momentLocale,...otherProps} = this.props;
+        const {id,onChange,value = ['', ''],momentLocale,...otherProps} = this.props;
         const format = this.props.format || "YYYY-MM-DD";
         const props = {
             id,

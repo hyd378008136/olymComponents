@@ -15,7 +15,7 @@ class DatePicker extends Component{
     }
 
     render(){
-        const {id,onChange,value,defaultValue,momentLocale,...otherProps} = this.props;
+        const {id,onChange,value = '',defaultValue,momentLocale,...otherProps} = this.props;
         const format = this.props.format || "YYYY-MM-DD";
         const props = {
             id,

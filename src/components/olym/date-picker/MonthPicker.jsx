@@ -16,7 +16,7 @@ class MonthPicker extends Component{
     }
 
     render(){
-        const {id,onChange,value,momentLocale,defaultValue,...otherProps} = this.props;
+        const {id,onChange,value = '',momentLocale,defaultValue,...otherProps} = this.props;
         const format = this.props.format || "YYYY-MM";
         const props = {
             id,

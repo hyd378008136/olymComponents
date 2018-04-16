@@ -41,8 +41,13 @@ export default class FormItem extends React.Component {
                 if (!props.children.props && !nextProps.children.props) {
                     return true
                 } else if (props.children.props && nextProps.children.props) {
-                    return _.isEqual(_.omit(props.children.props, 'data-__meta'),
-                        _.omit(nextProps.children.props, 'data-__meta'))
+                    let childrenPropsEqual = _.isEqual(_.omit(props.children.props, 'data-__meta'), _.omit(nextProps.children.props, 'data-__meta'));
+
+                    // 表单规则变化 需要重新render
+                    let childRules = props.children.props['data-__meta'] ? props.children.props['data-__meta'].rules : null;
+                    let nextChildRules = nextProps.children.props['data-__meta'] ? nextProps.children.props['data-__meta'].rules : null;
+
+                    return childrenPropsEqual && _.isEqual(childRules, nextChildRules);
                 } else {
                     return false
                 }

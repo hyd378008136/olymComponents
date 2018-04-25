@@ -56,10 +56,13 @@ export default class Select extends React.Component {
         // @deprecated
         multiple, tags, combobox } = _a, restProps = __rest(_a, ["prefixCls", "className", "size", "mode", "multiple", "tags", "combobox"]);
         warning(!multiple && !tags && !combobox, '`Select[multiple|tags|combobox]` is deprecated, please use `Select[mode]` instead.');
-        const cls = classNames({
+        let cls = classNames({
             [`${prefixCls}-lg`]: size === 'large',
             [`${prefixCls}-sm`]: size === 'small',
         }, className);
+        if (restProps.id) {
+            cls = classNames(restProps.id, cls)
+        }
         const locale = this.getLocale();
         let { notFoundContent = locale.notFoundContent, optionLabelProp } = this.props;
         const isCombobox = mode === 'combobox' || combobox;

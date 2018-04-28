@@ -113,7 +113,7 @@ class Table extends Component {
 
   getUserDefineCol = (columns, customColumns) => {
     if (!customColumns || customColumns.length === 0) {
-      return _.cloneDeep(columns)
+      return _.extend([], columns)
     }
     let userDefineColumns = [];
     // let columnsMap = {};

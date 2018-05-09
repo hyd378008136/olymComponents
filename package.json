@@ -11,7 +11,7 @@
     "ie8": "node build/server.js --ie8",
     "dev": "node build/server.js"
   },
-  "author": "yidih",
+  "author": "yidih-Marco",
   "license": "MIT",
   "dependencies": {
     "array-tree-filter": "~1.0.0",

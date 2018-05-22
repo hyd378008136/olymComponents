@@ -107,7 +107,7 @@ class AdSearch extends Component{
     if (fieldType === "select" || fieldType === "multi_select") {
       let map = new Map()
       children.map(child => {
-        map.set(child.props.value, child.props.children)
+        map.set(child.key || child.props.value, child.props.children)
       })
       if (field && field.reflectMap === undefined)
         field.reflectMap = map

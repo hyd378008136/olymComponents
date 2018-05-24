@@ -69,7 +69,7 @@ class FormItem extends Component {
         const _class = classnames(
             {"o-form-label--vertical": labelVertical},
             {["o-form-label--" + labelWidth]: labelWidth},
-            {"o-form-label--none": (label == " ")}
+            {"o-form-label--none": (label == " " && !labelVertical)}
         )
 
 

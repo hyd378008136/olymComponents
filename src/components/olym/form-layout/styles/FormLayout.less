@@ -254,13 +254,20 @@
     line-height: 1.2;
 
     .ant-form-item-label {
-      width: 1em;
-      margin-left: -1.5em;
+      width: 100%;
       text-align: left;
-
-      > label:after {
-        content: "";
+      padding: 0 0 8px;
+      margin: 0;
+      display: block;
+      text-align: left;
+      line-height: 1.5;
+      label:after {
+        content: "" ;
       }
+    }
+
+    .ant-form-item-control {
+      position: inherit;
     }
   }
 

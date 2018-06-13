@@ -13,15 +13,14 @@ class Button extends React.Component {
 		if (!!loading) {
 			this.setState({
 				isLoading: true
-			});
-			setTimeout(() => {
+			},()=>{
 				this.props.onClick();
-			}, 100);
-			setTimeout(() => {
-				this.setState({
-					isLoading: false
-				});
-			}, 300);
+				setTimeout(() => {
+					this.setState({
+						isLoading: false
+					});
+				}, 300);
+			});
 		} else {
 			this.props.onClick();
 		}

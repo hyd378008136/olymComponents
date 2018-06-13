@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Button as AButton } from "antd";
-import { connect } from "react-redux";
 
 class Button extends React.Component {
 	constructor(props) {

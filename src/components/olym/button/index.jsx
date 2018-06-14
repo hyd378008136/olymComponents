@@ -1,33 +1,42 @@
-import React, { Component } from "react";
+import React from "react";
 import { Button as AButton } from "antd";
+import PropTypes from 'prop-types'
 
 class Button extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isLoading: false
+			loading: false
 		};
 	}
-	handerClick = () => {
-		let { loading = true } = this.props;
-		if (!!loading) {
-			this.setState({
-				isLoading: true
-			},()=>{
+
+	handleClick = () => {
+		let needLoading = this.props.needLoading;
+		if (!needLoading) {
+			this.props.onClick();
+		} else {
+			this.setState({ loading: true }, () => {
 				this.props.onClick();
 				setTimeout(() => {
-					this.setState({
-						isLoading: false
-					});
+					this.setState({ loading: false })
 				}, 300);
-			});
-		} else {
-			this.props.onClick();
+			})
 		}
-	};
-	render() {
-		return <AButton {...this.props} loading={this.state.isLoading} onClick={this.handerClick} />;
 	}
+
+	render() {
+		return <AButton {...this.props} loading={this.state.loading} onClick={this.handleClick} />;
+	}
+}
+
+Button.defaultProps = {
+	needLoading: true,
+	onClick: () => {},
+}
+
+Button.PropTypes = {
+	needLoading: PropTypes.bool,
+	onClick: PropTypes.func,
 }
 
 export default Button;

@@ -25,7 +25,8 @@ class Button extends React.Component {
 	}
 
 	render() {
-		return <AButton {...this.props} loading={this.state.loading} onClick={this.handleClick} />;
+		let { needLoading, onClick, ...otherProps } = this.props
+		return <AButton {...otherProps} loading={this.state.loading} onClick={this.handleClick} />;
 	}
 }
 

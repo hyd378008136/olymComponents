@@ -7,6 +7,7 @@ import CustomTopLine from './CustomTopLine';
 import CustomFootLine from './CustomFootLine';
 import isEqual from 'lodash.isequal';
 import _ from 'lodash';
+import { hidden } from "ansi-colors";
 
 const FormItem = FormLayout.FormItem;
 const RangePicker = DatePicker.RangePicker;
@@ -576,10 +577,13 @@ class AdSearch extends Component{
         del = (<a onClick={(event)=>{
           this.props.onDeleteMySearch(tem)
           event.stopPropagation();
-        }} className="selected_del"><Icon type="cross" style={{float:'right',paddingTop:3}}/></a>);
+        }} className="selected_del"><Icon type="cross" style={{paddingTop:3}}/></a>);
       }
       // console.log(tem)
-      children.push(<Option key={id} value={templateName}>{templateName}{del}</Option>)
+      children.push(<Option key={id} value={templateName} style={{display:'flex'}}>
+        <span style={{ flex: 1, overflow: 'hidden', textOverflow:'ellipsis'}}>{templateName}</span>
+					{del}
+				</Option>)
     });
     const props = {
       onSelect:this.onTemplateSelect,

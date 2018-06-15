@@ -7,7 +7,7 @@ import CustomTopLine from './CustomTopLine';
 import CustomFootLine from './CustomFootLine';
 import isEqual from 'lodash.isequal';
 import _ from 'lodash';
-import { hidden } from "ansi-colors";
+/* import { hidden } from "ansi-colors"; */
 
 const FormItem = FormLayout.FormItem;
 const RangePicker = DatePicker.RangePicker;

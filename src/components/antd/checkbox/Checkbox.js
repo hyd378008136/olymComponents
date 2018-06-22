@@ -27,6 +27,8 @@ export default class Checkbox extends React.Component {
             checkboxProps.onChange = () => checkboxGroup.toggleOption({ label: children, value: props.value });
             checkboxProps.checked = checkboxGroup.value.indexOf(props.value) !== -1;
             checkboxProps.disabled = props.disabled || checkboxGroup.disabled;
+        } else {
+            checkboxProps.checked = checkboxProps.checked && checkboxProps.checked.toString() === 'true'
         }
         const classString = classNames(className, {
             [`${prefixCls}-wrapper`]: true,

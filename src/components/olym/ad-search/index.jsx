@@ -566,7 +566,12 @@ class AdSearch extends Component{
     const newList = targetList.filter((item)=>{
       const {reflectMap} = ocMap[key];
       if(reflectMap){
-        const value = reflectMap.get(item) || item
+        let value = '';
+        if (Array.isArray(item)) {
+          value = reflectMap.get(_.last(item)) || _.last(item)
+        } else {
+          value = reflectMap.get(item) || item
+        }
         return value !== v;
       }else{
         return item !== v;

@@ -230,7 +230,8 @@ class Table extends Component {
       onOk: onCustomChange,
       // dataSource: []
       customColumns: _customColumns,
-      pageSize: this.props.pageSize
+      pageSize: this.props.pageSize,
+      onCustomInfoChange: this.props.onCustomInfoChange
     }
 
     //处理title

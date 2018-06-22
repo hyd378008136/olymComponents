@@ -17,7 +17,6 @@ class CustomColumnsModal extends Component {
         columnKeys: [],
         fixCols: 0,
         pageSize: 15,
-        showPageSize: true
     }
 
     constructor(props) {
@@ -148,7 +147,7 @@ class CustomColumnsModal extends Component {
         const { visible, onCancel } = this.props
 
         const footer = <div className="footer-btn-layout">
-            {this.props.showPageSize ? <div className="footer-btn-layout-pagesize">
+            {this.props.onCustomInfoChange ? <div className="footer-btn-layout-pagesize">
                 <div style={{ paddingTop: 3 }}><label>每页大小：</label></div>
                 <div className="pagesize-select-width">
                     <Select onChange={this.handlePageSizeChange} value={this.state.pageSize}>

@@ -1,6 +1,6 @@
 {
   "name": "olymc",
-  "version": "0.2.28",
+  "version": "0.2.29",
   "description": "Olymtech Components",
   "main": "lib/index.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "ie8": "node build/server.js --ie8",
     "dev": "node build/server.js"
   },
-  "author": "yidih-Marco",
+  "author": "Olymtech",
   "license": "MIT",
   "dependencies": {
     "array-tree-filter": "~1.0.0",

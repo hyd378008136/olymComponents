@@ -1,6 +1,6 @@
 import React,{Component} from "react";
 
-import {Input, Button, Row, Col, Modal, Message, Icon,Affix,Checkbox,Popover,message} from 'antd';
+import {Input, Button, Row, Col, Modal, Message, Icon,Affix,Checkbox,Popover,message, Cascader} from 'antd';
 import {Table, FormLayout, Split, Wrap, Panel,Tag,DatePicker, Select} from 'olym'
 
 import CustomTopLine from './CustomTopLine';
@@ -301,7 +301,7 @@ class AdSearch extends Component{
 
   //跟上面那个方法差不多 创建 条件按 的那个搜索框，目前只支持单选和输入框
   creatExtraSearchValueField = (props) =>{
-    const {fieldCn,fieldEn,fieldType,...otherProps} = props;
+    const {fieldCn,fieldEn,fieldType,reflectMap,...otherProps} = props;
     // let fieldValue = props.fieldValue || "";
 
     if(fieldType === "select" || fieldType === "multi_select"){
@@ -320,6 +320,18 @@ class AdSearch extends Component{
       return(
         <FormItem key="extraSearchValue">
           <Select style={{width:selectWidth}} {...selectProps}/>
+        </FormItem>
+      )
+    } else if (fieldType === 'cascader') {
+      const cascaderProps = {
+        ...otherProps,
+        id: fieldEn,
+        value: this.state.extraSearchValue,
+        onChange: this.onExtraSearchValueChange
+      };
+      return (
+        <FormItem key="extraSearchValue">
+          <Cascader {...cascaderProps}/>
         </FormItem>
       )
     }else{
@@ -502,7 +514,12 @@ class AdSearch extends Component{
       const {fieldCn,reflectMap} = ocMap[key];
       let v;
       if(reflectMap){
-        v = reflectMap.get(value) || value
+        v = '';
+        if (Array.isArray(value)) {
+          v = reflectMap.get(_.last(value)) || _.last(value)
+        } else {
+          v = reflectMap.get(value) || value
+        }
       }else{
         v = value
       }

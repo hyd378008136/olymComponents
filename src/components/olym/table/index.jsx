@@ -229,7 +229,8 @@ class Table extends Component {
       onCancel: this.handleClose,
       onOk: onCustomChange,
       // dataSource: []
-      customColumns: _customColumns
+      customColumns: _customColumns,
+      pageSize: this.props.pageSize
     }
 
     //处理title

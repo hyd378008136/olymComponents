@@ -60,3 +60,15 @@
 .ant-table-scroll-y .ant-table-small .ant-table-thead > tr > th.ant-table-selection-column .ant-table-selection {
     width : 100% !important;min-width: 100% !important;
 }
+.footer-btn-layout {
+    display: flex;justify-content: space-between
+}
+.footer-btn-layout-pagesize {
+    display: flex;padding-left: 50px
+}
+.pagesize-select-width {
+    width: 100px
+}
+.pagesize-select-width .ant-select-enabled {
+    width: 100% !important
+}

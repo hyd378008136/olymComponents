@@ -134,11 +134,12 @@ class TableSample extends Component {
                columns={columns}
                dataSource={this.state.data}
                onChange={this.onChange}
-          // customColumns={customColumns}
+          customColumns={customColumns}
                onCustomChange={this.onCustomChange}
           // title="这是一个测试自定义列的表格"
                bordered
                customCtns={this.customCtn}
+               pageSize={30}
         />
         <Modal title={"123"} visible={this.state.visible}
                onOk={this.handleModelOk} onCancel={this.handleModelCancel}>

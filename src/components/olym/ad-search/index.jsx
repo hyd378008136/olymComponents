@@ -18,7 +18,7 @@ class AdSearch extends Component{
 
   constructor(props) {
     super(props)
-    const {data,dcList,ocMap} = this.initData(props);
+    const {data,dcList,ocMap, arrSelectValue} = this.initData(props);
     const template = this.initTemplate(props);
     let templateNames = {};
     for(let id in template){
@@ -33,7 +33,8 @@ class AdSearch extends Component{
       // extraConditionCheckedList:[],
       template,
       templateNames,
-      selectedTemplateName
+      selectedTemplateName,
+      arrSelectValue
     };
   }
 
@@ -73,13 +74,16 @@ class AdSearch extends Component{
     let data = {};
     let dcList = [];
     let ocMap = {};
-    let _this = this
+    let _this = this;
+    let arrSelectValue = '';
     defaultCondition.map(({id,props})=>{
       if(Array.isArray(props)){
         props.map((p)=>{
           data[p.fieldEn] = p.fieldValue;
           dcList.push(p.fieldEn)
-        })
+        });
+        arrSelectValue = props[0].fieldEn;
+        this.props.onArraySelect && this.props.onArraySelect(arrSelectValue)
       }else{
         data[props.fieldEn] = props.fieldValue;
         dcList.push(props.fieldEn)
@@ -99,7 +103,7 @@ class AdSearch extends Component{
       }
     });
     console.log("ocMap",ocMap)
-    return {data,dcList,ocMap}
+    return {data, dcList, ocMap, arrSelectValue}
   }
 
   addDefaultReflectMap = (props, field) => {

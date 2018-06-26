@@ -34,7 +34,8 @@ class AdSearch extends Component{
       template,
       templateNames,
       selectedTemplateName,
-      arrSelectValue
+      arrSelectValue,
+      hasArrSelectCallBack: false
     };
   }
 
@@ -83,7 +84,6 @@ class AdSearch extends Component{
           dcList.push(p.fieldEn)
         });
         arrSelectValue = props[0].fieldEn;
-        this.props.onArraySelect && this.props.onArraySelect(arrSelectValue)
       }else{
         data[props.fieldEn] = props.fieldValue;
         dcList.push(props.fieldEn)
@@ -133,19 +133,22 @@ class AdSearch extends Component{
 
   onArraySelect = (value,option) =>{
     this.setState({
-      arrSelectValue:value
+      arrSelectValue: value,
+      hasArrSelectCallBack: true
     })
     this.props.onArraySelect && this.props.onArraySelect(value,option)
   };
 
   onElementValueChange = (e) =>{
     console.log(e)
-    let data = this.state.data;
+    let {data} = this.state;
     if(e.target){
       const {id,value} = e.target;
       data[id] = value;
     }
-    this.setState({data})
+    this.setState({
+      data
+    })
   };
 
   onElementSelectChange = (value,id) =>{
@@ -156,14 +159,21 @@ class AdSearch extends Component{
 
   onElementDateChange = (dates, dateStrings, id, index) =>{
     console.log(id,dates,dateStrings)
-    let {data} = this.state;
+    let {data, hasArrSelectCallBack, arrSelectValue} = this.state;
     if (index || index === 0) {
       id = _.dropRight(id.split('_')).join('_');
       data[id][index] = dates
     } else {
       data[id] = dates;
     }
-    this.setState({data})
+
+    if (!hasArrSelectCallBack) {
+      this.props.onArraySelect && this.props.onArraySelect(arrSelectValue);
+    }
+    this.setState({
+      data,
+      hasArrSelectCallBack: true
+    })
   };
 
   getLabelWidth = (labelName) => {

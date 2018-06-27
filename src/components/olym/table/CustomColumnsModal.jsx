@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import classNames from 'classnames'
 import { Modal, Row, Col, Button, Form, Input, InputNumber, Select } from 'antd'
 import CustomTransfer from './CustomTransfer'
-
-const titles = ['可选', '已选']
+import _ from 'lodash';
+const titles = ['可选', '已选'];
 
 function RedStar() {
     return <span style={{ color: 'red' }}>*</span>
@@ -98,7 +98,7 @@ class CustomColumnsModal extends Component {
     }
 
     handlePageSizeChange = (value) => {
-        this.setState({ pageSize: value })
+        this.setState({ pageSize: _.toNumber(value) })
     }
 
     handleMoveUp = () => {
@@ -151,7 +151,7 @@ class CustomColumnsModal extends Component {
                 <div style={{ paddingTop: 3 }}><label>每页大小：</label></div>
                 <div className="pagesize-select-width">
                     <Select onChange={this.handlePageSizeChange} value={this.state.pageSize}>
-                        {pageSizeList.map(item => <Select.Option value={item}>{item}</Select.Option>)}
+                        {pageSizeList.map(item => <Select.Option key={_.toString(item)} value={_.toString(item)}>{item}</Select.Option>)}
                     </Select>
                 </div>
             </div> : <div></div>}

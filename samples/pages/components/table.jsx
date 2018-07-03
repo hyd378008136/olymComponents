@@ -141,6 +141,7 @@ class TableSample extends Component {
                customCtns={this.customCtn}
                pageSize={30}
                onCustomInfoChange={() => {}}
+               pageSizeList={[20, 30, 40, 50, 60]}
         />
         <Modal title={"123"} visible={this.state.visible}
                onOk={this.handleModelOk} onCancel={this.handleModelCancel}>

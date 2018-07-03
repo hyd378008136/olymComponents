@@ -9,8 +9,6 @@ function RedStar() {
     return <span style={{ color: 'red' }}>*</span>
 }
 
-const pageSizeList = [15, 30, 50, 100, 200];
-
 class CustomColumnsModal extends Component {
 
     static defaultProps = {
@@ -41,11 +39,12 @@ class CustomColumnsModal extends Component {
         //     const required = a ? !!a.required : false
         //     return {...data, required}
         // })
+        this.pageSizeList = this.props.pageSizeList ? this.props.pageSizeList : [15, 30, 50, 100, 200]
         this.state = {
             dataSource,
             targetKeys,
             fixCols: props.fixCols,
-            pageSize: props.pageSize ? props.pageSize : pageSizeList[0],
+            pageSize: props.pageSize ? props.pageSize : this.pageSizeList[0],
             selectedKeys: [],
         }
     }
@@ -150,8 +149,8 @@ class CustomColumnsModal extends Component {
             {this.props.onCustomInfoChange ? <div className="footer-btn-layout-pagesize">
                 <div style={{ paddingTop: 3 }}><label>每页大小：</label></div>
                 <div className="pagesize-select-width">
-                    <Select onChange={this.handlePageSizeChange} value={this.state.pageSize}>
-                        {pageSizeList.map(item => <Select.Option key={_.toString(item)} value={_.toString(item)}>{item}</Select.Option>)}
+                    <Select mode="combobox" filterOption={_.includes(this.pageSizeList, this.state.pageSize) ? false : true} onChange={this.handlePageSizeChange} value={this.state.pageSize}>
+                        {this.pageSizeList.map(item => <Select.Option key={_.toString(item)} value={_.toString(item)}>{item}</Select.Option>)}
                     </Select>
                 </div>
             </div> : <div></div>}

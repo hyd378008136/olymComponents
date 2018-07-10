@@ -39,6 +39,7 @@ class Button extends React.Component {
 		} else {
 			this.setState({ loading: true }, () => {
 				this.checkLoading();
+				this.props.onClick();
 			})
 		}
 	}

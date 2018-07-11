@@ -14,8 +14,12 @@ class Button extends React.Component {
 
 	checkLoading = () => {
 		var observer
+		const timeout = setTimeout(() => {
+			this.setState({ loading: false })
+		}, 1000);
 		const addNewObserver = () => {
 				if (this.getLoading() !== null) {
+					clearTimeout(timeout)
 					observer.disconnect()
 					var newObserver
 					const removeLoading = () => {

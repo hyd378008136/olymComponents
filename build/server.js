@@ -15,7 +15,7 @@ var webpackConfig = process.env.NODE_ENV === 'testing'
 
 let compiler;
 
-// const isInteractive = process.stdout.isTTY;
+const isInteractive = process.stdout.isTTY;
 
 function setupCompiler(host, port, protocol) {
   const entry = webpackConfig.entry
@@ -26,23 +26,21 @@ function setupCompiler(host, port, protocol) {
   compiler = webpack(webpackConfig);
 
   compiler.plugin('invalid', function() {
-    // if (isInteractive) {
-    //   console.log('clearConsole')
-    //   // clearConsole();
-    // }
+    if (isInteractive) {
+      clearConsole();
+    }
     console.log('Compiling...');
   });
 
   let isFirstCompile = true;
   compiler.plugin('done', function(stats) {
-    // if (isInteractive) {
-    //   clearConsole();
-    // }
+    if (isInteractive) {
+      clearConsole();
+    }
 
     const messages = formatWebpackMessages(stats.toJson({}, true));
     const isSuccessful = !messages.errors.length && !messages.warnings.length;
-    const showInstructions = isSuccessful && isFirstCompile;
-    // const showInstructions = isSuccessful && (isInteractive || isFirstCompile);
+    const showInstructions = isSuccessful && (isInteractive || isFirstCompile);
 
     if (isSuccessful) {
       console.log(chalk.green('Compiled successfully!'));
@@ -113,9 +111,9 @@ function runDevServer(host, port, protocol) {
     if(err) {
       return console.log(err);
     }
-    // if (isInteractive) {
-    //   clearConsole();
-    // }
+    if (isInteractive) {
+      clearConsole();
+    }
     console.log(chalk.cyan('Starting the development server...'));
     console.log();
   });
@@ -128,6 +126,6 @@ function run(port) {
   runDevServer(host, port, protocol);
 }
 
-run(9999);
+run(8089);
 
 

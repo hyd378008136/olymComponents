@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
-import { Modal, Row, Col, Button, Form, Input, InputNumber, Select } from 'antd'
+import { Modal, Row, Col, Button, Form, Input, InputNumber, Select, Message } from 'antd'
 import CustomTransfer from './CustomTransfer'
 import _ from 'lodash';
 const titles = ['可选', '已选'];
@@ -97,7 +97,23 @@ class CustomColumnsModal extends Component {
     }
 
     handlePageSizeChange = (value) => {
-        this.setState({ pageSize: _.toNumber(value) })
+        const max = this.pageSizeList[this.pageSizeList.length - 1]
+        const _value = _.toNumber(value)
+        const reg =  new RegExp("^(-?\\d+)?$")
+        if(reg.test(_value)){
+	        if(_value <= max){
+		        this.setState({ pageSize: _value})
+	        }else {
+		        Message.info(`请输入小于${max}的数字`, 3)
+		        this.setState({ pageSize: max })
+		        return false
+	        }
+        }else {
+          Message.info('请输入数字', 3)
+	        this.setState({ pageSize: this.props.pageSize || this.pageSizeList[0] })
+	        return false
+        }
+
     }
 
     handleMoveUp = () => {
@@ -144,6 +160,7 @@ class CustomColumnsModal extends Component {
     render() {
         const { dataSource, targetKeys, selectedKeys, pageSize, fixCols } = this.state
         const { visible, onCancel } = this.props
+	      const {getFieldDecorator} = this.props.form;
 
         const footer = <div className="footer-btn-layout">
             {this.props.onCustomInfoChange ? <div className="footer-btn-layout-pagesize">

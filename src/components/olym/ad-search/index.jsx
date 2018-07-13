@@ -18,18 +18,19 @@ class AdSearch extends Component{
 
   constructor(props) {
     super(props)
-    const {data,dcList,ocMap, arrSelectValue} = this.initData(props);
+    const {data,dcList,ocMap,dcMap, arrSelectValue} = this.initData(props);
     const template = this.initTemplate(props);
     let templateNames = {};
     for(let id in template){
       templateNames[template[id].templateName] = id
     }
-    console.log(data,dcList,ocMap)
+    console.log(data,dcList,ocMap,dcMap)
     let selectedTemplateName;
     this.state = {
       data,
       dcList,
       ocMap,
+      dcMap,//defaultCondition的Map
       // extraConditionCheckedList:[],
       template,
       templateNames,
@@ -62,6 +63,14 @@ class AdSearch extends Component{
         ocMap,
       })
     }
+    if(this.props.defaultCondition && nextProps.defaultCondition && !isEqual(this.props.defaultCondition, nextProps.defaultCondition)){
+      const {data,dcList,dcMap} = this.initData(nextProps);
+      this.setState({
+        // data,
+        // dcList,
+        dcMap,
+      })
+    }
   }
 
   initData = (props) =>{
@@ -75,17 +84,25 @@ class AdSearch extends Component{
     let data = {};
     let dcList = [];
     let ocMap = {};
+    let dcMap = {};
     let _this = this;
     let arrSelectValue = '';
     defaultCondition.map(({id,props})=>{
       if(Array.isArray(props)){
         props.map((p)=>{
           data[p.fieldEn] = p.fieldValue;
+          if(p.mode==='multi'){
+            dcMap[p.fieldEn] = p;
+          }
+
           dcList.push(p.fieldEn)
         });
         arrSelectValue = props[0].fieldEn;
       }else{
         data[props.fieldEn] = props.fieldValue;
+        if(props.mode==='multi') {
+          dcMap[props.fieldEn] = props;
+        }
         dcList.push(props.fieldEn)
       }
     });
@@ -103,7 +120,7 @@ class AdSearch extends Component{
       }
     });
     console.log("ocMap",ocMap)
-    return {data, dcList, ocMap, arrSelectValue}
+    return {data, dcList, ocMap, dcMap, arrSelectValue}
   }
 
   addDefaultReflectMap = (props, field) => {
@@ -146,8 +163,19 @@ class AdSearch extends Component{
       const {id,value} = e.target;
       data[id] = value;
     }
+    this.setState({data})
+  };
+
+  onMultiDefaultSearchValueChange = (e) =>{
+    let value;
+    if(e.target){
+      value = e.target.value;
+    }else{
+      value = e;
+    }
+    console.log(value);
     this.setState({
-      data
+      multiDefaultSearchValue:value
     })
   };
 
@@ -204,13 +232,23 @@ class AdSearch extends Component{
 
     if(fieldType === 'text'){
       //input
-      const inputProps = {
+      let inputProps = {
         ...otherProps,
         id : fieldEn,
         value : this.state.data[fieldEn],
         onChange : this.onElementValueChange,
         size : themeType,
       }
+      if(props.mode==='multi'){
+        inputProps = {
+          ...otherProps,
+          id : fieldEn,
+          value : this.state.multiDefaultSearchValue,
+          onChange : this.onMultiDefaultSearchValueChange,
+          size : themeType,
+        }
+      }
+
       return (
         <FormItem label={fieldCn} key={fieldEn}>
           <Input {...inputProps}/>
@@ -567,27 +605,57 @@ class AdSearch extends Component{
         <Tag closable onClose={(e)=>this.onTagClose(key,v)}>{str}</Tag>
       </FormItem>)
     })
-    if(this.props.onSaveMySearch && temp.length>0){
-      children.push(<FormItem key="onSaveMySearch"><Popover placement="bottom" trigger="click" content={this.getSaveMySearchContent(this.props.onSaveMySearch)}><Button children="保存条件" size={themeType}/></Popover></FormItem>);
-    }
     return children;
   };
 
+  getDefaultConditionTags = () =>{
+    let children = [];
+    const {data,dcList,ocMap,dcMap} = this.state;
+    let temp = [];
+
+    for(let key in data){
+      //编号也要加到tag。
+      if(data[key] && dcList.indexOf(key)>-1 && dcMap[key]){
+        const {fieldCn} = dcMap[key];
+        const value = data[key];
+        if(fieldCn){
+          if(Array.isArray(value)){
+            value.map((v)=>{
+              temp.push({key,str:`${fieldCn}：${v}`,v})
+            })
+          }else if(typeof value === 'string'){
+            temp.push({key,str:`${fieldCn}：${value}`,value})
+          }
+        }
+      }
+    }
+    temp.map(({key,str,v},index)=>{
+      children.push(<FormItem key={key+v}>
+        <Tag closable onClose={(e)=>this.onTagClose(key,v)}>{str}</Tag>
+      </FormItem>)
+    })
+    return children;
+  }
   onTagClose = (key,v) =>{
     // console.log(key,v)
     let {data,ocMap} = this.state;
     let targetList = data[key];
     const newList = targetList.filter((item)=>{
-      const {reflectMap} = ocMap[key];
-      if(reflectMap){
-        let value = '';
-        if (Array.isArray(item)) {
-          value = reflectMap.get(_.last(item)) || _.last(item)
+      if (ocMap[key]) {
+        const {reflectMap} = ocMap[key];
+        if (reflectMap) {
+          let value = '';
+          if (Array.isArray(item)) {
+            value = reflectMap.get(_.last(item)) || _.last(item)
+          } else {
+            value = reflectMap.get(item) || item
+          }
+          return value !== v;
         } else {
-          value = reflectMap.get(item) || item
+          return item !== v;
         }
-        return value !== v;
-      }else{
+      } else {
+        //这里只处理了fieldType=text，mode=multi的情况
         return item !== v;
       }
     })
@@ -708,6 +776,41 @@ class AdSearch extends Component{
       extraCondition=undefined
       extraSearchValue=''
     }
+    //如果mode=multi，组装查询条件清空输入
+    let {dcMap,multiDefaultSearchValue} = this.state;
+    multiDefaultSearchValue = typeof multiDefaultSearchValue === 'string' ? multiDefaultSearchValue.trim() : multiDefaultSearchValue
+    if(this.state.dcMap&& multiDefaultSearchValue){
+      for(let i in dcMap){
+        let fieldEn = dcMap[i].fieldEn;
+        if(fieldEn)
+        {
+          if(data[fieldEn]){
+            let value = data[fieldEn];
+            if(Array.isArray(value)){
+              if(value.indexOf(multiDefaultSearchValue) === -1){
+                value.push(multiDefaultSearchValue);
+              }else{
+                needSearch = false;
+              }
+              data[fieldEn] = value;
+            }else{
+              let list = [value];
+              if(value !== multiDefaultSearchValue){
+                list.push(multiDefaultSearchValue);
+              }else{
+                needSearch = false;
+              }
+              data[fieldEn] = list;
+            }
+          }else{
+            data[fieldEn] = [multiDefaultSearchValue];
+          }
+
+          multiDefaultSearchValue=''
+        }
+
+      }
+    }
 
     if(!needSearch){
       message.warn("已存在相同的搜索条件",3)
@@ -717,7 +820,8 @@ class AdSearch extends Component{
     this.setState({
       data,
       extraCondition,
-      extraSearchValue
+      extraSearchValue,
+      multiDefaultSearchValue
     })
   }
 
@@ -737,15 +841,27 @@ class AdSearch extends Component{
     }
 
     const extraConditionChildren = this.getExtraConditionChildren();
+    const defaultConditionTags = this.getDefaultConditionTags();
+    const btnSave = ()=>{
+      let children = [];
+      if(this.props.onSaveMySearch && extraConditionChildren.length >0||defaultConditionTags.length >0){
+        children.push(<FormItem key="onSaveMySearch"><Popover placement="bottom" trigger="click" content={this.getSaveMySearchContent(this.props.onSaveMySearch)}><Button children="保存条件" size={themeType}/></Popover></FormItem>);
+      }
+      return children
+    };
     const ex = () =>{
-      if(extraConditionChildren.length >0){
+      if(extraConditionChildren.length >0||defaultConditionTags.length >0){
         return(
           <Row>
             <Col span={1}>
               <FormItem label="搜索条件" key="con"/>
             </Col>
             <Col span={23}>
-              <div style={{paddingLeft:15}}>{extraConditionChildren}</div>
+              <div style={{paddingLeft:15}}>
+                {defaultConditionTags}
+                {extraConditionChildren}
+                {btnSave()}
+              </div>
             </Col>
           </Row>
         )

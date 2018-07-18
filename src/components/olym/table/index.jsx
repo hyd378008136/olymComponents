@@ -5,10 +5,10 @@ import {Button, Modal, Row, Col, OlymTable as ATable} from 'antd';
 import CustomColumnsModal from './CustomColumnsModal'
 import _ from 'lodash'
 import $ from 'jquery'
+import PropTypes from 'prop-types'
 
 import './style.css'
 import '../styles/common.less'
-let clickedArr = []
 
 class Table extends Component {
   constructor(props) {
@@ -94,14 +94,19 @@ class Table extends Component {
     })
     $('#' + timeId + ' table').on('mouseup', function () {
       const th = $($('#' + timeId + ' table')[0]).find('th')
-      let widthArr = []
+      let thArr = []
       for(let i = 0, len = th.length; i < len; i++){
-        const width = $(th[i]).width()
-	      widthArr.push(width)
+        const width = $(th[i]).outerWidth()
+        const text = $(th[i]).text()
+        const item = {
+          width,
+          text
+        }
+	      thArr.push(item)
       }
       // console.log(widthArr)
       isMoveStart = false;
-      tableName && _this.setTableWidth(widthArr)
+      tableName && _this.setTableWidth(thArr)
 
     })
     $('#' + timeId + ' table').on('mouseleave', function () {
@@ -122,9 +127,13 @@ class Table extends Component {
     }
   }
   // 拖拽后保存宽度到 local
-	setTableWidth = (widthArr) => {
-    const {tableName, showSeq} = this.props
-    console.log(widthArr)
+  // TODO sample table 拖拽报错，待测试
+	setTableWidth = (thArr) => {
+    const {tableName} = this.props
+    const newThArr = thArr.filter(item => item.text !== '' && item.text !== '序号')
+    const tableThWidth = localStorage.getItem('tableThWidth') && JSON.parse(localStorage.getItem('tableThWidth')) || {}
+		tableThWidth[tableName] = newThArr
+    localStorage.setItem('tableThWidth', JSON.stringify(tableThWidth))
   }
   getUserDefineCol = (columns, customColumns) => {
     if (!customColumns || customColumns.length === 0) {
@@ -188,7 +197,7 @@ class Table extends Component {
   }
 
   render() {
-    console.info(this.props)
+    // console.info(this.props)
     const {columns, customColumns, onCustomChange, showSeq, dataSource, customCtns, title, rowSelection, rowClassName, ...otherProps} = this.props;
     const {timeId, selectedRowKeys} = this.state;
     //多传参数会报错。原因不知道。先把不要用的参数去掉
@@ -210,7 +219,13 @@ class Table extends Component {
     // console.log(columns, _customColumns)
     const userDefineColumns = this.getUserDefineCol(columns, _customColumns);
     let _dataSource;
-
+	  const tableThWidth = localStorage.getItem('tableThWidth') && JSON.parse(localStorage.getItem('tableThWidth')) || {}
+	  const {tableName} = this.props
+	  if(tableThWidth[tableName]){
+		  userDefineColumns.map((col, index) => {
+			  col.width = tableThWidth[tableName][index].width
+		  })
+	  }
     if (showSeq && userDefineColumns[0] && userDefineColumns[0].key !== 'olymc_seq') {
       //显示序号
       _dataSource = [];
@@ -365,4 +380,9 @@ class Table extends Component {
     )
   }
 }
+
+Table.PropTypes = {
+	tableName: PropTypes.string,
+}
+
 export default Table;

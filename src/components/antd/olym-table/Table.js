@@ -15,7 +15,6 @@ import classNames from 'classnames';
 import Pagination from '../pagination';
 import Icon from '../icon';
 import Spin from '../spin';
-import Button from '../button'
 import warning from '../_util/warning';
 import FilterDropdown from '../table/filterDropdown';
 import createStore from '../table/createStore';
@@ -669,12 +668,6 @@ export default class Table extends React.Component {
         }
         return data;
     }
-    renderFooter () {
-        const customButton = React.createElement(Button,{className: 'customBtn', ...this.props.customButtonProps},'自定义列')
-        return (
-	        React.createElement('div',{},customButton, this.renderPagination())
-        )
-    }
     render() {
         const _a = this.props, { style, className, prefixCls, showHeader } = _a, restProps = __rest(_a, ["style", "className", "prefixCls", "showHeader"]);
         const data = this.getCurrentPageData();
@@ -709,7 +702,9 @@ export default class Table extends React.Component {
             };
         }
         return (React.createElement("div", { className: classNames(`${prefixCls}-wrapper`, className), style: style },
-            React.createElement(Spin, Object.assign({}, loading, { className: loading ? `${paginationPatchClass} ${prefixCls}-spin-holder` : '' }), table, this.renderFooter())));
+            React.createElement(Spin, Object.assign({}, loading, { className: loading ? `${paginationPatchClass} ${prefixCls}-spin-holder` : '' }),
+                table,
+                this.renderPagination())));
     }
 }
 Table.Column = Column;

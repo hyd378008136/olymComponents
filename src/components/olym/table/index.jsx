@@ -92,6 +92,13 @@ class Table extends Component {
       }
     })
     $('#' + timeId + ' table').on('mouseup', function () {
+      const th = $($('#' + timeId + ' table')[0]).find('th')
+      let widthArr = []
+      for(let i = 0, len = th.length; i < len; i++){
+        const width = $(th[i]).width()
+	      widthArr.push(width)
+      }
+      console.log(widthArr)
       isMoveStart = false;
     })
     $('#' + timeId + ' table').on('mouseleave', function () {

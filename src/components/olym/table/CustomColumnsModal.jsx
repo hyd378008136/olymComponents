@@ -134,7 +134,7 @@ class CustomColumnsModal extends Component {
     }
 
     handlePageSizeChange = (value) => {
-        const max = this.pageSizeList[this.pageSizeList.length - 1]
+        const max = Math.max(...this.pageSizeList)
         const _value = _.toNumber(value)
         const reg =  new RegExp("^(-?\\d+)?$")
         if(reg.test(_value)){

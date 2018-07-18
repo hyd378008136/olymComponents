@@ -26,7 +26,8 @@ class Table extends Component {
   //设置拖拽
   setDragula = () => {
     // console.info(this.props);
-    let {scroll, columns} = this.props;
+    let {scroll, columns, tableName} = this.props;
+    const _this = this
     let {timeId} = this.state;
     let haveColumnFixed = false;
     for (let i of columns) {
@@ -98,8 +99,10 @@ class Table extends Component {
         const width = $(th[i]).width()
 	      widthArr.push(width)
       }
-      console.log(widthArr)
+      // console.log(widthArr)
       isMoveStart = false;
+      tableName && _this.setTableWidth(widthArr)
+
     })
     $('#' + timeId + ' table').on('mouseleave', function () {
       isMoveStart = false;
@@ -118,7 +121,11 @@ class Table extends Component {
       return true
     }
   }
-
+  // 拖拽后保存宽度到 local
+	setTableWidth = (widthArr) => {
+    const {tableName, showSeq} = this.props
+    console.log(widthArr)
+  }
   getUserDefineCol = (columns, customColumns) => {
     if (!customColumns || customColumns.length === 0) {
       return _.extend([], columns)
@@ -196,7 +203,7 @@ class Table extends Component {
     let _rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
         this.setState({selectedRowKeys})
-        rowSelection.onChange && rowSelection.onChange(selectedRowKeys, selectedRows)
+	      rowSelection && rowSelection.onChange && rowSelection.onChange(selectedRowKeys, selectedRows)
       }
     }
     //处理自定义列
@@ -329,16 +336,18 @@ class Table extends Component {
     const props = {
       ...otherProps,
       // title:_title,
-	    rowSelection : {
-        ...rowSelection,
-        ..._rowSelection
-      },
       customButtonProps,
 	    rowClassName: (record, i) => `${(record.className || '') + ' ' + (rowClassName && rowClassName())}`,
 	    dataSource: _dataSource || dataSource,
       columns: userDefineColumns,
 
     };
+    if(rowSelection){
+      props.rowSelection = {
+	    ...rowSelection,
+	    ..._rowSelection
+	    }
+    }
     if (title || customCtns || (_customColumns && _customColumns.length > 0)) {
       props.title = _title
     }

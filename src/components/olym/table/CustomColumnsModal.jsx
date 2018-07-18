@@ -4,8 +4,6 @@ import { Modal, Row, Col, Button, Form, Input, InputNumber, Select } from 'antd'
 import CustomTransfer from './CustomTransfer'
 import _ from 'lodash';
 const titles = ['可选', '已选'];
-import $ from 'jquery'
-import DDSort from '../util/ddsort'
 
 function RedStar() {
     return <span style={{ color: 'red' }}>*</span>
@@ -24,15 +22,9 @@ class CustomColumnsModal extends Component {
         const customColumns = props.customColumns || [];
         let targetKeys = [];
         let dataSource = [];
-        let dataTitle = []
         customColumns.map((col) => {
             // console.log("col",col)
             if (col.orderNo > 0) {
-                const obj = {
-	                dataIndex: col.dataIndex,
-	                title: col.title,
-                }
-	              dataTitle.push(obj)
                 targetKeys.push(col.dataIndex)
             }
             const data = {
@@ -49,7 +41,6 @@ class CustomColumnsModal extends Component {
         // })
         this.pageSizeList = this.props.pageSizeList ? this.props.pageSizeList : [15, 30, 50, 100, 200]
         this.state = {
-	          dataTitle,
             dataSource,
             targetKeys,
             fixCols: props.fixCols,
@@ -57,39 +48,12 @@ class CustomColumnsModal extends Component {
             selectedKeys: [],
         }
     }
-	  componentDidMount() {
-		   this.setDrag()
-	  }
 
-	  componentDidUpdate() {
-		    this.setDrag()
-	  }
-    setDrag = () => {
-        $($('.ant-transfer-list-content')[1]).DDSort({
-            target: '.LazyLoad',
-            // move: this.forceUpdate()
-            // up: (params) => this.moveItem(params)
-        });
-    }
     handleOk = () => {
         const { columnKeys } = this.props
-        const { targetKeys, selectedKeys, dataSource, dataTitle, ...values } = this.state
-        const itemBox = $($('.ant-transfer-list-content')[1]).find('.ant-transfer-list-content-item')
-        let titleArr = []
-	      for(let i = 0; i < itemBox.length; i++){
-		      titleArr.push($(itemBox[i]).attr('title'))
-        }
-        titleArr.forEach((item, index) => {
-	          dataTitle.forEach((d, idx) => {
-	              if(d.title == item){
-		              targetKeys[index] = dataTitle[idx].dataIndex
-                }
-            })
-        })
-	    // console.log('targetKeys',targetKeys)
-
-	    // values.pageSize = Number(values.pageSize)
-        // console.log("columnKeys", columnKeys)
+        const { targetKeys, selectedKeys, dataSource, ...values } = this.state
+        // values.pageSize = Number(values.pageSize)
+        console.log("columnKeys", columnKeys)
         values.columnKeys = targetKeys.map((key) => {
             return columnKeys.filter(info => info.dataIndex === key)[0] || { key }
         })
@@ -99,8 +63,7 @@ class CustomColumnsModal extends Component {
     }
 
     handleSelectChange = ({ key }, checked) => {
-        // console.log('key',key)
-        // console.log('checked', checked)
+        console.log(key, checked)
         let { selectedKeys, targetKeys } = this.state
         if (targetKeys.indexOf(key) > -1) {
             if (checked) {
@@ -164,13 +127,6 @@ class CustomColumnsModal extends Component {
             this.setState({ targetKeys: tmp })
         }
     }
-	  handleMoveTop = () => {
-		    const { selectedKeys, targetKeys } = this.state
-		    const newTargetKeys = targetKeys.concat()
-		    const tmp = new Set(selectedKeys.concat(newTargetKeys))
-        const newTmp = [...tmp]
-		    this.setState({ targetKeys: newTmp })
-	  }
 
     renderItem = (item) => {
         const customLabel = (
@@ -186,7 +142,7 @@ class CustomColumnsModal extends Component {
     }
 
     render() {
-        const { dataSource, targetKeys, selectedKeys, pageSize, fixCols, dataTitle } = this.state
+        const { dataSource, targetKeys, selectedKeys, pageSize, fixCols } = this.state
         const { visible, onCancel } = this.props
 
         const footer = <div className="footer-btn-layout">
@@ -213,9 +169,7 @@ class CustomColumnsModal extends Component {
         }
 
         const canMove = selectedKeys.length === 1
-        const canMoveTop = selectedKeys.length >= 1
         const btnType = canMove ? 'primary' : 'default'
-        const toTopBtnType = canMoveTop ? 'primary' : 'default'
         const isFirst = canMove && targetKeys[0] === selectedKeys[0]
         const isLast = canMove && targetKeys.length > 1 && targetKeys[targetKeys.length - 1] === selectedKeys[0]
 
@@ -234,14 +188,6 @@ class CustomColumnsModal extends Component {
             disabled: isLast || !canMove,
             onClick: this.handleMoveDown,
         }
-	      const toTopProps = {
-		        onClick: this.handleMoveTop,
-		        size: "small",
-		        key: "toTop",
-  		      type: toTopBtnType,
-  		      disabled: !canMoveTop,
-            style:{marginTop: '4px'}
-	      };
 
         return (
             <Modal {...modalOpts}>
@@ -271,7 +217,6 @@ class CustomColumnsModal extends Component {
                                 <div className="ant-transfer-operation transfer-updown " >
                                     <Button {...upBtnProps} />
                                     <Button {...downBtnProps} />
-                                    <Button {...toTopProps}>置顶</Button>
                                 </div>
                             </Col>
                         </Row>

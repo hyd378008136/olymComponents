@@ -38,7 +38,7 @@ class CustomTransfer extends Component {
                           }) => {
 
         const {onSelectChange} = this.props
-        // console.log("dataSource", dataSource)
+        console.log("dataSource", dataSource)
 
         function matchFilter(filterText, item, text) {
             if (filterOption) {
@@ -109,7 +109,7 @@ class CustomTransfer extends Component {
     }
 
     render() {
-        // console.log("render",this.props.dataSource)
+        console.log("render",this.props.dataSource)
         const body = this.renderTransferBody;
         return (
             <AntdTransfer {...this.props} body={body} />

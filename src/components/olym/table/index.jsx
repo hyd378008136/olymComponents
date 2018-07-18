@@ -8,21 +8,20 @@ import $ from 'jquery'
 
 import './style.css'
 import '../styles/common.less'
-let clickedArr = []
 
 class Table extends Component {
   constructor(props) {
     super(props)
     this.state = {
       visible: false,
-      timeId: (new Date()).valueOf(),
-	    selectedRowKeys: []
+      timeId: (new Date()).valueOf()
     };
   }
 
   componentDidMount = () => {
     this.setDragula();
   }
+
   //设置拖拽
   setDragula = () => {
     // console.info(this.props);
@@ -164,7 +163,7 @@ class Table extends Component {
         extraColumns.push(obj)
       }
     })
-    // console.log(customColumnsMap)
+    console.log(customColumnsMap)
     userDefineColumns = userDefineColumns.concat(extraColumns);
     userDefineColumns.sort((a, b) => {
       return a.orderNo - b.orderNo;
@@ -182,8 +181,8 @@ class Table extends Component {
 
   render() {
     console.info(this.props)
-    const {columns, customColumns, onCustomChange, showSeq, dataSource, customCtns, title, rowSelection, rowClassName, ...otherProps} = this.props;
-    const {timeId, selectedRowKeys} = this.state;
+    const {columns, customColumns, onCustomChange, showSeq, dataSource, customCtns, title, ...otherProps} = this.props;
+    const {timeId} = this.state;
     //多传参数会报错。原因不知道。先把不要用的参数去掉
     let _customColumns = [];
     customColumns && customColumns.map((col) => {
@@ -193,12 +192,6 @@ class Table extends Component {
     _customColumns.sort((a, b) => {
       return a.orderNo - b.orderNo;
     })
-    let _rowSelection = {
-      onChange: (selectedRowKeys, selectedRows) => {
-        this.setState({selectedRowKeys})
-        rowSelection.onChange && rowSelection.onChange(selectedRowKeys, selectedRows)
-      }
-    }
     //处理自定义列
     // console.log(columns, _customColumns)
     const userDefineColumns = this.getUserDefineCol(columns, _customColumns);
@@ -233,15 +226,8 @@ class Table extends Component {
     }
 
     // let title = this.props.title;
-    if(selectedRowKeys.length > 0){
-	    selectedRowKeys.forEach(d => {
-	      _dataSource.forEach(item => {
-	        if(item.key === d){
-		        item.className = 'ant-table-row-clicked'
-	        }
-        })
-      })
-    }
+
+
     // 弹出框参数
     const modalOpts = {
       // ...customConfig,
@@ -266,18 +252,19 @@ class Table extends Component {
           } else {
             leftChildren.push(title)
           }
+
         }
-        // if (_customColumns && Array.isArray(_customColumns) && _customColumns.length > 0) {
-          // const buttonProps = {
-          //   onClick: this.handleShow,
-          //   size: "small",
-          //   key: "custom"
-          // };
-          // if (title) {
-          //   buttonProps.className = "ml8"
-          // }
-          // leftChildren.push(<Button {...buttonProps}>自定义列</Button>)
-        // }
+        if (_customColumns && Array.isArray(_customColumns) && _customColumns.length > 0) {
+          const buttonProps = {
+            onClick: this.handleShow,
+            size: "small",
+            key: "custom"
+          };
+          if (title) {
+            buttonProps.className = "ml8"
+          }
+          leftChildren.push(<Button {...buttonProps}>自定义列</Button>)
+        }
         if (leftChildren.length === 0) {
           return;
         }
@@ -318,24 +305,15 @@ class Table extends Component {
         </Col>
       </Row>)
     };
+
     // 每次弹框都重新渲染
     const CustomColumnsModalGen = () => <CustomColumnsModal {...modalOpts} />
-	  const customButtonProps = {
-		  onClick: this.handleShow,
-		  size: "small",
-		  key: "custom"
-	  };
+
     //把处理完的数据组合成新的props
     const props = {
       ...otherProps,
       // title:_title,
-	    rowSelection : {
-        ...rowSelection,
-        ..._rowSelection
-      },
-      customButtonProps,
-	    rowClassName: (record, i) => `${(record.className || '') + ' ' + (rowClassName && rowClassName())}`,
-	    dataSource: _dataSource || dataSource,
+      dataSource: _dataSource || dataSource,
       columns: userDefineColumns,
 
     };

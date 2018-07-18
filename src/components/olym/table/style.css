@@ -72,8 +72,3 @@
 .pagesize-select-width .ant-select-enabled {
     width: 100% !important
 }
-
-.olym-table-header{
-    display: flex;
-    align-content: space-between;
-}

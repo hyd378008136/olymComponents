@@ -140,6 +140,11 @@ Nav.defaultProps = {
 		    icon: 'laptop',
 		    href:"/components/InputNumber"
 	    },
+	    {
+		    label: 'TextArea',
+		    icon: 'laptop',
+		    href:"/components/TextAreaDemo"
+	    },
         {
             label: 'Ad-search 高级查询',
             icon: 'laptop',

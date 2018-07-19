@@ -77,3 +77,16 @@
     display: flex;
     align-content: space-between;
 }
+.olym-table-header-left {
+    padding-right: 5px;
+}
+.olym-table-header-right {
+    flex-grow:1 ;
+}
+.right-btn{
+    display: flex;
+    justify-content: flex-end;
+}
+.right-btn button{
+    margin-left: 5px;
+}

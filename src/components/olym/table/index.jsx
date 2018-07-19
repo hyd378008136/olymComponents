@@ -308,37 +308,30 @@ class Table extends Component {
         </div>
       };
       const right = () => {
-        let rigthChildren = [];
         if (customCtns && Array.isArray(customCtns) && customCtns.length > 0) {
-          customCtns.map((btn) => {
-            const {props, ...others} = btn;
-            const _btn = {
-              props: {
-                ...props,
-                className: "custom_other_btn_right",
-
-              },
-              ...others
-            }
-            rigthChildren.unshift(_btn)
-          })
-          return (<div className="tar" key="rightarea">
-            {rigthChildren}
+          return (<div className="right-btn" key="rightarea">
+            {customCtns}
           </div>)
         } else if (customCtns && typeof customCtns === "function") {
-          return (<div className="tar" key="rightarea">
+          return (<div className="right-btn" key="rightarea">
             {customCtns()}
           </div>)
         }
       }
-      return (<Row>
-        <Col span={6}>
-          {left()}
-        </Col>
-        <Col span={18}>
-          {right()}
-        </Col>
-      </Row>)
+      // return (<Row>
+      //   <Col span={6}>
+      //     {left()}
+      //   </Col>
+      //   <Col span={18}>
+      //     {right()}
+      //   </Col>
+      // </Row>)
+      return (
+        <div className="olym-table-header">
+          <div className="olym-table-header-left">{left()}</div>
+          <div className="olym-table-header-right">{right()}</div>
+        </div>
+      )
     };
     // 每次弹框都重新渲染
     const CustomColumnsModalGen = () => <CustomColumnsModal {...modalOpts} />

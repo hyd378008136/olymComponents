@@ -33,7 +33,7 @@ class TextArea extends Component {
 		});
 	}
 	render() {
-		// console.log('props',this.props)
+		console.log('props',this.props)
 		const {visible} = this.state
 		const {value, ...otherProps} = this.props
 		const modalOpts = {
@@ -44,11 +44,11 @@ class TextArea extends Component {
 			handleChange: this.handleChange
 		}
 		return (
-			<div>
-				<Button onClick = {this.openModal}>打开大的</Button>
-				<Input.TextArea {...otherProps} value={value} onChange = {this.handleChange} />
+			<span>
+				{/*<Button onClick = {this.openModal}>打开大的</Button>*/}
+				<Input.TextArea onDoubleClick = {this.openModal} {...otherProps} value={value} onChange = {this.handleChange} />
 				<TextAreaBigModal {...modalOpts}/>
-			</div>
+			</span>
 		)
 	}
 }

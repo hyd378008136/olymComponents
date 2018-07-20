@@ -20,8 +20,13 @@ class TextAreaDemo extends Component {
 			<div>
 				<Button onClick = {this.getValue}>取值</Button>
 
-				<FormItem helpPosition={"right"} >
+				<FormItem helpPosition={"right"} label = '输入框 demo'>
 					{getFieldDecorator('TextAreaDemo', {
+						rules: [{
+							required: true,
+							max: 9,
+							message:'最长9'
+						}]
 					})(<TextArea autosize={{minRows: 5, maxRows: 6}}/>)}
 				</FormItem>
 			</div>

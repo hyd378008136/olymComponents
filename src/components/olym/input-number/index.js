@@ -7,7 +7,10 @@ class InputNumber extends Component {
 		this.state = {}
 	}
 	onChange = (e) => {
-		const { value } = e.target;
+		let { value } = e.target;
+		if(value === '.'){
+			value = '0.'
+		}
 		const reg = /^-?(0|[1-9][0-9]*)(\.[0-9]*)?$/;
 		if ((!isNaN(value) && reg.test(value)) || value === '' || value === '-') {
 			this.props.onChange(value);

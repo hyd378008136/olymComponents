@@ -163,6 +163,7 @@ class Table extends Component {
     //     }
     // })
     columns.map((obj) => {
+      console.log(typeof obj.title)
       const dataIndex = obj.dataIndex;
       // if (!obj.orderNo || obj.orderNo < 0) {
       //     return;
@@ -289,7 +290,7 @@ class Table extends Component {
             leftChildren.push(title)
           }
         }
-        if(leftCtns && Array.isArray(leftCtns) && customCtns.length > 0){
+        if(leftCtns && Array.isArray(leftCtns) && customCtns && customCtns.length > 0){
 	        leftCtns.forEach((btn) => {
 		        const {props, ...others} = btn;
 		        const _btn = {
@@ -330,12 +331,21 @@ class Table extends Component {
       //     {right()}
       //   </Col>
       // </Row>)
-      return (
-        <div className="olym-table-header">
-          <div className="olym-table-header-left">{left()}</div>
-          <div className="olym-table-header-right">{right()}</div>
-        </div>
-      )
+      if(typeof title === 'string' && !customCtns){
+	      return (
+          <div className="olym-table-header">
+            {title}
+          </div>
+	      )
+      }else {
+	      return (
+          <div className="olym-table-header">
+            <div className="olym-table-header-left">{left()}</div>
+            <div className="olym-table-header-right">{right()}</div>
+          </div>
+	      )
+      }
+
     };
     // 每次弹框都重新渲染
     const CustomColumnsModalGen = () => <CustomColumnsModal {...modalOpts} />

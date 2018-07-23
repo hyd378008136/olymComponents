@@ -198,7 +198,7 @@ class Table extends Component {
 
   render() {
     // console.info(this.props)
-    const {columns, customColumns, onCustomChange, showSeq, dataSource, customCtns, title, rowSelection, rowClassName, ...otherProps} = this.props;
+    const {columns, customColumns, onCustomChange, showSeq, dataSource, customCtns, title, rowSelection, rowClassName, leftCtns, ...otherProps} = this.props;
     const {timeId, selectedRowKeys} = this.state;
     //多传参数会报错。原因不知道。先把不要用的参数去掉
     let _customColumns = [];
@@ -289,17 +289,21 @@ class Table extends Component {
             leftChildren.push(title)
           }
         }
-        // if (_customColumns && Array.isArray(_customColumns) && _customColumns.length > 0) {
-          // const buttonProps = {
-          //   onClick: this.handleShow,
-          //   size: "small",
-          //   key: "custom"
-          // };
-          // if (title) {
-          //   buttonProps.className = "ml8"
-          // }
-          // leftChildren.push(<Button {...buttonProps}>自定义列</Button>)
-        // }
+        if(leftCtns && Array.isArray(leftCtns) && customCtns.length > 0){
+	        leftCtns.forEach((btn) => {
+		        const {props, ...others} = btn;
+		        const _btn = {
+			        props: {
+				        ...props,
+				        className: "custom_other_btn_left",
+			        },
+			        ...others
+		        }
+		        leftChildren.push(_btn)
+	        })
+        }else if(leftCtns && typeof leftCtns === 'function'){
+          leftChildren.push(leftCtns())
+        }
         if (leftChildren.length === 0) {
           return;
         }

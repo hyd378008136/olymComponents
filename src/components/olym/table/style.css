@@ -16,7 +16,9 @@
     float: right;
     margin-left: 5px;
 }
-
+.custom_other_btn_left {
+    margin-left: 5px;
+}
 .custom-filter-dropdown-btns {
     overflow: hidden;
     padding: 8px 8px 0px 8px;

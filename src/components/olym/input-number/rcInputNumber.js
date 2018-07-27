@@ -4,6 +4,8 @@ import classNames from 'classnames';
 import isNegativeZero from 'is-negative-zero';
 import KeyCode from 'rc-util/lib/KeyCode';
 import InputHandler from './InputHandler';
+import './style.less'
+import '../../antd/input-number/style/index'
 
 function noop() {
 }
@@ -677,42 +679,7 @@ export default class rcInputNumber extends React.Component {
                 onMouseOver={props.onMouseOver}
                 onMouseOut={props.onMouseOut}
             >
-                <div className={`${prefixCls}-handler-wrap`}>
-                    <InputHandler
-                        ref={this.saveUp}
-                        disabled={isUpDisabled}
-                        prefixCls={prefixCls}
-                        unselectable="unselectable"
-                        {...upEvents}
-                        role="button"
-                        aria-label="Increase Value"
-                        aria-disabled={!!isUpDisabled}
-                        className={`${prefixCls}-handler ${prefixCls}-handler-up ${upDisabledClass}`}
-                    >
-                        {this.props.upHandler || <span
-                            unselectable="unselectable"
-                            className={`${prefixCls}-handler-up-inner`}
-                            onClick={preventDefault}
-                        />}
-                    </InputHandler>
-                    <InputHandler
-                        ref={this.saveDown}
-                        disabled={isDownDisabled}
-                        prefixCls={prefixCls}
-                        unselectable="unselectable"
-                        {...downEvents}
-                        role="button"
-                        aria-label="Decrease Value"
-                        aria-disabled={!!isDownDisabled}
-                        className={`${prefixCls}-handler ${prefixCls}-handler-down ${downDisabledClass}`}
-                    >
-                        {this.props.downHandler || <span
-                            unselectable="unselectable"
-                            className={`${prefixCls}-handler-down-inner`}
-                            onClick={preventDefault}
-                        />}
-                    </InputHandler>
-                </div>
+
                 <div
                     className={`${prefixCls}-input-wrap`}
                     role="spinbutton"

@@ -1,43 +1,26 @@
-import React, {Component} from 'react'
-import {Input} from 'antd'
-
-class InputNumber extends Component {
-	constructor(props) {
-		super(props)
-		this.state = {}
-	}
-	onChange = (e) => {
-		let { value } = e.target;
-		if(value === '.'){
-			value = '0.'
-		}
-		const reg = /^-?(0|[1-9][0-9]*)(\.[0-9]*)?$/;
-		if ((!isNaN(value) && reg.test(value)) || value === '' || value === '-') {
-			this.props.onChange(value);
-		}
-	}
-
-	onBlur = () => {
-		const { value, onBlur, onChange } = this.props;
-		if (value.charAt(value.length - 1) === '.' || value === '-') {
-			onChange({ value: value.slice(0, -1) });
-		}
-		if (onBlur) {
-			onBlur();
-		}
-	}
-
-	render() {
-		return (
-			<Input
-				{...this.props}
-				onChange={this.onChange}
-				onBlur={this.onBlur}
-				// placeholder=""
-				// maxLength="25"
-			/>
-		)
-	}
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
+            t[p[i]] = s[p[i]];
+    return t;
+};
+import React from 'react';
+import classNames from 'classnames';
+import rcInputNumber from './rcInputNumber';
+export default class InputNumber extends React.Component {
+    render() {
+        const _a = this.props, { className, size } = _a, others = __rest(_a, ["className", "size"]);
+        const inputNumberClass = classNames({
+            [`${this.props.prefixCls}-lg`]: size === 'large',
+            [`${this.props.prefixCls}-sm`]: size === 'small',
+        }, className);
+        return React.createElement(rcInputNumber, Object.assign({ className: inputNumberClass }, others));
+    }
 }
-
-export default InputNumber;
+InputNumber.defaultProps = {
+    prefixCls: 'ant-input-number',
+    step: 1,
+};

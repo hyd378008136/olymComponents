@@ -267,6 +267,7 @@ class CustomColumnsModal extends Component {
                         <Row>
                             <Col span={20}>
                                 <CustomTransfer
+                                    showSearch
                                     titles={titles}
                                     listStyle={{ width: 180, height: 300 }}
                                     targetKeys={targetKeys}

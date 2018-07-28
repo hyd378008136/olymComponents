@@ -10,6 +10,7 @@ import { Item as MenuItem, ItemGroup as MenuItemGroup } from 'rc-menu';
 import warning from 'warning';
 import Option from './Option';
 import Input from '../../input'
+import TextArea from '../../../olym/input-textarea'
 
 import {
   getPropValue,
@@ -589,7 +590,7 @@ export default class Select extends React.Component {
     const { autosize } = this.props
     const inputElement = props.getInputElement
       ? props.getInputElement()
-      : <Input.TextArea id={props.id} autosize={autosize}/>;
+      : <TextArea id={props.id} autosize={autosize}/>;
     const inputCls = classnames(inputElement.props.className, {
       [`${props.prefixCls}-search__field`]: true,
     });

@@ -27,7 +27,7 @@ class TextAreaBigModal extends Component {
 		}
 		return (
 			<Modal {...modalOpts}>
-				<Input.TextArea {...otherProps} value={value}  onChange = { this.handleChange } autosize={{minRows: 10}}/>
+				<Input.TextArea {...otherProps} value={value}  onChange = { this.handleChange } />
 			</Modal>
 		)
 	}

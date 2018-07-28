@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Input, Button, Form} from 'antd'
 import TextAreaBigModal from './TextAreaBigModal'
+import PropTypes from 'prop-types'
 
 class TextArea extends Component {
 	constructor(props) {
@@ -35,14 +36,15 @@ class TextArea extends Component {
 	render() {
 		console.log('props',this.props)
 		const {visible} = this.state
-		const {value, ...otherProps} = this.props
+		const {value, bigAutosize, ...otherProps} = this.props
 		const modalOpts = {
 			visible,
 			onCancel : this.handleCancel,
 			value,
 			onOk: this.handleOk,
-			handleChange: this.handleChange
-		}
+			handleChange: this.handleChange,
+            autosize : bigAutosize
+        }
 		return (
 			<span>
 				{/*<Button onClick = {this.openModal}>打开大的</Button>*/}
@@ -52,5 +54,13 @@ class TextArea extends Component {
 		)
 	}
 }
+
+TextArea.PropTypes = {
+    bigAutosize: PropTypes.object,
+}
+
+TextArea.defaultProps = {
+    bigAutosize: {minRows: 10}
+};
 
 export default TextArea

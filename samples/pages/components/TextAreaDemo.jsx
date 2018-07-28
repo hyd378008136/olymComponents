@@ -50,7 +50,10 @@ class TextAreaDemo extends Component {
 							max: 9,
 							message:'最长9'
 						}]
-					})(<TextArea autosize={{minRows: 5, maxRows: 6}}/>)}
+					})(<TextArea
+						autosize={{minRows: 5, maxRows: 6}}
+						bigAutosize = {{minRows: 20}} // 大弹出框的行数
+					/>)}
 				</FormItem>
 				<FormItem helpPosition={"bottom"} label = 'textareaselect' labelWidth="8em">
 					{getFieldDecorator('TextAreaSelectDemo', {
@@ -70,7 +73,7 @@ class TextAreaDemo extends Component {
 							// onFocus={handleFocus}
 							// onBlur={handleBlur}
 							showSearch={true}
-							onFirstFocus={this.handleSearch}
+							// onFirstFocus={this.handleSearch}
 							onSearch={this.handleSearch}
 							getPopupContainer={this.getPopupContainer}
 							filterOption={false}

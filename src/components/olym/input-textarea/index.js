@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Input, Button, Form} from 'antd'
 import TextAreaBigModal from './TextAreaBigModal'
 import PropTypes from 'prop-types'
+import './style.less'
 
 class TextArea extends Component {
 	constructor(props) {
@@ -43,7 +44,10 @@ class TextArea extends Component {
 			value,
 			onOk: this.handleOk,
 			handleChange: this.handleChange,
-            autosize : bigAutosize
+            autosize : {
+                maxRows: 20,
+                ...bigAutosize,
+			}
         }
 		return (
 			<span>
@@ -60,7 +64,10 @@ TextArea.PropTypes = {
 }
 
 TextArea.defaultProps = {
-    bigAutosize: {minRows: 10}
+    bigAutosize: {
+    	minRows: 10,
+        maxRows: 30,
+    }
 };
 
 export default TextArea

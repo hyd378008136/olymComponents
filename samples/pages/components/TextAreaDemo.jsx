@@ -69,7 +69,7 @@ class TextAreaDemo extends Component {
 							style={{ width: 200 }}
 							placeholder="Select a person"
 							// optionFilterProp="children"
-							// onChange={handleChange}
+							// onChange={this.handleChange}
 							// onFocus={handleFocus}
 							// onBlur={handleBlur}
 							showSearch={true}

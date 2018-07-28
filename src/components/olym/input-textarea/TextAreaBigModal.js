@@ -17,9 +17,9 @@ class TextAreaBigModal extends Component {
 	render() {
 		const { visible, onCancel, value, onOk, width, handleChange, ...otherProps} = this.props
 		const modalOpts = {
-			title : '编辑框',
+			title : '',
 			width : width || '800px',
-			className: 'table-custom-column',
+			className: 'table-custom-column big-textarea',
 			maskClosable: false,
 			visible,
 			onCancel,

@@ -11,11 +11,11 @@ class TextArea extends Component {
 			value: ''
 		};
 	}
-	handleChange = (e) => {
+	handleChange = (e, open) => {
 		// this.setState({
 		// 	value: e.target.value
 		// })
-		this.props.onChange && this.props.onChange(e)
+		this.props.onChange && this.props.onChange(e, open)
 	}
 	openModal = () => {
 		this.setState({
@@ -34,7 +34,7 @@ class TextArea extends Component {
 		});
 	}
 	render() {
-		console.log('props',this.props)
+		// console.log('props',this.props)
 		const {visible} = this.state
 		const {value, bigAutosize, ...otherProps} = this.props
 		const modalOpts = {

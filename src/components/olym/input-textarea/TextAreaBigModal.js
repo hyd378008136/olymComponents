@@ -12,7 +12,7 @@ class TextAreaBigModal extends Component {
 		};
 	}
 	handleChange = (e) => {
-		this.props.handleChange && this.props.handleChange(e)
+		this.props.handleChange && this.props.handleChange(e, false)
 	}
 	render() {
 		const { visible, onCancel, value, onOk, width, handleChange, ...otherProps} = this.props

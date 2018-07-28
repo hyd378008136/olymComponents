@@ -57,11 +57,11 @@ class TextAreaDemo extends Component {
 				</FormItem>
 				<FormItem helpPosition={"bottom"} label = 'textareaselect' labelWidth="8em">
 					{getFieldDecorator('TextAreaSelectDemo', {
-						rules: [{
-							required: true,
-							max: 9,
-							message:'最长9'
-						}]
+						// rules: [{
+						// 	required: true,
+						// 	max: 9,
+						// 	message:'最长9'
+						// }]
 					})(
 						<TextAreaSelect
 							mode="combobox"

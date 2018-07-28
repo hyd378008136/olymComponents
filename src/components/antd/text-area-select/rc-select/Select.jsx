@@ -163,7 +163,7 @@ export default class Select extends React.Component {
     }
   }
 
-  onInputChange = event => {
+  onInputChange = (event, open = true) => {
     const { tokenSeparators } = this.props;
     const val = event.target.value;
     if (
@@ -178,8 +178,9 @@ export default class Select extends React.Component {
       return;
     }
     this.setInputValue(val);
+    console.log(open)
     this.setState({
-      open: true,
+      open,
     });
     if (isCombobox(this.props)) {
       this.fireChange([

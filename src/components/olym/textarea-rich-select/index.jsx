@@ -14,7 +14,7 @@ class TextAreaRichSelect extends Component {
 
     static propTypes = {
         dataBody: React.PropTypes.array,
-        dataHeader: React.PropTypes.object,
+        dataHeader: React.PropTypes.array,
         dropdwonMaxRows: React.PropTypes.number
     }
 

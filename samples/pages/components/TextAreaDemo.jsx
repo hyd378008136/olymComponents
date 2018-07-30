@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import TextArea from '../../../src/components/olym/input-textarea'
 import TextAreaSelect from '../../../src/components/antd/text-area-select'
+import TextAreaRichSelect from '../../../src/components/olym/textarea-rich-select'
 import {Form, Button, Select} from 'antd'
 import {FormLayout} from 'olym'
 const FormItem = FormLayout.FormItem
@@ -38,6 +39,29 @@ class TextAreaDemo extends Component {
 	}
 	render() {
 		const {getFieldDecorator} = this.props.form
+		const dataHeader= [{dataIndex: "value", title: "代码"}, {dataIndex: "name", title: "名称"}]
+		const dataBody= [{
+			value: 'code1',
+			name: 'name1'
+		},{
+            value: 'code21',
+            name: 'name21'
+        },{
+            value: 'code31',
+            name: 'name41'
+        },{
+            value: 'code41',
+            name: 'name41'
+        },{
+            value: 'code51',
+            name: 'name51'
+        },{
+            value: 'code61',
+            name: 'name16'
+        },{
+            value: 'code71',
+            name: 'name17'
+        },]
 		return (
 			<FormLayout>
 				<div id="pop-up"> </div>
@@ -85,6 +109,46 @@ class TextAreaDemo extends Component {
 						</TextAreaSelect>
 					)}
 				</FormItem>
+                <FormItem helpPosition={"bottom"} label = 'textareaRichSelect' labelWidth="8em">
+                    {getFieldDecorator('TextAreaRichSelectDemo', {
+                        // rules: [{
+                        // 	required: true,
+                        // 	max: 9,
+                        // 	message:'最长9'
+                        // }]
+                    })(
+                    	<TextAreaRichSelect
+                            mode="combobox"
+                            allowclear
+                            style={{ width: 200 }}
+                            dataHeader={dataHeader}
+							dataBody={dataBody}
+                            onSearch={this.handleSearch}
+                            placeholder="Select a person"
+                            getPopupContainer={this.getPopupContainer}
+						/>
+                        // <TextAreaSelect
+                        //     mode="combobox"
+                        //     allowclear
+                        //     style={{ width: 200 }}
+                        //     placeholder="Select a person"
+							// // optionFilterProp="children"
+							// // onChange={this.handleChange}
+							// // onFocus={handleFocus}
+							// // onBlur={handleBlur}
+                        //     showSearch={true}
+							// // onFirstFocus={this.handleSearch}
+                        //     onSearch={this.handleSearch}
+                        //     getPopupContainer={this.getPopupContainer}
+                        //     filterOption={false}
+							// // filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                        // >
+                        //     {
+                        //         this.state.dataList.map((item) => <Option ket={item} value={item}>{item}</Option>)
+                        //     }
+                        // </TextAreaSelect>
+                    )}
+                </FormItem>
 			</FormLayout>
 		)
 	}

@@ -18,7 +18,7 @@ class DatePicker extends Component {
     const {value, onChange, id, onOk, format = 'YYYY-MM-DD'} = this.props;
     if (!value && onChange) {
       const now = moment();
-      onChange(id, now, now.format(format))
+      onChange(now, now.format(format), id)
     }
     onOk && onOk()
   };

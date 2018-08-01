@@ -1,5 +1,6 @@
 import React,{Component} from "react";
 import {DatePicker} from 'olym';
+import moment from 'moment';
 
 const RangePicker = DatePicker.RangePicker;
 const MonthPicker = DatePicker.MonthPicker;
@@ -9,6 +10,7 @@ class DatePickerSample extends Component{
         super(props)
         this.state = {
             value:["2017-09-09","2017-10-10","2017-11-11"],
+            time: ''
         };
     }
 
@@ -27,6 +29,17 @@ class DatePickerSample extends Component{
                         month:dateString
                     })
                 }} />
+                <DatePicker
+                  format="YYYY-MM-DD HH:mm:ss"
+                  // showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+                  showTime
+                  onChange={(id, dates, dateStrings) => {
+                    console.log(id, dates, dateStrings)
+                    this.setState({
+                      time: dates
+                    })
+                  }} value={this.state.time}
+                />
             </div>
         )
     }

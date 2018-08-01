@@ -14,23 +14,23 @@ class DatePicker extends Component {
     this.state = {};
   }
 
+  onOk = () => {
+    const {value, onChange, id, onOk, format = 'YYYY-MM-DD'} = this.props;
+    if (!value && onChange) {
+      const now = moment();
+      onChange(id, now, now.format(format))
+    }
+    onOk && onOk()
+  };
+
   render() {
-    const {id, onChange, value = '', defaultValue, momentLocale, ...otherProps} = this.props;
-    let {showTime} = this.props;
+    const {id, onChange, value = '', defaultValue, momentLocale, onOk, ...otherProps} = this.props;
     const format = this.props.format || "YYYY-MM-DD";
-    if (showTime && typeof showTime === 'boolean') {
-      showTime = {
-        defaultValue: moment('00:00:00', 'HH:mm:ss')
-      }
-    }
-    if (showTime && typeof showTime === 'object') {
-      showTime.defaultValue = moment('00:00:00', 'HH:mm:ss')
-    }
     const props = {
       id,
       ...otherProps,
       format,
-      showTime
+      onOk: this.onOk
     };
 
     if (value !== undefined) {

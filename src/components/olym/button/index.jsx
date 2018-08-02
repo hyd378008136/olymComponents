@@ -36,14 +36,14 @@ class Button extends React.Component {
 		observer.observe(document.body, { childList: true })
 	}
 
-	handleClick = () => {
+	handleClick = (e) => {
 		let needLoading = this.props.needLoading;
 		if (!needLoading) {
-			this.props.onClick();
+			this.props.onClick(e);
 		} else {
 			this.setState({ loading: true }, () => {
 				this.checkLoading();
-				this.props.onClick();
+				this.props.onClick(e);
 			})
 		}
 	}

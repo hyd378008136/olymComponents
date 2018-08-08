@@ -257,9 +257,10 @@ class Table extends Component {
 
     // let title = this.props.title;
     if(selectedRowKeys.length > 0){
+      const _key = this.props.rowKey ? this.props.rowKey : 'key';
 	    selectedRowKeys.forEach(d => {
 	      _dataSource.forEach(item => {
-	        if(item.key === d){
+	        if(item[_key] === d){
 		        item.className = 'ant-table-row-clicked'
 	        }
         })

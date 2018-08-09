@@ -1,6 +1,6 @@
 import React,{Component} from "react";
 
-import {Input, Button, Row, Col, Modal, Message, Icon,Affix,Checkbox,Popover,message, Cascader} from 'antd';
+import {Input, Button, Row, Col, Modal, Message, Icon,Affix,Checkbox,Popover,message, Cascader,AutoComplete} from 'antd';
 import {Table, FormLayout, Split, Wrap, Panel,Tag,DatePicker, Select} from 'olym'
 
 import CustomTopLine from './CustomTopLine';
@@ -386,6 +386,29 @@ class AdSearch extends Component{
           <Cascader {...cascaderProps}/>
         </FormItem>
       )
+    } else if(fieldType === 'auto_complete'){
+        //autoComplete
+        // console.info(props);
+        const autoCompleteProps = {
+            ...otherProps,
+            id : fieldEn,
+            dropdownMatchSelectWidth : false,
+            size : themeType,
+            placeholder : '请选择',
+            value : this.state.extraSearchValue,
+            onSelect : (val)=>{
+                this.onExtraSearchValueSelect(val);
+            },
+            onSearch : (val)=>{
+                this.onExtraSearchValueChange(val);
+                props.onSearch(val);
+            }
+        }
+        return (
+            <FormItem key="extraSearchValue">
+                <AutoComplete {...autoCompleteProps}/>
+            </FormItem>
+        )
     }else{
       return (
         <FormItem key="extraSearchValue">

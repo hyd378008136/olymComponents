@@ -1,6 +1,6 @@
 {
   "name": "olymc",
-  "version": "0.2.42",
+  "version": "0.2.43",
   "description": "Olymtech Components",
   "main": "lib/index.js",
   "scripts": {

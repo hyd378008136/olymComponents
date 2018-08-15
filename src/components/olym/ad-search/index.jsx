@@ -260,6 +260,7 @@ class AdSearch extends Component{
         ...otherProps,
         id : fieldEn,
         dropdownMatchSelectWidth : false,
+        dropdownMenuStyle: {'max-width': '250px'},
         size : themeType,
         placeholder : '请选择',
         value : this.state.data[fieldEn],
@@ -283,6 +284,7 @@ class AdSearch extends Component{
         placeholder : '请选择',
         value : this.state.data[fieldEn],
         onChange : this.onElementSelectChange,
+        dropdownMenuStyle: {'max-width': '250px'},
         mode : "multiple",
       }
       return(
@@ -361,6 +363,7 @@ class AdSearch extends Component{
         ...otherProps,
         id : fieldEn,
         dropdownMatchSelectWidth : false,
+        dropdownMenuStyle: {'max-width': '250px'},
         size : themeType,
         placeholder : '请选择',
         value : this.state.extraSearchValue,

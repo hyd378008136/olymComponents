@@ -10,6 +10,7 @@ import { Item as MenuItem, ItemGroup as MenuItemGroup } from 'rc-menu';
 import warning from 'warning';
 import Option from './Option';
 import Input from '../../input'
+import TextArea from '../../../olym/input-textarea'
 
 import {
   getPropValue,
@@ -162,7 +163,7 @@ export default class Select extends React.Component {
     }
   }
 
-  onInputChange = event => {
+  onInputChange = (event, open = true) => {
     const { tokenSeparators } = this.props;
     const val = event.target.value;
     if (
@@ -177,8 +178,9 @@ export default class Select extends React.Component {
       return;
     }
     this.setInputValue(val);
+    console.log(open)
     this.setState({
-      open: true,
+      open,
     });
     if (isCombobox(this.props)) {
       this.fireChange([
@@ -589,7 +591,7 @@ export default class Select extends React.Component {
     const { autosize } = this.props
     const inputElement = props.getInputElement
       ? props.getInputElement()
-      : <Input.TextArea id={props.id} autosize={autosize}/>;
+      : <TextArea id={props.id} autosize={autosize}/>;
     const inputCls = classnames(inputElement.props.className, {
       [`${props.prefixCls}-search__field`]: true,
     });

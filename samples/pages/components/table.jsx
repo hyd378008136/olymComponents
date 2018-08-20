@@ -203,6 +203,11 @@ class TableSample extends Component {
 			this.setSelectedRowKeys(keys)
 		}
 	}
+	renderTitle = () => {
+  	return(
+  		<div key='1'>测试 title</div>
+	  )
+	}
   render() {
     const _this = this
     const columns = [{
@@ -225,7 +230,7 @@ class TableSample extends Component {
         return <Input value={text} onChange={(e) => this.tableFieldChange(e, 'name', index)}/>
       }
     }, {
-      title: '年龄',
+      title: '<span>姓名span</span>',
       dataIndex: 'age',
       key: 'age',
       sorter: true,
@@ -297,9 +302,9 @@ class TableSample extends Component {
                onChange={this.onChange}
                customColumns={customColumns}
                onCustomChange={this.onCustomChange}
-               title="这是一个测试自定义列的表格"
+               title={this.renderTitle()}
                bordered
-               customCtns={this.customCtn()}
+               // customCtns={this.customCtn()}
                pageSize={30}
                tableName = 'test'
                // rowClassName = {(record, index) => 'test'}

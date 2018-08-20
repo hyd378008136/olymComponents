@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
-import TextArea from '../../../src/components/olym/input-textarea'
+// import TextArea from '../../../src/components/olym/input-textarea'
 import TextAreaSelect from '../../../src/components/antd/text-area-select'
 import TextAreaRichSelect from '../../../src/components/olym/textarea-rich-select'
+import {ReplaceTextArea as TextArea} from '../../../src/components/olym/replace-textarea'
 import {Form, Button, Select} from 'antd'
 import {FormLayout} from 'olym'
 const FormItem = FormLayout.FormItem
@@ -67,18 +68,34 @@ class TextAreaDemo extends Component {
 				<div id="pop-up"> </div>
 				<Button onClick = {this.getValue}>取值</Button>
 
-				<FormItem helpPosition={"right"} label = '输入框 demo' labelWidth="8em">
-					{getFieldDecorator('TextAreaDemo', {
-						rules: [{
-							required: true,
-							max: 9,
-							message:'最长9'
-						}]
-					})(<TextArea
-						autosize={{minRows: 5, maxRows: 6}}
-						bigAutosize = {{minRows: 20}} // 大弹出框的行数
-					/>)}
-				</FormItem>
+				{/*<FormItem helpPosition={"right"} label = '输入框 demo' labelWidth="8em">*/}
+					{/*{getFieldDecorator('TextAreaDemo', {*/}
+						{/*rules: [{*/}
+							{/*required: true,*/}
+							{/*max: 9,*/}
+							{/*message:'最长9'*/}
+						{/*}]*/}
+					{/*})(<TextArea*/}
+						{/*autosize={{minRows: 5, maxRows: 6}}*/}
+						{/*bigAutosize = {{minRows: 20}} // 大弹出框的行数*/}
+					{/*/>)}*/}
+				{/*</FormItem>*/}
+                <FormItem helpPosition={"right"} label = 'replaceTextArea' labelWidth="8em">
+                    {getFieldDecorator('replaceTextArea', {
+                        rules: [{
+                            required: true,
+                            message:'必填项'
+                        }]
+                    })(
+                    	<TextArea
+							needReplace = {true}
+							needUppercase = {true}
+                            needTransform = {true}
+                        	autosize={{minRows: 5, maxRows: 6}}
+                        	bigAutosize = {{minRows: 20}} // 大弹出框的行数
+                    	/>
+					)}
+                </FormItem>
 				<FormItem helpPosition={"bottom"} label = 'textareaselect' labelWidth="8em">
 					{getFieldDecorator('TextAreaSelectDemo', {
 						// rules: [{

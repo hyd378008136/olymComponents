@@ -139,12 +139,21 @@ Nav.defaultProps = {
 		    label: 'InputNumber',
 		    icon: 'laptop',
 		    href:"/components/InputNumber"
-	    },
+	    },{
+            label: 'ReplaceInput',
+            icon: 'laptop',
+            href:"/components/ReplaceInput"
+        },
 	    {
 		    label: 'TextArea',
 		    icon: 'laptop',
 		    href:"/components/TextAreaDemo"
 	    },
+        {
+            label: 'ReplaceTextareaDemo',
+            icon: 'laptop',
+            href:"/components/ReplaceTextarea"
+        },
         {
             label: 'Ad-search 高级查询',
             icon: 'laptop',

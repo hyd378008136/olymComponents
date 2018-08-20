@@ -4,6 +4,10 @@
 import React, {Component} from 'react'
 import {Input as AtInput} from 'antd'
 import PropTypes from 'prop-types'
+// import { ReplaceTextArea as TextArea } from 'olym'
+import Group from '../../antd/input/Group';
+import Search from '../../antd/input/Search';
+import ReplaceTextArea from '../replace-text-area'
 
 /**
  * 将常见的不可见字符转换为普通的空格字符
@@ -90,5 +94,9 @@ ReplaceInput.defaultProps = {
     needUppercase: true,
     needTransform: true,
 }
+
+ReplaceInput.Group = Group;
+ReplaceInput.Search = Search;
+ReplaceInput.TextArea = ReplaceTextArea
 
 export default ReplaceInput

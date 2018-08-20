@@ -4,9 +4,6 @@
 import React, {Component} from 'react'
 import {Input as AtInput} from 'antd'
 import PropTypes from 'prop-types'
-// import { ReplaceTextArea as TextArea } from 'olym'
-import Group from '../../antd/input/Group';
-import Search from '../../antd/input/Search';
 import ReplaceTextArea from '../replace-text-area'
 
 /**
@@ -95,8 +92,8 @@ ReplaceInput.defaultProps = {
     needTransform: true,
 }
 
-ReplaceInput.Group = Group;
-ReplaceInput.Search = Search;
+ReplaceInput.Group = AtInput.Group;
+ReplaceInput.Search = AtInput.Search;
 ReplaceInput.TextArea = ReplaceTextArea
 
 export default ReplaceInput

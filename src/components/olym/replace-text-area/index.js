@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {TextArea} from 'olym'
+import TextArea from '../text-area'
 import PropTypes from 'prop-types'
 /**
  * 将常见的不可见字符转换为普通的空格字符

@@ -151,4 +151,4 @@ class TextAreaDemo extends Component {
 	}
 }
 
-export default CustomizedHOCForm()(TextAreaDemo)
+export default CustomizedHOCForm({})(TextAreaDemo)

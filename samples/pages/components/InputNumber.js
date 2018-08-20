@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {InputNumber} from "olym";
+import InputNumber from '../../../src/components/olym/input-number'
 
 class NumericInputDemo extends React.Component {
 	constructor(props) {

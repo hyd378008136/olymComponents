@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import classNames from 'classnames'
-import { Modal, Row, Col, Button, Form, Input, InputNumber, Select } from 'antd'
+import { Modal, Row, Col, Button, Form, Input, InputNumber, Select, Message } from 'antd'
 import CustomTransfer from './CustomTransfer'
 import _ from 'lodash';
 const titles = ['可选', '已选'];
@@ -97,7 +96,23 @@ class CustomColumnsModal extends Component {
     }
 
     handlePageSizeChange = (value) => {
-        this.setState({ pageSize: _.toNumber(value) })
+        const max = Math.max(...this.pageSizeList)
+        const _value = _.toNumber(value)
+        const reg =  new RegExp("^(-?\\d+)?$")
+        if(reg.test(_value)){
+	        if(_value <= max){
+		        this.setState({ pageSize: _value})
+	        }else {
+		        Message.info(`请输入小于${max}的数字`, 3)
+		        this.setState({ pageSize: max })
+		        return false
+	        }
+        }else {
+          Message.info('请输入数字', 3)
+	        this.setState({ pageSize: this.props.pageSize || this.pageSizeList[0] })
+	        return false
+        }
+
     }
 
     handleMoveUp = () => {
@@ -127,6 +142,13 @@ class CustomColumnsModal extends Component {
             this.setState({ targetKeys: tmp })
         }
     }
+    handleMoveTop = () => {
+        const {selectedKeys, targetKeys} = this.state
+        const newTargetKeys = targetKeys.concat()
+        const tmp = new Set(selectedKeys.concat(newTargetKeys))
+        const newTmp = [...tmp]
+        this.setState({targetKeys: newTmp})
+    }
 
     renderItem = (item) => {
         const customLabel = (
@@ -144,7 +166,6 @@ class CustomColumnsModal extends Component {
     render() {
         const { dataSource, targetKeys, selectedKeys, pageSize, fixCols } = this.state
         const { visible, onCancel } = this.props
-
         const footer = <div className="footer-btn-layout">
             {this.props.onCustomInfoChange ? <div className="footer-btn-layout-pagesize">
                 <div style={{ paddingTop: 3 }}><label>每页大小：</label></div>
@@ -169,7 +190,9 @@ class CustomColumnsModal extends Component {
         }
 
         const canMove = selectedKeys.length === 1
+        const canMoveTop = selectedKeys.length >= 1
         const btnType = canMove ? 'primary' : 'default'
+        const toTopBtnType = canMoveTop ? 'primary' : 'default'
         const isFirst = canMove && targetKeys[0] === selectedKeys[0]
         const isLast = canMove && targetKeys.length > 1 && targetKeys[targetKeys.length - 1] === selectedKeys[0]
 
@@ -188,6 +211,14 @@ class CustomColumnsModal extends Component {
             disabled: isLast || !canMove,
             onClick: this.handleMoveDown,
         }
+	      const toTopProps = {
+		        onClick: this.handleMoveTop,
+		        size: "small",
+		        key: "toTop",
+  		      type: toTopBtnType,
+  		      disabled: !canMoveTop,
+            style:{marginTop: '4px'}
+	      };
 
         return (
             <Modal {...modalOpts}>
@@ -196,6 +227,7 @@ class CustomColumnsModal extends Component {
                         <Row>
                             <Col span={20}>
                                 <CustomTransfer
+                                    showSearch
                                     titles={titles}
                                     listStyle={{ width: 180, height: 300 }}
                                     targetKeys={targetKeys}
@@ -217,6 +249,7 @@ class CustomColumnsModal extends Component {
                                 <div className="ant-transfer-operation transfer-updown " >
                                     <Button {...upBtnProps} />
                                     <Button {...downBtnProps} />
+                                    <Button {...toTopProps}>置顶</Button>
                                 </div>
                             </Col>
                         </Row>

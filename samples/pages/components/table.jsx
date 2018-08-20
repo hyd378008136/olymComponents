@@ -151,8 +151,6 @@ class TableSample extends Component {
                bordered
                customCtns={this.customCtn}
                title="这是一个测试自定义列的表格"
-               bordered
-               customCtns={this.customCtn()}
                pageSize={30}
                onCustomInfoChange={() => {}}
                pageSizeList={[20, 30, 40, 50, 60]}

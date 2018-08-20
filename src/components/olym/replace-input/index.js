@@ -91,6 +91,4 @@ ReplaceInput.defaultProps = {
     needTransform: true,
 }
 
-export {
-    ReplaceInput
-}
+export default ReplaceInput

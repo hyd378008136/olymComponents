@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import TextArea from '../input-textarea'
+import {TextArea} from 'olym'
 import PropTypes from 'prop-types'
 /**
  * 将常见的不可见字符转换为普通的空格字符
@@ -91,6 +91,4 @@ ReplaceTextArea.defaultProps = {
     needTransform: true,
 }
 
-export {
-    ReplaceTextArea
-}
+export default ReplaceTextArea

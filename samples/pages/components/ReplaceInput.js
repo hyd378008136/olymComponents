@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
-import {ReplaceInput as Input} from '../../../src/components/olym/replace-input'
 import {Form, Button, Select} from 'antd'
-import {FormLayout} from 'olym'
+import {FormLayout, ReplaceInput as Input} from 'olym'
 const FormItem = FormLayout.FormItem
 
 class InputDemo extends React.Component {

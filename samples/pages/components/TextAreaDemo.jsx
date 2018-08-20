@@ -1,9 +1,6 @@
 import React, {Component} from 'react'
-import TextArea from '../../../src/components/olym/input-textarea'
-import TextAreaSelect from '../../../src/components/antd/text-area-select'
-import TextAreaRichSelect from '../../../src/components/olym/textarea-rich-select'
-import {Form, Button, Select} from 'antd'
-import {FormLayout} from 'olym'
+import { Button, Select, TextAreaSelect} from 'antd'
+import {FormLayout, TextArea, TextAreaRichSelect, CustomizedHOCForm} from 'olym'
 const FormItem = FormLayout.FormItem
 const Option = Select.Option;
 let id = 0;
@@ -154,4 +151,4 @@ class TextAreaDemo extends Component {
 	}
 }
 
-export default Form.create()(TextAreaDemo)
+export default CustomizedHOCForm()(TextAreaDemo)

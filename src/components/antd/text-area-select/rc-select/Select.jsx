@@ -10,7 +10,7 @@ import { Item as MenuItem, ItemGroup as MenuItemGroup } from 'rc-menu';
 import warning from 'warning';
 import Option from './Option';
 import Input from '../../input'
-import TextArea from '../../../olym/input-textarea'
+import TextArea from '../../../olym/text-area'
 
 import {
   getPropValue,

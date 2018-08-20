@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {ReplaceTextArea as TextArea} from '../../../src/components/olym/replace-textarea'
+import { ReplaceTextArea as TextArea } from 'olym'
 import {Form, Button, Select} from 'antd'
 import {FormLayout} from 'olym'
 const FormItem = FormLayout.FormItem

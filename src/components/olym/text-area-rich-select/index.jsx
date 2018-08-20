@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {Select} from 'antd';
-import TextAreaSelect from '../../antd/text-area-select'
+import {Select, TextAreaSelect} from 'antd';
 import './styles/index'
 
 const Option = Select.Option;

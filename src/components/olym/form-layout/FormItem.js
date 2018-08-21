@@ -49,7 +49,7 @@ class FormItem extends Component {
 
 
     render() {
-        let {security, children, labelVertical,type, labelWidth, label,isEasyEdit, ...props} = this.props
+        let {security, children, labelVertical,type, labelWidth = "", label,isEasyEdit, ...props} = this.props
         // const {canAccess, readOnly} = checkSecurity(this.props)
         // 检查是否可显示
         // if (!canAccess) {
@@ -65,10 +65,18 @@ class FormItem extends Component {
         // }
 
 
-        const _style = label ? {} : {paddingLeft: 0}
+        if(labelWidth && labelWidth.includes('em')){
+            labelWidth = `${parseFloat(labelWidth) + 2}em`
+        }
+        
+        const _style = label ? {
+            paddingLeft: labelWidth
+        } : {
+            paddingLeft: 0
+        }
         const _class = classnames(
             {"o-form-label--vertical": labelVertical},
-            {["o-form-label--" + labelWidth]: labelWidth},
+           /*  {["o-form-label--" + labelWidth]: labelWidth}, */
             {"o-form-label--none": (label == " " && !labelVertical)}
         )
 
@@ -129,6 +137,7 @@ class FormItem extends Component {
                 {...props}
                 style={_style}
                 label={_label}
+                labelWidth={labelWidth}
                 className={_class}
                 type={type}
             >

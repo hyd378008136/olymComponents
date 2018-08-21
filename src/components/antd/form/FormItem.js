@@ -187,7 +187,7 @@ export default class FormItem extends React.Component {
         return false;
     }
     renderLabel() {
-        const { prefixCls, label, labelCol, colon, id } = this.props;
+        const { prefixCls, label, labelCol, colon, id, labelWidth } = this.props;
         const context = this.context;
         const required = this.isRequired();
         const labelColClassName = classNames(`${prefixCls}-item-label`, labelCol && labelCol.className);
@@ -201,7 +201,12 @@ export default class FormItem extends React.Component {
         if (haveColon && typeof label === 'string' && label.trim() !== '') {
             labelChildren = label.replace(/[：|:]\s*$/, '');
         }
-        return label ? (React.createElement(Col, Object.assign({}, labelCol, { className: labelColClassName, key: "label" }),
+
+        const labelWidthStyle = {
+            width:labelWidth,
+            marginLeft:`-${labelWidth}`
+        };
+        return label ? (React.createElement(Col, Object.assign({}, labelCol, { className: labelColClassName, key: "label",style:labelWidthStyle }),
             React.createElement("label", { htmlFor: id || this.getId(), className: labelClassName, title: typeof label === 'string' ? label : '', onClick: this.onLabelClick }, labelChildren))) : null;
     }
     renderChildren() {

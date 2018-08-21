@@ -89,6 +89,18 @@ class LayoutSample extends Component {
 
         return (
             <Layout>
+                	
+                   
+                <div style={{ 'margin-top': '200px' }}>
+                    <FormLayout labelWidth="8em" inputSize={'small'}>
+                        <FormItem label="test">
+                            {getFieldDecorator("a.c.c")(<Input size="small"></Input>)}
+                        </FormItem>
+                        <FormItem label="test" labelWidth="10em">
+                            {getFieldDecorator("a.c.c")(<Input size="small"></Input>)}
+                        </FormItem>
+                    </FormLayout>
+                </div>
                 <Header style={{
                     height: '100px',
                     position: 'fixed', width: '100%', padding: 0,

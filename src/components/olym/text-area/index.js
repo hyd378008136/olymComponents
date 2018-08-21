@@ -37,7 +37,7 @@ class TextArea extends Component {
 	render() {
 		// console.log('props',this.props)
 		const {visible} = this.state
-		const {value, bigAutosize, ...otherProps} = this.props
+		const {value, bigAutoSize, needBigModal, ...otherProps} = this.props
 		const modalOpts = {
 			visible,
 			onCancel : this.handleCancel,
@@ -46,13 +46,13 @@ class TextArea extends Component {
 			handleChange: this.handleChange,
             autosize : {
                 maxRows: 20,
-                ...bigAutosize,
+                ...bigAutoSize,
 			}
         }
 		return (
 			<span>
 				{/*<Button onClick = {this.openModal}>打开大的</Button>*/}
-				<Input.TextArea onDoubleClick = {this.openModal} {...otherProps} value={value} onChange = {this.handleChange} />
+				<Input.TextArea onDoubleClick = {needBigModal ? this.openModal : null} {...otherProps} value={value} onChange = {this.handleChange} />
 				<TextAreaBigModal {...modalOpts}/>
 			</span>
 		)
@@ -60,14 +60,16 @@ class TextArea extends Component {
 }
 
 TextArea.PropTypes = {
-    bigAutosize: PropTypes.object,
+    bigAutoSize: PropTypes.object,
+    needBigModal: PropTypes.bool,
 }
 
 TextArea.defaultProps = {
-    bigAutosize: {
+    bigAutoSize: {
     	minRows: 10,
         maxRows: 30,
-    }
+    },
+	needBigModal: true
 };
 
 export default TextArea

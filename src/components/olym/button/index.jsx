@@ -10,16 +10,40 @@ class Button extends React.Component {
 		};
 	}
 
-	handleClick = () => {
+	getLoading = () => document.getElementById('loading')
+
+	checkLoading = () => {
+		var observer
+		const timeout = setTimeout(() => {
+			this.setState({ loading: false })
+		}, 300);
+		const addNewObserver = () => {
+				if (this.getLoading() !== null) {
+					clearTimeout(timeout)
+					observer.disconnect()
+					var newObserver
+					const removeLoading = () => {
+						if (this.getLoading() === null) {
+							this.setState({ loading: false })
+							newObserver.disconnect()
+						}
+					}
+					newObserver = new MutationObserver(removeLoading)
+					newObserver.observe(document.body, { childList: true })
+				}
+		}
+		observer = new MutationObserver(addNewObserver)
+		observer.observe(document.body, { childList: true })
+	}
+
+	handleClick = (e) => {
 		let needLoading = this.props.needLoading;
 		if (!needLoading) {
-			this.props.onClick();
+			this.props.onClick(e);
 		} else {
 			this.setState({ loading: true }, () => {
-				this.props.onClick();
-				setTimeout(() => {
-					this.setState({ loading: false })
-				}, 300);
+				this.checkLoading();
+				this.props.onClick(e);
 			})
 		}
 	}

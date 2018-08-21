@@ -20,26 +20,26 @@ class Nav extends Component{
 
     render(){
         return (
-                <ul className="nav">
-                    {
-                        this.props.navArr.map(item =>
-                            item.isCat ?
+            <ul className="nav">
+                {
+                    this.props.navArr.map(item =>
+                        item.isCat ?
                             <li className="nav__cat" key={item.label.toString()}>{item.label}</li> :
                             <li className="nav__item" key={item.label.toString()}>
                                 <Link to={item.href} activeClassName="nav__link--active" className={classnames('nav__link',{'has-subnav':item.children})} onClick={this.slideToggle}><Icon type={item.icon} />{item.label}</Link>
                                 {item.children &&
-                                    <ol className="subnav">
+                                <ol className="subnav">
                                     {item.children.map(item =>
                                         <li className="subnav__item" key={item.label.toString()}>
                                             <Link to={item.href} className="subnav__link" activeClassName="nav__link--active">{item.label}</Link>
                                         </li>
-                                )}
-                                    </ol>
+                                    )}
+                                </ol>
                                 }
                             </li>
-                        )
-                    }
-                </ul>
+                    )
+                }
+            </ul>
         );
     }
 }
@@ -50,28 +50,28 @@ Nav.defaultProps = {
             label: '首页',
             icon: 'inbox',
             href:'/'
-        },        
+        },
         // {
-			// label: 'Badge 徽标数',
+        // label: 'Badge 徽标数',
         //     icon: 'laptop',
         //     href:"/components/badge"
         // },{
-			// label: 'Breadcrumb 面包屑',
+        // label: 'Breadcrumb 面包屑',
         //     icon: 'laptop',
         //     href:"/components/breadcrumb"
         // },
         // {
-			// label: 'Button 按钮',
+        // label: 'Button 按钮',
         //     icon: 'laptop',
         //     href:"/components/button"
         // },
         // {
-			// label: 'Checkbox 多选框',
+        // label: 'Checkbox 多选框',
         //     icon: 'laptop',
         //     href:"/components/checkbox"
         // },
         {
-			label: 'DatePicker 日期选择框',
+            label: 'DatePicker 日期选择框',
             icon: 'laptop',
             href:"/components/datePicker"
         },
@@ -81,47 +81,47 @@ Nav.defaultProps = {
             href:"/components/toe"
         },
         // {
-			// label: 'Dropdown 下拉菜单',
+        // label: 'Dropdown 下拉菜单',
         //     icon: 'laptop',
         //     href:"/components/dropdown"
         // },
         // {
-			// label: 'Icon 图标',
+        // label: 'Icon 图标',
         //     icon: 'laptop',
         //     href:"/components/icon"
         // },
         // {
-			// label: 'Input 输入框',
+        // label: 'Input 输入框',
         //     icon: 'laptop',
         //     href:"/components/input"
         // },
         // {
-			// label: 'Layout 布局',
+        // label: 'Layout 布局',
         //     icon: 'laptop',
         //     href:"/components/layout"
         // },
         // {
-			// label: 'Menu 菜单',
+        // label: 'Menu 菜单',
         //     icon: 'laptop',
         //     href:"/components/menu"
         // },
         // {
-			// label: 'Modal 对话框',
+        // label: 'Modal 对话框',
         //     icon: 'laptop',
         //     href:"/components/modal"
         // },
         // {
-			// label: 'Notification 通知提醒框',
+        // label: 'Notification 通知提醒框',
         //     icon: 'laptop',
         //     href:"/components/notification"
         // },
         // {
-			// label: 'Radio 单选框',
+        // label: 'Radio 单选框',
         //     icon: 'laptop',
         //     href:"/components/radio"
         // },
         // {
-			// label: 'Select 选择器',
+        // label: 'Select 选择器',
         //     icon: 'laptop',
         //     href:"/components/select"
         // },
@@ -134,6 +134,25 @@ Nav.defaultProps = {
             label: 'Table 表格',
             icon: 'laptop',
             href:"/components/table"
+        },
+        {
+            label: 'InputNumber',
+            icon: 'laptop',
+            href:"/components/InputNumber"
+        },{
+            label: 'ReplaceInput',
+            icon: 'laptop',
+            href:"/components/ReplaceInput"
+        },
+        {
+            label: 'TextArea',
+            icon: 'laptop',
+            href:"/components/TextAreaDemo"
+        },
+        {
+            label: 'ReplaceTextareaDemo',
+            icon: 'laptop',
+            href:"/components/ReplaceTextarea"
         },
         {
             label: 'Ad-search 高级查询',
@@ -157,22 +176,22 @@ Nav.defaultProps = {
 
 
         // {
-			// label: 'Tabs 标签页',
+        // label: 'Tabs 标签页',
         //     icon: 'laptop',
         //     href:"/components/tabs"
         // },
         // {
-			// label: 'Tag 标签',
+        // label: 'Tag 标签',
         //     icon: 'laptop',
         //     href:"/components/tag"
         // },
         // {
-			// label: 'Timeline 时间轴',
+        // label: 'Timeline 时间轴',
         //     icon: 'laptop',
         //     href:"/components/timeline"
         // },
         // {
-			// label: 'Upload上传',
+        // label: 'Upload上传',
         //     icon: 'laptop',
         //     href:"/components/upload"
         // },

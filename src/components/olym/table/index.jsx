@@ -231,7 +231,8 @@ class Table extends Component {
       // dataSource: []
       customColumns: _customColumns,
       pageSize: this.props.pageSize,
-      onCustomInfoChange: this.props.onCustomInfoChange
+      onCustomInfoChange: this.props.onCustomInfoChange,
+      pageSizeList: this.props.pageSizeList
     }
 
     //处理title

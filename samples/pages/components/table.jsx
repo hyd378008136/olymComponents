@@ -83,7 +83,18 @@ class TableSample extends Component {
       data: _data
     })
   }
-
+	onSelectChange = (selectedRowKeys, selectedRows) => {
+		this.state.selectedRowKeys = selectedRowKeys
+	}
+	setSelectedRowKeysFunc = func => {
+		this.setSelectedRowKeys = func
+	}
+	clearSelectedRowKeys = (keys = []) => {
+		this.state.selectedRowKeys = keys
+		if (this.setSelectedRowKeys) {
+			this.setSelectedRowKeys(keys)
+		}
+	}
   render() {
     const columns = [{
       // title: strWithStar('姓名'),
@@ -139,8 +150,10 @@ class TableSample extends Component {
           // title="这是一个测试自定义列的表格"
                bordered
                customCtns={this.customCtn}
+               title="这是一个测试自定义列的表格"
                pageSize={30}
                onCustomInfoChange={() => {}}
+               pageSizeList={[20, 30, 40, 50, 60]}
         />
         <Modal title={"123"} visible={this.state.visible}
                onOk={this.handleModelOk} onCancel={this.handleModelCancel}>

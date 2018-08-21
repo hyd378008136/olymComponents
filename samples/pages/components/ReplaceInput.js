@@ -9,10 +9,12 @@ class InputDemo extends React.Component {
         this.state = { value: '',textAreaValue: '' };
     }
 
-    onChange = (value) => {
+    onChange = (e) => {
+        let { value } = e.target;
         this.setState({ value });
     }
-    onTextAreaChange = (value) => {
+    onTextAreaChange = (e) => {
+        let { value } = e.target;
         this.setState({ textAreaValue: value });
     }
     getValue = () => {

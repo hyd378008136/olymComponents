@@ -8,7 +8,7 @@
     needUppercase = {true}
     needTransform = {true}
 	autosize={{minRows: 5, maxRows: 6}}
-    bigAutosize = {{minRows: 20}} // 大弹出框的行数
+    bigAutoSize = {{minRows: 20}} // 大弹出框的行数
 />
 ```
 双击弹出一个大输入框的TextArea

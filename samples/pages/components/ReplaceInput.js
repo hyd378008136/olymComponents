@@ -67,6 +67,7 @@ class InputDemo extends React.Component {
                 )}
             </FormItem>
             <Input.TextArea
+                // needBigModal = {false}
                 needReplace = {true}
                 needUppercase = {true}
                 needTransform = {true}

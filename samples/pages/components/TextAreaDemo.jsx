@@ -73,7 +73,7 @@ class TextAreaDemo extends Component {
 						}]
 					})(<TextArea
 						autosize={{minRows: 5, maxRows: 6}}
-						bigAutosize = {{minRows: 20}} // 大弹出框的行数
+						bigAutoSize = {{minRows: 20}} // 大弹出框的行数
 					/>)}
 				</FormItem>
 				<FormItem helpPosition={"bottom"} label = 'textareaselect' labelWidth="8em">

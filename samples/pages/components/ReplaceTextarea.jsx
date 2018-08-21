@@ -38,7 +38,7 @@ class ReplaceTextareaDemo extends React.Component {
                             needUppercase = {true}
                             needTransform = {true}
                             autosize={{minRows: 5, maxRows: 6}}
-                            bigAutosize = {{minRows: 20}} // 大弹出框的行数
+                            bigAutoSize = {{minRows: 20}} // 大弹出框的行数
                             // onChange={this.onChange}
                         />
                     )}
@@ -49,7 +49,7 @@ class ReplaceTextareaDemo extends React.Component {
                     needUppercase = {true}
                     needTransform = {true}
                     autosize={{minRows: 5, maxRows: 6}}
-                    bigAutosize = {{minRows: 20}} // 大弹出框的行数
+                    bigAutoSize = {{minRows: 20}} // 大弹出框的行数
                     onChange={this.onChange}
                 />
             </FormLayout>

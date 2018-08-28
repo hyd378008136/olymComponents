@@ -11,10 +11,35 @@ class TextAreaBigModal extends Component {
 			bigValue: ''
 		};
 	}
+
+    componentDidMount() {
+		const {value} = this.props
+		if(value){
+			this.setState({
+                bigValue: value
+			})
+		}
+    }
+
+    componentWillReceiveProps(nextProps) {
+		if(nextProps.value !== this.props.value || nextProps.visible !== this.props.visible){
+            const {value} = this.props
+            this.setState({
+                bigValue: value
+            })
+		}
+    }
 	handleChange = (e) => {
-		this.props.handleChange && this.props.handleChange(e, false)
+        this.setState({
+            bigValue: e.target.value
+        })
+	}
+    handleOk = () => {
+		const {bigValue} = this.state
+		this.props.onOk(bigValue)
 	}
 	render() {
+		const {bigValue} = this.state
 		const { visible, onCancel, value, onOk, width, handleChange, ...otherProps} = this.props
 		const modalOpts = {
 			title : '',
@@ -23,11 +48,11 @@ class TextAreaBigModal extends Component {
 			maskClosable: false,
 			visible,
 			onCancel,
-			onOk,
+			onOk: this.handleOk
 		}
 		return (
 			<Modal {...modalOpts}>
-				<Input.TextArea {...otherProps} value={value}  onChange = { this.handleChange } />
+				<Input.TextArea {...otherProps} value={bigValue}  onChange = { this.handleChange } />
 			</Modal>
 		)
 	}

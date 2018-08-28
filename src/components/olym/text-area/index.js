@@ -9,41 +9,36 @@ class TextArea extends Component {
 		super(props);
 		this.state = {
 			visible: false,
-			value: ''
 		};
 	}
-	handleChange = (e, open) => {
-		// this.setState({
-		// 	value: e.target.value
-		// })
-		this.props.onChange && this.props.onChange(e, open)
-	}
+
 	openModal = () => {
 		this.setState({
 			visible: true
 		})
 	}
-	handleOk = (e, value) => {
-		this.setState({
-			visible: false,
-		});
-	}
+
+	handleOk = (value) => {
+        this.setState({
+            visible: false,
+        },() => this.props.onChange && this.props.onChange(value));
+    }
 
 	handleCancel = () => {
 		this.setState({
 			visible: false,
 		});
 	}
+
 	render() {
 		// console.log('props',this.props)
 		const {visible} = this.state
-		const {value, bigAutoSize, needBigModal, ...otherProps} = this.props
+		const {bigAutoSize, needBigModal,value, ...otherProps} = this.props
 		const modalOpts = {
 			visible,
 			onCancel : this.handleCancel,
 			value,
 			onOk: this.handleOk,
-			handleChange: this.handleChange,
             autosize : {
                 maxRows: 20,
                 ...bigAutoSize,
@@ -51,8 +46,11 @@ class TextArea extends Component {
         }
 		return (
 			<span>
-				{/*<Button onClick = {this.openModal}>打开大的</Button>*/}
-				<Input.TextArea onDoubleClick = {needBigModal ? this.openModal : null} {...otherProps} value={value} onChange = {this.handleChange} />
+				<Input.TextArea
+					onDoubleClick = {needBigModal ? this.openModal : null}
+					{...otherProps}
+					value={value}
+				/>
 				<TextAreaBigModal {...modalOpts}/>
 			</span>
 		)

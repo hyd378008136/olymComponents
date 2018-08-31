@@ -2,19 +2,17 @@ import React, {Component} from 'react';
 import {Select, TextAreaSelect} from 'antd';
 import './styles/index'
 import PropTypes from 'prop-types'
-import TextArea from "../text-area";
+import { convertDuplicateToUnique } from '../util/arrayUtils';
 
 const Option = Select.Option;
 
-
-//props selectKey 指定一个key的值填入input中
 class TextAreaRichSelect extends Component {
     constructor(props) {
         super(props)
     }
 
     handleSelect = (value, option) => {
-        const {dataBody, selectKey} = this.props;
+        const { dataBody, selectKey } = this.props;
         var index = option.props.index;
         let obj = dataBody[index - 1];
         if (obj) {
@@ -22,61 +20,46 @@ class TextAreaRichSelect extends Component {
         }
     }
 
-    render() {
-        const {dataHeader, dataBody, selectKey, notFoundContent = "not found", dropdownMatchSelectWidth = false, ...props} = this.props;
-        const hasDataBody = dataBody && dataBody.length > 0;
-        let dropdownHeadData = dataHeader,
-            dropdownBodyData = hasDataBody ? dataBody : notFoundContent;
-        //console.log(dataHeader)
-        // 拼接下拉框header部分结构
-        const dropdownHeadElement = dropdownHeadData ? <Option key="title" disabled>{dropdownHeadData.map(val => <p
-            key={val.dataIndex}>{val.title}</p>)}</Option> : '';
-        const dropdownBodyElement = !hasDataBody ?
-            <Option key="no-data" className="no-data" disabled><p colSpan="2">{dropdownBodyData}</p><p></p>
-            </Option> : createBodyElement();
-
-        //下拉框body部分
-        function createBodyElement() {
-            const isArray = dropdownBodyData instanceof Array;
-            if (!isArray) {
-                throw  new TypeError('RichSelect 组件的 dataBody 只接受 "Array" 格式的数据');
-            }
-
-            var convertDuplicateToUnique = (array, key) => {
-                let temp = {}
-                array.forEach(item => {
-                    temp[item[key]] = pushToList(temp[item[key]], item)
-                    let length = temp[item[key]].length
-                    if (length > 1) {
-                        item[key] = temp[item[key]][length - 2][key] + ' '
-                    }
-                })
-                return array
-            }
-        
-            var pushToList = (item, value) => {
-                if (item === undefined) {
-                    item = []
-                }
-                item.push(value)
-                return item
-            }
-
-            dropdownBodyData = convertDuplicateToUnique(dropdownBodyData, selectKey)
-
-            return dropdownBodyData.map(function (val, index) {
-                const parentVal = val;
-                const _item = dropdownHeadData.map((val, i) => <p key={val.dataIndex}>{parentVal[val.dataIndex]}</p>);
-                return <Option key={index} value={val[selectKey]}>{_item}</Option>
-            })
+    getDropDownHeadElement = () => {
+        let dataHeader = this.props.dataHeader;
+        if (dataHeader) {
+            return (
+                <Option key="title" disabled>
+                    {dataHeader.map(item => <p key={item.dataIndex}>{item.title}</p>)}
+                </Option>
+            );
         }
+        return '';
+    }
 
+    getDropDownBodyElement = () => {
+        let dataBody = this.props.dataBody;
+        if (dataBody && dataBody.length > 0) {
+            let selectKey = this.props.selectKey;
+            dataBody = convertDuplicateToUnique(dataBody, selectKey);
+            return dataBody.map(item => {
+                const value = this.props.dataHeader.map(item2 => <p key={item2.dataIndex}>{item[item2.dataIndex]}</p>);
+                return <Option key={item[selectKey]}>{value}</Option>;
+            })
+        } else {
+            return (
+                <Option key="no-data" className="no-data" disabled>
+                    <p colSpan="2">{this.props.notFoundContent}</p><p></p>
+                </Option>
+            )
+        }
+    }
+
+    render() {
+        const { dataHeader, dataBody, selectKey, notFoundContent, ...props } = this.props;
         return (
-            <TextAreaSelect ref="input" {...props} dropdownMatchSelectWidth={dropdownMatchSelectWidth}
-                    optionLabelProp={"value"} dropdownClassName={"rich-select"}
-                    onSelect={this.handleSelect}>
-                {dropdownHeadElement}
-                {dropdownBodyElement}
+            <TextAreaSelect
+                {...props}
+                optionLabelProp={"value"}
+                dropdownClassName={"rich-select"}
+                onSelect={this.handleSelect}>
+                {this.getDropDownHeadElement()}
+                {this.getDropDownBodyElement()}
             </TextAreaSelect>
         )
     }
@@ -91,7 +74,9 @@ TextAreaRichSelect.PropTypes = {
 TextAreaRichSelect.defaultProps = {
     selectKey: "value",
     disabled: false,
-    scrollHeight: 32
+    scrollHeight: 32,
+    dropdownMatchSelectWidth: false,
+    notFoundContent: 'not found',
 };
 
 export default TextAreaRichSelect;

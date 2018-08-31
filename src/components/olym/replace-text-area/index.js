@@ -27,12 +27,11 @@ class ReplaceTextArea extends Component {
         
     }
     render() {
-        const _this = this
-        const {needReplace, needUppercase, needTransform, ...othetProps} = this.props
+        const {needReplace, needUppercase, needTransform, ...otherProps} = this.props
         return (
             <TextArea
-                {...othetProps}
-                onBlur={(e) => handleOnBlur(e, _this)}
+                {...otherProps}
+                onBlur={(e) => handleOnBlur(e, this)}
                 // onChange={this.onChange}
                 // placeholder=""
                 // maxLength="25"

@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Select, TextAreaSelect} from 'antd';
 import './styles/index'
+import PropTypes from 'prop-types'
+import TextArea from "../text-area";
 
 const Option = Select.Option;
 
@@ -9,18 +11,6 @@ const Option = Select.Option;
 class TextAreaRichSelect extends Component {
     constructor(props) {
         super(props)
-    }
-
-    static propTypes = {
-        dataBody: React.PropTypes.array,
-        dataHeader: React.PropTypes.array,
-        dropdwonMaxRows: React.PropTypes.number
-    }
-
-    static defaultProps = {
-        selectKey: "value",
-        disabled: false,
-        scrollHeight: 32
     }
 
     handleSelect = (value, option) => {
@@ -91,5 +81,17 @@ class TextAreaRichSelect extends Component {
         )
     }
 }
+
+TextAreaRichSelect.PropTypes = {
+    dataBody: PropTypes.array,
+    dataHeader: PropTypes.array,
+    dropdwonMaxRows: PropTypes.number
+}
+
+TextAreaRichSelect.defaultProps = {
+    selectKey: "value",
+    disabled: false,
+    scrollHeight: 32
+};
 
 export default TextAreaRichSelect;

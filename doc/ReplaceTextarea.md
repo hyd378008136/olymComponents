@@ -23,3 +23,4 @@ needTransform | 是否需要全角转半角 | bool | -
 使用的时候使用别名 TextArea 可实现无缝切换
 
 重写onChange 需要对event对象和直接value 值做兼容处理类似  e = e.target ? e.target.value : e
+重写onBlur 需要自己调用onChange 进行表单的绑定

@@ -40,7 +40,31 @@ const transformFullToHalf = (str) => {
     }
     return returnValue
 }
+
+const handleOnBlur = (e, _this) => {
+    let { value } = e.target;
+    const {needReplace, needUppercase, needTransform} = _this.props
+    // const reg = /[\u4e00-\u9fa5]/g;
+    // value =  value.replace(reg, "");
+    if(value && needTransform){
+        value = transformFullToHalf(value)
+    }
+    if(needReplace){
+        value = replaceInvisibleCharacter(value)
+    }
+    if(needUppercase){
+        value = value.toUpperCase()
+    }
+    e.target.value = value
+    if(_this.props.onBlur){
+        _this.props.onBlur && _this.props.onBlur(e)
+    }else {
+        _this.props.onChange && _this.props.onChange(e)
+    }
+}
+
 export default {
     replaceInvisibleCharacter,
-    transformFullToHalf
+    transformFullToHalf,
+    handleOnBlur
 }

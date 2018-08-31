@@ -5,36 +5,20 @@ import React, {Component} from 'react'
 import {Input as AtInput} from 'antd'
 import PropTypes from 'prop-types'
 import ReplaceTextArea from '../replace-text-area'
-import {replaceInvisibleCharacter, transformFullToHalf} from '../util/replaceFunc'
+import {handleOnBlur} from '../util/replaceFunc'
 
 class ReplaceInput extends Component {
     constructor(props) {
         super(props)
         this.state = {}
     }
-    handleInputOnBlur = (e) => {
-        let { value } = e.target;
-        const {needReplace, needUppercase, needTransform} = this.props
-        // const reg = /[\u4e00-\u9fa5]/g;
-        // value =  value.replace(reg, "");
-        if(value && needTransform){
-            value = transformFullToHalf(value)
-        }
-        if(needReplace){
-            value = replaceInvisibleCharacter(value)
-        }
-        if(needUppercase){
-            value = value.toUpperCase()
-        }
-        e.target.value = value
-        this.props.onChange && this.props.onChange(e);
-    }
     render() {
+        const _this = this
         const {needReplace, needUppercase, needTransform, ...othetProps} = this.props
         return (
             <AtInput
                 {...othetProps}
-                onBlur={this.handleInputOnBlur}
+                onBlur={(e) => handleOnBlur(e, _this)}
             />
         )
     }

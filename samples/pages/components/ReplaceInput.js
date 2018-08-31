@@ -10,6 +10,7 @@ class InputDemo extends React.Component {
     }
 
     onChange = (e) => {
+        console.log('e',e)
         let { value } = e.target;
         this.setState({ value });
     }
@@ -23,6 +24,9 @@ class InputDemo extends React.Component {
             console.log('state',this.state.value)
             console.log('state',this.state.textAreaValue)
         })
+    }
+    onBlur = (e) => {
+        console.log(e)
     }
     render() {
         const {getFieldDecorator} = this.props.form
@@ -50,6 +54,7 @@ class InputDemo extends React.Component {
                 style={{ width: 120 }}
                 value={this.state.value}
                 onChange={this.onChange}
+                // onBlur = {this.onBlur}
             />
             <FormItem helpPosition={"right"} label = 'replaceTextArea' labelWidth="8em">
                 {getFieldDecorator('replaceTextArea', {

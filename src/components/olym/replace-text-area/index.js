@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import TextArea from '../text-area'
 import PropTypes from 'prop-types'
-import {replaceInvisibleCharacter, transformFullToHalf} from '../util/replaceFunc'
+import {handleOnBlur} from '../util/replaceFunc'
 
 class ReplaceTextArea extends Component {
     constructor(props) {
@@ -24,13 +24,15 @@ class ReplaceTextArea extends Component {
         }
         e.target.value = value
         this.props.onChange && this.props.onChange(e);
+        
     }
     render() {
+        const _this = this
         const {needReplace, needUppercase, needTransform, ...othetProps} = this.props
         return (
             <TextArea
                 {...othetProps}
-                onBlur = {this.handleInputOnBlur}
+                onBlur={(e) => handleOnBlur(e, _this)}
                 // onChange={this.onChange}
                 // placeholder=""
                 // maxLength="25"

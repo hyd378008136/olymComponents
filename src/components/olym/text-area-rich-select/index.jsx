@@ -75,10 +75,9 @@ class TextAreaRichSelect extends Component {
             dropdownBodyData = convertDuplicateToUnique(dropdownBodyData, selectKey)
 
             return dropdownBodyData.map(function (val, index) {
-                // TODO unique key问题
                 const parentVal = val;
                 const _item = dropdownHeadData.map((val, i) => <p key={val.dataIndex}>{parentVal[val.dataIndex]}</p>);
-                return <Option key={index} value={val[selectKey]}>{_item}</Option>//这里的key可以当value使用，不用再定义value
+                return <Option key={index} value={val[selectKey]}>{_item}</Option>
             })
         }
 

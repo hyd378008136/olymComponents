@@ -38,7 +38,7 @@ const transformFullToHalf = (str) => {
 
 const processData = (value, _this) => {
     const {needReplace, needUppercase, needTransform} = _this.props;
-    if (!!value) {
+    if (!!value&&typeof(value) == 'string') {
         if (needTransform) {
             value = transformFullToHalf(value)
         }
@@ -56,25 +56,16 @@ const handleOnBlur = (e, _this) => {
     let {value} = _this.state
     const {onChange, onBlur} = _this.props;
     let resultValue = processData(value, _this);
+    _this.setState({value: resultValue});
     if (resultValue !== value) {
-        _this.setState({value: resultValue});
         e.target.value = resultValue;
         onChange && onChange(e);
     }
     onBlur && onBlur(e);
-    _this.isFocus = false;
 }
 
 const setPropsValue = (_value, _this) => {
-    if (!_this.isFocus) {
-        // 接受表单数据
-        let value = processData(_value, _this);
-        if (value !== _this.state.value) {
-            _this.setState({value});
-        }
-    } else {
         _this.setState({value: _value});
-    }
 };
 
 export {replaceInvisibleCharacter, transformFullToHalf, handleOnBlur, setPropsValue}

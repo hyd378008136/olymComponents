@@ -14,7 +14,6 @@ class ReplaceInput extends Component {
         this.state = {
             value: null
         };
-        this.isFocus = false;
     }
     componentDidMount() {
         setPropsValue(this.props.value, this);
@@ -37,7 +36,6 @@ class ReplaceInput extends Component {
             needReplace,
             needUppercase,
             needTransform,
-            onFocus,
             onChange,
             ...otherProps
         } = this.props
@@ -45,11 +43,7 @@ class ReplaceInput extends Component {
             {...otherProps}
             value={this.state.value}
             onChange={onChange}
-            onBlur={(e) => handleOnBlur(e, this)}
-            onFocus={() => {
-            this.isFocus = true;
-            onFocus && onFocus();
-        }}/>)
+            onBlur={(e) => handleOnBlur(e, this)}/>)
     }
 }
 ReplaceInput.PropTypes = {

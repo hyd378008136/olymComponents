@@ -10,7 +10,6 @@ class ReplaceTextArea extends Component {
         this.state = {
             value: null
         };
-        this.isFocus = false;
     }
     componentDidMount() {
         setPropsValue(this.props.value, this);
@@ -34,7 +33,6 @@ class ReplaceTextArea extends Component {
             needReplace,
             needUppercase,
             needTransform,
-            onFocus,
             onChange,
             ...otherProps
         } = this.props
@@ -42,11 +40,7 @@ class ReplaceTextArea extends Component {
             {...otherProps}
             value={this.state.value}
             onChange={onChange}
-            onBlur={(e) => handleOnBlur(e, this)}
-            onFocus={() => {
-            this.isFocus = true;
-            onFocus && onFocus();
-        }}/>)
+            onBlur={(e) => handleOnBlur(e, this)}/>)
     }
 }
 

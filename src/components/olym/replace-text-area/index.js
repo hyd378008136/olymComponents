@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import TextArea from '../text-area'
 import PropTypes from 'prop-types'
-import {handleOnBlur,setPropsValue} from '../util/replaceFunc'
+import {handleOnBlur, setPropsValue} from '../util/replaceFunc'
 import isEqual from 'lodash.isequal';
 
 class ReplaceTextArea extends Component {
@@ -30,7 +30,14 @@ class ReplaceTextArea extends Component {
     }
 
     render() {
-        const {needReplace, needUppercase, needTransform,onFocus, onChange,...otherProps} = this.props
+        const {
+            needReplace,
+            needUppercase,
+            needTransform,
+            onFocus,
+            onChange,
+            ...otherProps
+        } = this.props
         return (<TextArea
             {...otherProps}
             value={this.state.value}
@@ -46,13 +53,13 @@ class ReplaceTextArea extends Component {
 ReplaceTextArea.PropTypes = {
     needReplace: PropTypes.bool,
     needUppercase: PropTypes.bool,
-    needTransform: PropTypes.bool,
+    needTransform: PropTypes.bool
 }
 
 ReplaceTextArea.defaultProps = {
     needReplace: true,
     needUppercase: true,
-    needTransform: true,
+    needTransform: true
 }
 
 export default ReplaceTextArea

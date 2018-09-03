@@ -4,7 +4,7 @@
  * @returns {*}
  */
 const replaceInvisibleCharacter = (str) => {
-    let returnValue="";
+    let returnValue = "";
     if (!!str) {
         const space = " ";
         //排除掉 \r\n  \u000d\u000a
@@ -14,7 +14,7 @@ const replaceInvisibleCharacter = (str) => {
                 "\u007F-\u00A0" + //：特殊 (Specials);
                 "]", "g");
         returnValue = str.replace(regEx, space);
-    } 
+    }
     return returnValue;
 }
 // 全角转半角
@@ -32,7 +32,7 @@ const transformFullToHalf = (str) => {
                 returnValue += String.fromCharCode(str.charCodeAt(i));
             }
         }
-    } 
+    }
     return returnValue
 }
 

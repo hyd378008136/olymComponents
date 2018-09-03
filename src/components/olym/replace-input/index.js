@@ -5,7 +5,7 @@ import React, {Component} from 'react'
 import {Input as AtInput} from 'antd'
 import PropTypes from 'prop-types'
 import ReplaceTextArea from '../replace-text-area'
-import {handleOnBlur,setPropsValue} from '../util/replaceFunc'
+import {handleOnBlur, setPropsValue} from '../util/replaceFunc'
 import isEqual from 'lodash.isequal';
 
 class ReplaceInput extends Component {
@@ -33,7 +33,14 @@ class ReplaceInput extends Component {
         return true
     }
     render() {
-        const {needReplace, needUppercase, needTransform,onFocus, onChange,...otherProps} = this.props
+        const {
+            needReplace,
+            needUppercase,
+            needTransform,
+            onFocus,
+            onChange,
+            ...otherProps
+        } = this.props
         return (<AtInput
             {...otherProps}
             value={this.state.value}

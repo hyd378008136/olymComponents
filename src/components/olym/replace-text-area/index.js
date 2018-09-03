@@ -1,42 +1,45 @@
 import React, {Component} from 'react'
 import TextArea from '../text-area'
 import PropTypes from 'prop-types'
-import {handleOnBlur} from '../util/replaceFunc'
+import {handleOnBlur,setPropsValue} from '../util/replaceFunc'
+import isEqual from 'lodash.isequal';
 
 class ReplaceTextArea extends Component {
     constructor(props) {
         super(props)
-        this.state = {}
+        this.state = {
+            value: null
+        };
+        this.isFocus = false;
     }
-    handleInputOnBlur = (e) => {
-        let { value } = e.target;
-        const {needReplace, needUppercase, needTransform} = this.props
-        // const reg = /[\u4e00-\u9fa5]/g;
-        // value =  value.replace(reg, "");
-        if(value && needTransform){
-            value = transformFullToHalf(value)
-        }
-        if(needReplace){
-            value = replaceInvisibleCharacter(value)
-        }
-        if(needUppercase){
-            value = value.toUpperCase()
-        }
-        e.target.value = value
-        this.props.onChange && this.props.onChange(e);
-        
+    componentDidMount() {
+        setPropsValue(this.props.value, this);
     }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.value !== this.props.value) {
+            setPropsValue(nextProps.value, this);
+        }
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if (isEqual(nextProps, this.props) && isEqual(nextState, this.state)) {
+            return false
+        }
+        return true
+    }
+
     render() {
-        const {needReplace, needUppercase, needTransform, ...otherProps} = this.props
-        return (
-            <TextArea
-                {...otherProps}
-                onBlur={(e) => handleOnBlur(e, this)}
-                // onChange={this.onChange}
-                // placeholder=""
-                // maxLength="25"
-            />
-        )
+        const {needReplace, needUppercase, needTransform,onFocus, onChange,...otherProps} = this.props
+        return (<TextArea
+            {...otherProps}
+            value={this.state.value}
+            onChange={onChange}
+            onBlur={(e) => handleOnBlur(e, this)}
+            onFocus={() => {
+            this.isFocus = true;
+            onFocus && onFocus();
+        }}/>)
     }
 }
 

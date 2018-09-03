@@ -4,67 +4,77 @@
  * @returns {*}
  */
 const replaceInvisibleCharacter = (str) => {
-    let returnValue;
-    if(str){
-        const space=" ";
+    let returnValue = "";
+    if (!!str) {
+        const space = " ";
         //排除掉 \r\n  \u000d\u000a
-        const regEx = new RegExp("["+
-            "\u0000-\u0009"+//：C0控制符及基本拉丁文 (C0 Control and Basic Latin)
-            "\u000B-\u000C"+//：C0控制符及基本拉丁文 (C0 Control and Basic Latin)
-            "\u000E-\u001F"+//：C0控制符及基本拉丁文 (C0 Control and Basic Latin)
-            "\u007F-\u00A0" +//：特殊 (Specials);
-            "]","g");
+        const regEx = new RegExp("[\u0000-\u0009" + //：C0控制符及基本拉丁文 (C0 Control and Basic Latin)
+                "\u000B-\u000C" + //：C0控制符及基本拉丁文 (C0 Control and Basic Latin)
+                "\u000E-\u001F" + //：C0控制符及基本拉丁文 (C0 Control and Basic Latin)
+                "\u007F-\u00A0" + //：特殊 (Specials);
+                "]", "g");
         returnValue = str.replace(regEx, space);
-    }else{
-        returnValue="";
     }
     return returnValue;
 }
 // 全角转半角
 const transformFullToHalf = (str) => {
-    let returnValue="";
-    if(str){
+    let returnValue = "";
+    if (!!str) {
         for (let i = 0; i < str.length; i++) {
-            if (str.charCodeAt(i)==12288) {
-                returnValue+= String.fromCharCode(str.charCodeAt(i)-12256);
+            if (str.charCodeAt(i) == 12288) {
+                returnValue += String.fromCharCode(str.charCodeAt(i) - 12256);
                 continue;
             }
-            if (str.charCodeAt(i)>65280 && str.charCodeAt(i)<65375){
-                returnValue+= String.fromCharCode(str.charCodeAt(i)-65248);
+            if (str.charCodeAt(i) > 65280 && str.charCodeAt(i) < 65375) {
+                returnValue += String.fromCharCode(str.charCodeAt(i) - 65248);
             } else {
-                returnValue+= String.fromCharCode(str.charCodeAt(i));
+                returnValue += String.fromCharCode(str.charCodeAt(i));
             }
         }
-    }else {
-        returnValue  = ''
     }
     return returnValue
 }
 
-const handleOnBlur = (e, _this) => {
-    let { value } = e.target;
-    const {needReplace, needUppercase, needTransform} = _this.props
-    // const reg = /[\u4e00-\u9fa5]/g;
-    // value =  value.replace(reg, "");
-    if(value && needTransform){
-        value = transformFullToHalf(value)
+const processData = (value, _this) => {
+    const {needReplace, needUppercase, needTransform} = _this.props;
+    if (!!value) {
+        if (needTransform) {
+            value = transformFullToHalf(value)
+        }
+        if (needReplace) {
+            value = replaceInvisibleCharacter(value)
+        }
+        if (needUppercase) {
+            value = value.toUpperCase()
+        }
     }
-    if(needReplace){
-        value = replaceInvisibleCharacter(value)
-    }
-    if(needUppercase){
-        value = value.toUpperCase()
-    }
-    e.target.value = value
-    if(_this.props.onBlur){
-        _this.props.onBlur && _this.props.onBlur(e)
-    }else {
-        _this.props.onChange && _this.props.onChange(e)
-    }
+    return value;
 }
 
-export default {
-    replaceInvisibleCharacter,
-    transformFullToHalf,
-    handleOnBlur
+const handleOnBlur = (e, _this) => {
+    let {value} = _this.state
+    const {onChange, onBlur} = _this.props;
+    let resultValue = processData(value, _this);
+    if (resultValue !== value) {
+        _this.setState({value: resultValue});
+        e.target.value = resultValue;
+        onChange && onChange(e);
+    }
+    onBlur && onBlur(e);
+    _this.isFocus = false;
 }
+
+const setPropsValue = (_value, _this) => {
+    if (!_this.isFocus) {
+        // 接受表单数据
+        let value = processData(_value, _this);
+        if (value !== _this.state.value) {
+            _this.setState({value});
+        }
+    } else {
+        _this.setState({value: _value});
+    }
+};
+
+export {replaceInvisibleCharacter, transformFullToHalf, handleOnBlur, setPropsValue}

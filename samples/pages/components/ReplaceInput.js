@@ -31,7 +31,7 @@ class InputDemo extends React.Component {
     render() {
         const {getFieldDecorator} = this.props.form
         return <FormLayout>
-            <Button onClick = {this.getValue}>取值</Button>
+            <Button onClick = {this.getValue}>取值1</Button>
             <FormItem helpPosition={"right"} label = 'replaceInput' labelWidth="8em">
                 {getFieldDecorator('replaceInput', {
                     rules: [{

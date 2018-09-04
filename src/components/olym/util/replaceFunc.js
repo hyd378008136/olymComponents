@@ -56,8 +56,8 @@ const handleOnBlur = (e, _this) => {
     let {value} = _this.state
     const {onChange, onBlur} = _this.props;
     let resultValue = processData(value, _this);
-    _this.setState({value: resultValue});
     if (resultValue !== value) {
+        _this.setState({value: resultValue});
         e.target.value = resultValue;
         onChange && onChange(e);
     }

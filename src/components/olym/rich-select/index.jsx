@@ -84,7 +84,7 @@ class RichSelect extends Component {
 
         return (
             <Select ref="input" {...props} dropdownMatchSelectWidth={dropdownMatchSelectWidth}
-                    optionLabelProp={"value"} dropdownClassName={"rich-select"}
+                    optionLabelProp={"value"} dropdownClassName={`rich-select ${this.props.id}-dzg-rich-select`}
                     onSelect={this.handleSelect}>
                 {dropdownHeadElement}
                 {dropdownBodyElement}

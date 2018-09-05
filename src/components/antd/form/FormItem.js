@@ -187,7 +187,7 @@ export default class FormItem extends React.Component {
         return false;
     }
     renderLabel() {
-        const { prefixCls, label, labelCol, colon, id, labelWidth } = this.props;
+        const { prefixCls, label, labelCol, colon, id, labelWidth, labelStyle } = this.props;
         const context = this.context;
         const required = this.isRequired();
         const labelColClassName = classNames(`${prefixCls}-item-label`, labelCol && labelCol.className);
@@ -207,7 +207,7 @@ export default class FormItem extends React.Component {
             marginLeft:`-${labelWidth}`
         };
         return label ? (React.createElement(Col, Object.assign({}, labelCol, { className: labelColClassName, key: "label",style:labelWidthStyle }),
-            React.createElement("label", { htmlFor: id || this.getId(), className: labelClassName, title: typeof label === 'string' ? label : '', onClick: this.onLabelClick }, labelChildren))) : null;
+            React.createElement("label", { htmlFor: id || this.getId(), className: labelClassName, style: labelStyle, title: typeof label === 'string' ? label : '', onClick: this.onLabelClick }, labelChildren))) : null;
     }
     renderChildren() {
         const props = this.props;

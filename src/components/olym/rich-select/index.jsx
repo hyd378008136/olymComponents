@@ -32,6 +32,24 @@ class RichSelect extends Component {
         }
     }
 
+    getInputElement = () => {
+        if (this.props.getInputElement) {
+            return this.props.getInputElement();
+        } else {
+            return (
+                <input
+                    id={this.props.id}
+                    onCompositionStart={this.props.onCompositionStart}
+                    onCompositionEnd={this.props.onCompositionEnd}
+                    onCompositionEndCapture={this.props.onCompositionEndCapture}
+                    onCompositionUpdate={this.props.onCompositionUpdate}
+                    onCompositionStartCapture={this.props.onCompositionStartCapture}
+                    onCompositionUpdateCapture={this.props.onCompositionUpdateCapture}
+                />
+            )
+        }
+    }
+
     render() {
         const {dataHeader, dataBody, selectKey, notFoundContent = "not found", dropdownMatchSelectWidth = false, ...props} = this.props;
         const hasDataBody = dataBody && dataBody.length > 0;
@@ -85,7 +103,7 @@ class RichSelect extends Component {
         return (
             <Select ref="input" {...props} dropdownMatchSelectWidth={dropdownMatchSelectWidth}
                     optionLabelProp={"value"} dropdownClassName={`rich-select ${this.props.id}-dzg-rich-select`}
-                    onSelect={this.handleSelect}>
+                    onSelect={this.handleSelect} getInputElement={this.getInputElement}>
                 {dropdownHeadElement}
                 {dropdownBodyElement}
             </Select>

@@ -21,6 +21,7 @@ import {
     Select,
     Table
 } from "antd";
+import { replaceWrapper } from 'olym';
 
 const FormItem = FormLayout.FormItem;
 
@@ -119,21 +120,21 @@ class RichSelectSample extends Component {
                         </Col>
                         <Col span={20}>
                             <FormItem label="combobox1" labelWidth={"6em"}>
-                                {getFieldDecorator('combobox1', {initialValue: "海运进口"})(<RichSelect
+                                {getFieldDecorator('combobox1', {initialValue: "海运进口"})(
+                                    replaceWrapper(<RichSelect
                                     dataBody={dataBody}
                                     dataHeader={dataHead}
                                     selectKey="type"
                                     onSelect={(value, option, obj) => {
                                         console.log("combobox1下拉框+onSelect", value, option, obj);
                                     }}
+                                    onChange={(value) => { setFieldsValue({ 'combobox1': { value} }) }}
                                     mode={"combobox"}
-
                                     filterOption={(inputValue, option) => {
-                                        console.log(option);
                                         var arr = option.props.children.some((e, i) => (e.props.children.indexOf(inputValue) > -1))
                                         return arr;
                                     }}
-                                />)}
+                                />, { valueKeyFromEvent: 'toString' }))}
                             </FormItem>
                         </Col>
                     </Row>

@@ -47,7 +47,7 @@ export default function replaceWrapper(ReactElement, options = {}) {
 	const onCompositionEnd = e => {
     isOnCompositionUpdate = false;
     let value = e.currentTarget.value;
-    let event;
+    let event = {};
     if (valueKeyFromEvent === 'toString') {
       event = value;
     } else {

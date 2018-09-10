@@ -21,7 +21,11 @@ class TextArea extends Component {
 	handleOk = (value) => {
         this.setState({
             visible: false,
-        },() => this.props.onChange && this.props.onChange(value));
+        },() => this.props.onChange && this.props.onChange({
+			target: { 
+				value
+			}
+		}));
     }
 
 	handleCancel = () => {

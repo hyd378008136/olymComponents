@@ -30,15 +30,13 @@ export default function replaceWrapper(ReactElement, options = {}) {
 		if (!isOnCompositionUpdate) {
 			resultValue = processData(value, { needReplace, needUppercase, needTransform });
 		}
-		if (resultValue !== value) {
-			if (valueKeyFromEvent === 'toString') {
-				e = resultValue;
-			} else {
-				_.set(e, valueKeyFromEvent, resultValue);
-			}
-      rest[0] = e;
-			ReactElement.props && ReactElement.props.onChange && ReactElement.props.onChange(...rest);
+		if (valueKeyFromEvent === 'toString') {
+			e = resultValue;
+		} else {
+			_.set(e, valueKeyFromEvent, resultValue);
 		}
+		rest[0] = e;
+		ReactElement.props && ReactElement.props.onChange && ReactElement.props.onChange(...rest);
 	};
 	const onCompositionUpdate = e => {
 		isOnCompositionUpdate = true;

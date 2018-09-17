@@ -213,8 +213,11 @@ export default function CustomizedHOCForm({
 
       getFieldDecorator = (id, options = {}) => {
         let { fields, fieldsIds } = store;
-        const { initialValue = '', valuePropName = 'value', rules, ...otherProps } = options;
+        const { initialValue, valuePropName = 'value', rules, ...otherProps } = options;
         if (_.result(fields, id) === undefined) {
+          _.set(fields, `${id}`, {});
+        }
+        if (initialValue !== undefined) {
           _.set(fields, `${id}.initialValue`, initialValue);
         }
         if (fieldsIds.indexOf(id) < 0) {

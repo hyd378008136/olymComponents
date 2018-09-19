@@ -24,10 +24,11 @@ import {
     Table,
     Tabs
 } from "antd";
-import {FormLayout, Panel, Split, Wrap} from "olym";
+import {FormLayout, Panel, Split, Wrap, FloatDrag} from "olym";
 // import Wrap from "../../../src/components/olym/wrap/index";
 
 const FormItem = FormLayout.FormItem;
+const FloatDragComponent = FloatDrag.FloatDragComponent
 // const FormItem = Form.Item;
 
 
@@ -88,9 +89,8 @@ class LayoutSample extends Component {
         }];
 
         return (
+           
             <Layout>
-                	
-                   
                 <div style={{ 'margin-top': '200px' }}>
                     <FormLayout labelWidth="8em" inputSize={'small'}>
                         <FormItem label="test">
@@ -200,6 +200,7 @@ class LayoutSample extends Component {
                 {/*<Footer style={{textAlign: 'center'}}>*/}
                 {/*Ant Design ©2016 Created by Ant UED*/}
                 {/*</Footer>*/}
+                {FloatDragComponent(null, {top: 100, right: 800, id: 'suspension-drag-component'})}
             </Layout>
         )
     }

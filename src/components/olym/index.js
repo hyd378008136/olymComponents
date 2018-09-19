@@ -35,3 +35,4 @@ export { default as ReplaceInput } from './replace-input';
 export { default as ReplaceTextArea } from './replace-text-area';
 export { default as CustomizedHOCForm } from './customized-h-o-c-form';
 export { default as replaceWrapper } from './replace-wrapper';
+export { default as FloatDrag } from './float-drag'

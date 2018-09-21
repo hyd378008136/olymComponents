@@ -661,7 +661,8 @@ class AdSearch extends Component{
       </FormItem>)
     })
     return children;
-  }
+  };
+
   onTagClose = (key,v) =>{
     // console.log(key,v)
     let {data,ocMap} = this.state;
@@ -688,9 +689,15 @@ class AdSearch extends Component{
     // console.log(newList);
     data[key] = newList;
     this.doSearch(data);
-    this.setState({
-      data
-    })
+    let state = { data };
+    if (!newList.length) {
+      state = _.assign(state, {
+        selectedTemplateName: '',
+        selectedTemplateId: '',
+        templateName: ''
+      })
+    }
+    this.setState(state)
   };
 
   doSearch = (data) =>{

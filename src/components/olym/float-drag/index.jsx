@@ -1,11 +1,11 @@
 import React from 'react'
 import Button from '../button/index'
 
-function FloatDragComponent(WrappedComponent, option = {
+function FloatDragComponent(option = {
   top: 5,
   right: 5,
   id: 'suspension-drag-component',
-}) {
+}, WrappedComponent) {
   class DragComponent extends React.Component {
 
     self = {
@@ -62,8 +62,8 @@ function FloatDragComponent(WrappedComponent, option = {
 
     jumpToCustomizedPage = (e) => {
       console.log(e);
-      if(this.props.url) {
-        window.open(this.props.url);
+      if(option.url) {
+        window.open(option.url);
       }
     }
 

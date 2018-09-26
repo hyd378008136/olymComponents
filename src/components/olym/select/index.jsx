@@ -11,7 +11,11 @@ class Select extends Component {
 	onChange = (value) => {
 		if (!value) {
 			if (this.props.onSelect) {
-				this.props.onSelect('', {});
+				try {
+					this.props.onSelect('', {});
+				} catch (error) {
+					console.warn('this is onChange triggered select, you are using option.props.index, please check if undefined!!!');
+				}
 			}
 		}
 		if (this.props.onChange) {

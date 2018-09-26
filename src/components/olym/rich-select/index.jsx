@@ -34,7 +34,11 @@ class RichSelect extends Component {
 
     onChange = (value) => {
         if (!value) {
-            this.props.onSelect && this.props.onSelect('', {}, {});
+            try {
+                this.props.onSelect && this.props.onSelect('', {}, {});
+            } catch (error) {
+                console.warn('this is onChange triggered select, you are using option.props.index, please check if undefined!!!');
+            }
         }
         this.props.onChange && this.props.onChange(value);
     }

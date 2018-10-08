@@ -734,7 +734,7 @@ class AdSearch extends Component{
 
   onTemplateSelect = (value) =>{
     console.log(value)
-    let {templateNames,template,arrSelectValue} = this.state;
+    let {templateNames, template, arrSelectValue} = this.state;
     const id = templateNames[value]
     const templateData = template[id];
     let {advancedcondition} = templateData;
@@ -742,7 +742,7 @@ class AdSearch extends Component{
     if(typeof advancedcondition === 'string'){
       advancedcondition = JSON.parse(advancedcondition)
     }
-
+    arrSelectValue = '';
     // let extraConditionCheckedList = [];
     let list = [];
     const {defaultCondition} = this.props;

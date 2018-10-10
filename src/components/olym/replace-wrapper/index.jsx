@@ -69,8 +69,8 @@ class ReplaceWrappedComponent extends React.Component {
 	};
 
 	render() {
-		let ReactElement = this.props.ReactElement;
-		return React.cloneElement(ReactElement, { ...this.props, onCompositionStart: this.onCompositionStart, onChange: this.onChange, onCompositionEnd: this.onCompositionEnd }, null);
+		let { ReactElement, ...props } = this.props;
+		return React.cloneElement(ReactElement, { ...props, onCompositionStart: this.onCompositionStart, onChange: this.onChange, onCompositionEnd: this.onCompositionEnd }, null);
 	}
 }
 

@@ -25,10 +25,10 @@ class ReplaceWrappedComponent extends React.Component {
 	}
 
 	onChange = (...rest) => {
-		let { needReplace = true, needUppercase = true, needTransform = true, valueKeyFromEvent = 'target.value', ReactElement } = this.props;
+		let { needReplace = true, needUppercase = true, needTransform = true, valueKeyFromEvent = 'target.value' } = this.props;
 		if (this.isOnCompositionStart) {
 			_.set(rest[0], 'type', 'composition');
-			ReactElement.props && ReactElement.props.onChange && ReactElement.props.onChange(...rest);
+			this.props && this.props.onChange && this.props.onChange(...rest);
 			return;
 		}
 		let e = rest[0];
@@ -48,7 +48,7 @@ class ReplaceWrappedComponent extends React.Component {
 		rest[0] = e;
 		_.set(rest[0], 'type', 'change');
 		_.set(rest[0], 'mode', 'replaceWrapper');
-		ReactElement.props && ReactElement.props.onChange && ReactElement.props.onChange(...rest);
+		this.props && this.props.onChange && this.props.onChange(...rest);
 	};
 
 	onCompositionStart = e => {

@@ -75,5 +75,5 @@ class ReplaceWrappedComponent extends React.Component {
 }
 
 export default function replaceWrapper(ReactElement, options = {}) {
-	return <ReplaceWrappedComponent ReactElement={ReactElement} {...options}/>;
+	return <ReplaceWrappedComponent ReactElement={ReactElement} {...options} {...ReactElement.props}/>;
 }

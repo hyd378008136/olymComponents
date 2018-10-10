@@ -46,6 +46,8 @@ class ReplaceWrappedComponent extends React.Component {
 			_.set(e, valueKeyFromEvent, resultValue);
 		}
 		rest[0] = e;
+		_.set(rest[0], 'type', 'change');
+		_.set(rest[0], 'mode', 'replaceWrapper');
 		ReactElement.props && ReactElement.props.onChange && ReactElement.props.onChange(...rest);
 	};
 

@@ -17,11 +17,18 @@ const processData = (value, { needReplace, needUppercase, needTransform }) => {
 	return value;
 };
 
-export default function replaceWrapper(ReactElement, options = {}) {
-	let { needReplace = true, needUppercase = true, needTransform = true, valueKeyFromEvent = 'target.value' } = options;
-	let isOnCompositionStart = false;
-	const onChange = (...rest) => {
-		if (isOnCompositionStart) {
+class ReplaceWrappedComponent extends React.Component {
+
+	constructor(props) {
+		super(props);
+		this.isOnCompositionStart = false;
+	}
+
+	onChange = (...rest) => {
+		let { needReplace = true, needUppercase = true, needTransform = true, valueKeyFromEvent = 'target.value', ReactElement } = this.props;
+		if (this.isOnCompositionStart) {
+			_.set(rest[0], 'type', 'composition');
+			ReactElement.props && ReactElement.props.onChange && ReactElement.props.onChange(...rest);
 			return;
 		}
 		let e = rest[0];
@@ -30,7 +37,7 @@ export default function replaceWrapper(ReactElement, options = {}) {
 			value = e;
 		}
 		let resultValue = value;
-		if (!isOnCompositionStart) {
+		if (!this.isOnCompositionStart) {
 			resultValue = processData(value, { needReplace, needUppercase, needTransform });
 		}
 		if (valueKeyFromEvent === 'toString') {
@@ -41,12 +48,14 @@ export default function replaceWrapper(ReactElement, options = {}) {
 		rest[0] = e;
 		ReactElement.props && ReactElement.props.onChange && ReactElement.props.onChange(...rest);
 	};
-	const onCompositionStart = e => {
-		isOnCompositionStart = true;
+
+	onCompositionStart = e => {
+		this.isOnCompositionStart = true;
 	};
 
-	const onCompositionEnd = e => {
-    isOnCompositionStart = false;
+	onCompositionEnd = e => {
+		let { valueKeyFromEvent = 'target.value' } = this.props;
+    this.isOnCompositionStart = false;
     let value = e.currentTarget.value;
     let event = {};
     if (valueKeyFromEvent === 'toString') {
@@ -54,8 +63,15 @@ export default function replaceWrapper(ReactElement, options = {}) {
     } else {
       _.set(event, valueKeyFromEvent, value);
     }
-    onChange(event);
+    this.onChange(event);
 	};
 
-	return React.cloneElement(ReactElement, { onCompositionStart, onChange, onCompositionEnd }, null);
+	render() {
+		let ReactElement = this.props.ReactElement;
+		return React.cloneElement(ReactElement, { onCompositionStart: this.onCompositionStart, onChange: this.onChange, onCompositionEnd: this.onCompositionEnd }, null);
+	}
+}
+
+export default function replaceWrapper(ReactElement, options = {}) {
+	return <ReplaceWrappedComponent ReactElement={ReactElement} {...options}/>;
 }

@@ -25,7 +25,7 @@ class ReplaceWrappedComponent extends React.Component {
 	}
 
 	onChange = (...rest) => {
-		let { needReplace = true, needUppercase = true, needTransform = true, valueKeyFromEvent = 'target.value' } = this.props;
+		let { needReplace = true, needUppercase = true, needTransform = true, valueKeyFromEvent = 'target.value' } = this.props.options;
 		if (this.isOnCompositionStart) {
 			_.set(rest[0], 'type', 'composition');
 			this.props && this.props.onChange && this.props.onChange(...rest);
@@ -56,7 +56,7 @@ class ReplaceWrappedComponent extends React.Component {
 	};
 
 	onCompositionEnd = e => {
-		let { valueKeyFromEvent = 'target.value' } = this.props;
+		let { valueKeyFromEvent = 'target.value' } = this.props.options;
     this.isOnCompositionStart = false;
     let value = e.currentTarget.value;
     let event = {};
@@ -69,11 +69,11 @@ class ReplaceWrappedComponent extends React.Component {
 	};
 
 	render() {
-		let { ReactElement, ...props } = this.props;
+		let { ReactElement, options, ...props } = this.props;
 		return React.cloneElement(ReactElement, { ...props, onCompositionStart: this.onCompositionStart, onChange: this.onChange, onCompositionEnd: this.onCompositionEnd }, null);
 	}
 }
 
 export default function replaceWrapper(ReactElement, options = {}) {
-	return <ReplaceWrappedComponent ReactElement={ReactElement} {...options} {...ReactElement.props}/>;
+	return <ReplaceWrappedComponent ReactElement={ReactElement} options={options} {...ReactElement.props}/>;
 }

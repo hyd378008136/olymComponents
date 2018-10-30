@@ -608,7 +608,10 @@ class AdSearch extends Component{
       if(data[key] && dcList.indexOf(key) === -1 && ocMap[key]){
         console.log(key, ocMap)
         const value = data[key];
-        const {fieldCn} = ocMap[key]
+        const {fieldCn, reflectMap, getReflectMap} = ocMap[key]
+          if(reflectMap && reflectMap.size === 0 && getReflectMap && typeof getReflectMap === 'function'){
+          getReflectMap()
+        }
         if(fieldCn){
           if(Array.isArray(value)){
             value.map((v)=>{

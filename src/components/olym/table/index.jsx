@@ -174,7 +174,7 @@ class Table extends Component {
 
   render() {
     console.info(this.props)
-    const {columns, customColumns, onCustomChange, showSeq, dataSource, customCtns, title, ...otherProps} = this.props;
+    const {columns, customColumns, onCustomChange, showSeq, dataSource, customCtns, title, leftSpan=6,rightSpan=18,...otherProps} = this.props;
     const {timeId} = this.state;
     //多传参数会报错。原因不知道。先把不要用的参数去掉
     let _customColumns = [];
@@ -290,10 +290,10 @@ class Table extends Component {
         }
       }
       return (<Row>
-        <Col span={6}>
+        <Col span={leftSpan}>
           {left()}
         </Col>
-        <Col span={18}>
+        <Col span={rightSpan}>
           {right()}
         </Col>
       </Row>)

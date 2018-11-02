@@ -609,8 +609,20 @@ class AdSearch extends Component{
         console.log(key, ocMap)
         const value = data[key];
         const {fieldCn, reflectMap, getReflectMap} = ocMap[key]
-          if(reflectMap && reflectMap.size === 0 && getReflectMap && typeof getReflectMap === 'function'){
-          getReflectMap()
+        if(getReflectMap && typeof getReflectMap === 'function'){
+          if (Array.isArray(value)) {
+            for (let i = 0; i < value.length; i++) {
+              const id = value[i]
+              if (reflectMap.get(id)) {
+                // console.log(reflectMap)
+                // console.log(id)
+                continue
+              }
+              getReflectMap(id)
+            }
+          } else {
+                getReflectMap(value)
+          }
         }
         if(fieldCn){
           if(Array.isArray(value)){

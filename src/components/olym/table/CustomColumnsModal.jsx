@@ -64,14 +64,29 @@ class CustomColumnsModal extends Component {
     handleSelectChange = ({ key }, checked) => {
         console.log(key, checked)
         let { selectedKeys, targetKeys } = this.state
-        if (targetKeys.indexOf(key) > -1) {
-            if (checked) {
-                selectedKeys = selectedKeys.concat(key)
-            } else {
-                selectedKeys = selectedKeys.filter(item => item !== key)
+        let _selectedKeys = _.cloneDeep(selectedKeys)
+        const checkedLen = checked.length
+        const targetKeysLen = targetKeys.length
+        if(Array.isArray(checked)){
+            if(checkedLen === 0){
+                _selectedKeys = []
+            }else {
+                if(checkedLen === targetKeysLen){
+                    _selectedKeys = checked
+                }
             }
-            this.setState({ selectedKeys })
+        }else {
+            if (targetKeys.indexOf(key) > -1) {
+                if (checked) {
+                    _selectedKeys = _selectedKeys.concat(key)
+                } else {
+                    _selectedKeys = _selectedKeys.filter(item => item !== key)
+                }
+            }
         }
+        // console.log('_selectedKeys',_selectedKeys)
+        this.setState({ selectedKeys:_selectedKeys })
+
     }
 
     handleTransferChange = (targetKeys, direction, moveKeys) => {
@@ -144,7 +159,10 @@ class CustomColumnsModal extends Component {
     }
     handleMoveTop = () => {
         const {selectedKeys, targetKeys} = this.state
-        const newTargetKeys = targetKeys.concat()
+        // console.log('targetKeys',targetKeys)
+        // console.log('selectedKeys',selectedKeys)
+        // console.log('targetKeys')
+        const newTargetKeys = _.cloneDeep(targetKeys)
         const tmp = new Set(selectedKeys.concat(newTargetKeys))
         const newTmp = [...tmp]
         this.setState({targetKeys: newTmp})

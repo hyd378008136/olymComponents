@@ -8,7 +8,15 @@ import _ from 'lodash';
 const customColumns = [
   {orderNo: -1, dataIndex: "address", title: "地址"},
   {orderNo: 4, dataIndex: "age", title: "age"},
-  {orderNo: 3, dataIndex: "name", title: "姓名"}
+  {orderNo: 3, dataIndex: "name1", title: "姓222名"},
+  {orderNo: 5, dataIndex: "name2", title: "姓222名"},
+  {orderNo: 6, dataIndex: "name3", title: "姓名2222"},
+  {orderNo: 7, dataIndex: "name44", title: "姓名222"},
+  {orderNo: 8, dataIndex: "name55", title: "姓名333"},
+  {orderNo: 9, dataIndex: "name555", title: "姓名33"},
+  {orderNo: 20, dataIndex: "name5555", title: "姓33名"},
+  {orderNo: 11, dataIndex: "name555555", title: "姓333名"},
+  {orderNo: 12, dataIndex: "name55555", title: "姓333名"},
 ]
 
 const strWithStar = (str, color) => {

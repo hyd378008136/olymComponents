@@ -1,6 +1,6 @@
 {
   "name": "olymc",
-  "version": "0.3.31",
+  "version": "0.3.32",
   "description": "Olymtech Components",
   "main": "lib/index.js",
   "scripts": {
@@ -179,7 +179,7 @@
     "node": ">= 4.0.0",
     "npm": ">= 3.0.0"
   },
-  "browserlist": [
+  "browserslist": [
     "> 1%",
     "last 2 versions",
     "not ie <= 9"

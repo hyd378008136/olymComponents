@@ -1,6 +1,6 @@
 {
   "name": "olymc",
-  "version": "0.3.33",
+  "version": "0.3.34",
   "description": "Olymtech Components",
   "main": "lib/index.js",
   "scripts": {
@@ -23,7 +23,7 @@
     "gregorian-calendar-format": "~4.1.0",
     "is-negative-zero": "^2.0.0",
     "jquery": "1.11.3",
-    "lodash": "^4.17.10",
+    "lodash": "4.17.4",
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.5",
     "object.omit": "^2.0.0",

@@ -456,10 +456,15 @@ class AdSearch extends Component{
     if(extraCondition && extraCondition.length>0){
       // children.push(<FormItem key="extra"><Popover title={<span>其他条件</span>} content={this.getOtherConditionContent(extraCondition)} placement="bottom" trigger="click"><a>+条件<Icon type="down" size={themeType}/></a></Popover></FormItem>)
       children.push(<FormItem key="extra" label="条件按">
-        <Select size="small" dropdownMatchSelectWidth={false}
-                placeholder="条件筛选" style={{minWidth:80}}
-                onSelect={this.onExtraConditionSelect}
-                value={this.state.extraCondition}
+        <Select showSearch 
+          optionFilterProp="children"
+          size="small"
+          dropdownMatchSelectWidth={false}
+          placeholder="条件筛选" 
+          style={{minWidth:80}}
+          onSelect={this.onExtraConditionSelect}
+          value={this.state.extraCondition}
+          filterOption={(input, option) => option.props.children.indexOf(input) >= 0}
         >
           {extraCondition.map(({props})=>{
             return <Option name={props.fieldEn} key={props.fieldEn}>{props.fieldCn}</Option>

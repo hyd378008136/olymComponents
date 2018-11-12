@@ -106,7 +106,7 @@ class RichSelect extends Component {
             return dropdownBodyData.map(function (val, index) {
                 // TODO unique key问题
                 const parentVal = val;
-                const _item = dropdownHeadData.map((val, i) => <p key={val.dataIndex}>{parentVal[val.dataIndex]}</p>);
+                const _item = dropdownHeadData.map((val, i) => <p key={val.dataIndex} title={parentVal[val.dataIndex]}>{parentVal[val.dataIndex]}</p>);
                 return <Option key={index} value={val[selectKey]}>{_item}</Option>//这里的key可以当value使用，不用再定义value
             })
         }

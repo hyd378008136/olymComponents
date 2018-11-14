@@ -174,7 +174,7 @@ class Table extends Component {
 
   render() {
     console.info(this.props)
-    const {columns, customColumns, onCustomChange, showSeq, dataSource, customCtns, title, leftSpan=6,rightSpan=18,...otherProps} = this.props;
+    const {columns, customColumns, onCustomChange, showSeq, dataSource, customCtns, title, leftSpan=6,rightSpan=18,selectedRowKeysCount = 0, ...otherProps} = this.props;
     const {timeId} = this.state;
     //多传参数会报错。原因不知道。先把不要用的参数去掉
     let _customColumns = [];
@@ -245,7 +245,6 @@ class Table extends Component {
           } else {
             leftChildren.push(title)
           }
-
         }
         if (_customColumns && Array.isArray(_customColumns) && _customColumns.length > 0) {
           const buttonProps = {
@@ -257,6 +256,10 @@ class Table extends Component {
             buttonProps.className = "ml8"
           }
           leftChildren.push(<Button {...buttonProps}>自定义列</Button>)
+        }
+        //选中条数
+        if (!!selectedRowKeysCount) {
+          leftChildren.push(<span>&nbsp;&nbsp;已选择{selectedRowKeysCount}项</span>);
         }
         if (leftChildren.length === 0) {
           return;

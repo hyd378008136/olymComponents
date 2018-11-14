@@ -6,7 +6,7 @@ import {Input as AtInput} from 'antd'
 import PropTypes from 'prop-types'
 import ReplaceTextArea from '../replace-text-area'
 import {handleOnBlur, setPropsValue} from '../util/replaceFunc'
-import isEqual from 'lodash.isequal';
+import _ from 'lodash';
 
 class ReplaceInput extends Component {
     constructor(props) {
@@ -26,7 +26,7 @@ class ReplaceInput extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        if (isEqual(nextProps, this.props) && isEqual(nextState, this.state)) {
+        if (_.isEqual(nextProps, this.props) && _.isEqual(nextState, this.state)) {
             return false
         }
         return true

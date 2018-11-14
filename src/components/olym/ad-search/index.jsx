@@ -5,7 +5,6 @@ import {Table, FormLayout, Split, Wrap, Panel,Tag,DatePicker, Select} from 'olym
 
 import CustomTopLine from './CustomTopLine';
 import CustomFootLine from './CustomFootLine';
-import isEqual from 'lodash.isequal';
 import _ from 'lodash';
 
 const FormItem = FormLayout.FormItem;
@@ -55,7 +54,7 @@ class AdSearch extends Component{
         template,templateNames
       })
     }
-    if(this.props.extraCondition && nextProps.extraCondition && !isEqual(this.props.extraCondition, nextProps.extraCondition)){
+    if(this.props.extraCondition && nextProps.extraCondition && !_.isEqual(this.props.extraCondition, nextProps.extraCondition)){
       const {data,dcList,ocMap} = this.initData(nextProps);
       this.setState({
         // data,
@@ -63,7 +62,7 @@ class AdSearch extends Component{
         ocMap,
       })
     }
-    if(this.props.defaultCondition && nextProps.defaultCondition && !isEqual(this.props.defaultCondition, nextProps.defaultCondition)){
+    if(this.props.defaultCondition && nextProps.defaultCondition && !_.isEqual(this.props.defaultCondition, nextProps.defaultCondition)){
       const {data,dcList,dcMap} = this.initData(nextProps);
       this.setState({
         // data,

@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import TextArea from '../text-area'
 import PropTypes from 'prop-types'
 import {handleOnBlur, setPropsValue} from '../util/replaceFunc'
-import isEqual from 'lodash.isequal';
+import _ from 'lodash';
 
 class ReplaceTextArea extends Component {
     constructor(props) {
@@ -22,7 +22,7 @@ class ReplaceTextArea extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        if (isEqual(nextProps, this.props) && isEqual(nextState, this.state)) {
+        if (_.isEqual(nextProps, this.props) && _.isEqual(nextState, this.state)) {
             return false
         }
         return true

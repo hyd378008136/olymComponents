@@ -176,12 +176,7 @@ Nav.defaultProps = {
       label: 'Layout布局',
       icon: 'laptop',
       href: "/components/layout"
-    },
-    {
-      label: 'Calendar日历',
-      icon: 'laptop',
-      href: '/components/calendar'
-    },
+    }
 
     // {
     // label: 'Tabs 标签页',

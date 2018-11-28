@@ -9,7 +9,7 @@ class CalendarSample extends Component {
 
   render () {
     return (
-      <div style={{width: '500px'}}>
+      <div style={{width: '500px', backgroundColor: 'white'}}>
         <Calendar
           fullscreen={false}
         />

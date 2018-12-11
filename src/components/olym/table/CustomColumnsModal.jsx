@@ -71,9 +71,9 @@ class CustomColumnsModal extends Component {
             if(checkedLen === 0){
                 _selectedKeys = []
             }else {
-                if(checkedLen === targetKeysLen){
+                //if(checkedLen === targetKeysLen){
                     _selectedKeys = checked
-                }
+                //}
             }
         }else {
             if (targetKeys.indexOf(key) > -1) {
@@ -86,7 +86,6 @@ class CustomColumnsModal extends Component {
         }
         // console.log('_selectedKeys',_selectedKeys)
         this.setState({ selectedKeys:_selectedKeys })
-
     }
 
     handleTransferChange = (targetKeys, direction, moveKeys) => {

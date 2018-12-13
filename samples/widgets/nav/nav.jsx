@@ -176,6 +176,11 @@ Nav.defaultProps = {
       label: 'Layout布局',
       icon: 'laptop',
       href: "/components/layout"
+    },
+    {
+      label: 'LazyLoad懒加载',
+      icon: 'laptop',
+      href: "/components/lazy-load"
     }
 
     // {
